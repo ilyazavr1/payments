@@ -6,7 +6,7 @@ public class User {
     private String firstName;
     private String lastName;
     private String surname;
-    private String login;
+    private String email;
     private String password;
     private String blocked;
     private long rolesId;
@@ -44,12 +44,12 @@ public class User {
         this.surname = surname;
     }
 
-    public String getLogin() {
-        return login;
+    public String getEmail() {
+        return email;
     }
 
-    public void setLogin(String login) {
-        this.login = login;
+    public void setEmail(String email) {
+        this.email = email;
     }
 
     public String getPassword() {

@@ -1,4 +1,4 @@
-package ua.epam.payments.payments.web;
+package ua.epam.payments.payments.web.servlets;
 
 import ua.epam.payments.payments.model.dao.impl.UserDaoImpl;
 import ua.epam.payments.payments.model.entity.User;
@@ -20,7 +20,7 @@ public class HelloServlet extends HttpServlet {
 
     public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
         UserDaoImpl userDao = new UserDaoImpl();
-        User user = userDao.getUserById(1);
+        User user = userDao.getUserById(2);
         System.out.println(user.getId() +" \n" +
                 user.getFirstName());
 

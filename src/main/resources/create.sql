@@ -9,6 +9,8 @@ create table roles
     PRIMARY KEY (id)
 );
 
+INSERT INTO roles values (default, 'manager');
+INSERT INTO roles values (default, 'user');
 
 create table users
 (
@@ -16,10 +18,10 @@ create table users
     first_name varchar(50)  NOT NULL,
     last_name  varchar(50)  NOT NULL,
     surname    varchar(50)  NOT NULL,
-    login      varchar(50)  NOT NULL,
+    email      varchar(50)  NOT NULL,
     password   varchar(255) NOT NULL,
     blocked    bool         NOT NULL DEFAULT FALSE,
-    roles_id   integer      references roles (id) ON DELETE SET NULL,
+    role_id   integer      references roles (id) ON DELETE SET NULL,
     PRIMARY KEY (id)
 );
 

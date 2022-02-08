@@ -1,4 +1,4 @@
-package ua.epam.payments.payments.web;
+package ua.epam.payments.payments.web.servlets;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;

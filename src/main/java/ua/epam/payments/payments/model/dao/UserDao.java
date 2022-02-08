@@ -6,4 +6,6 @@ public interface UserDao {
 
     public User getUserById(long id);
 
+    public boolean createUser(User user);
+
 }
