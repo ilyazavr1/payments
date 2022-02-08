@@ -1,11 +1,7 @@
-<%--
-  Created by IntelliJ IDEA.
-  User: smiya
-  Date: 08.02.2022
-  Time: 17:55
-  To change this template use File | Settings | File Templates.
---%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+
+
 <html>
 <head>
     <title>Profile</title>
@@ -13,7 +9,16 @@
 <body>
 <h1>Profile</h1>
 
+<c:if test="${sessionScope.user != null}">
 
+    <p>User id: <c:out value="${sessionScope.user.id}"></c:out></p>
+    <p>User name: <c:out value="${sessionScope.user.firstName}"></c:out></p>
+    <p>User last name: <c:out value="${sessionScope.user.lastName}"></c:out></p>
+</c:if>
+
+<c:if test="${sessionScope.user == null}">
+<p>User is null</p>
+</c:if>
 
 </body>
 </html>
