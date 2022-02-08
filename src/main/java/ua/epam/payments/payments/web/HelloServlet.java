@@ -1,5 +1,8 @@
 package ua.epam.payments.payments.web;
 
+import ua.epam.payments.payments.model.dao.impl.UserDaoImpl;
+import ua.epam.payments.payments.model.entity.User;
+
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -16,15 +19,23 @@ public class HelloServlet extends HttpServlet {
     }
 
     public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
+        UserDaoImpl userDao = new UserDaoImpl();
+        User user = userDao.getUserById(1);
+        System.out.println(user.getId() +" \n" +
+                user.getFirstName());
+
+
         response.setContentType("text/html");
 
         // Hello
         PrintWriter out = response.getWriter();
         out.println("<html><body>");
-        out.println("<h1>" + message + "</h1>");
+        out.println("<h1>" + message + "</h1></br>");
+        out.println("<h1>" + user.getId() +" " + user.getFirstName() + "</h1>");
         out.println("</body></html>");
-        int x = 0;
-        int y = 8 / x;
+
+
+
     }
 
 
