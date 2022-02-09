@@ -1,6 +1,9 @@
 package ua.epam.payments.payments.model.entity;
 
-public class User {
+import java.io.Serializable;
+
+public class User implements Serializable {
+    private static final long serialVersionUID = 123L;
 
     private long id;
     private String firstName;
@@ -8,7 +11,7 @@ public class User {
     private String surname;
     private String email;
     private String password;
-    private String blocked;
+    private boolean blocked;
     private long rolesId;
 
 
@@ -60,11 +63,11 @@ public class User {
         this.password = password;
     }
 
-    public String getBlocked() {
+    public boolean getBlocked() {
         return blocked;
     }
 
-    public void setBlocked(String blocked) {
+    public void setBlocked(boolean blocked) {
         this.blocked = blocked;
     }
 
@@ -74,5 +77,53 @@ public class User {
 
     public void setRolesId(long rolesId) {
         this.rolesId = rolesId;
+    }
+
+    public static class Builder {
+        private User newUser;
+
+        public Builder() {
+            newUser = new User();
+        }
+
+        public Builder withFirstName(String firstName){
+            newUser.firstName = firstName;
+            return this;
+        }
+
+        public Builder withLastName(String lastName){
+            newUser.lastName = lastName;
+            return this;
+        }
+
+        public Builder withSurname(String surname){
+            newUser.surname = surname;
+            return this;
+        }
+
+        public Builder withEmail(String email){
+            newUser.email = email;
+            return this;
+        }
+
+        public Builder withPassword(String password){
+            newUser.password = password;
+            return this;
+        }
+
+        public Builder withBlocked(boolean blocked){
+            newUser.blocked = blocked;
+            return this;
+        }
+
+        public Builder withRolesId(long rolesId){
+            newUser.rolesId = rolesId;
+            return this;
+        }
+
+        public User build(){
+            return newUser;
+        }
+
     }
 }

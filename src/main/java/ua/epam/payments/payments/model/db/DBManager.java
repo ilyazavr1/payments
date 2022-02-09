@@ -29,6 +29,7 @@ public class DBManager {
         config.addDataSourceProperty("prepStmtCacheSize", "250");
         config.addDataSourceProperty("prepStmtCacheSqlLimit", "2048");
 
+
         ds = new HikariDataSource(config);
 
     }
@@ -54,6 +55,12 @@ public class DBManager {
 
     public Connection getConnection() throws SQLException {
         return ds.getConnection();
+    }
+
+    //test
+    public void testActive(){
+        System.out.println(ds.getHikariPoolMXBean().getActiveConnections());
+        //System.out.println(ds.getHikariPoolMXBean().getTotalConnections());
     }
 
 }

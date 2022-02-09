@@ -9,8 +9,8 @@ create table roles
     PRIMARY KEY (id)
 );
 
-INSERT INTO roles values (default, 'manager');
-INSERT INTO roles values (default, 'user');
+INSERT INTO roles values (default, 'ADMINISTRATOR');
+INSERT INTO roles values (default, 'CLIENT');
 
 create table users
 (

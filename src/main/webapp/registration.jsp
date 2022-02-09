@@ -14,7 +14,7 @@
 <h1>Sign up</h1>
 
 
-<form action="signup" method="post">
+<form action="registration" method="post">
 
     <label for="firstName">Input first name</label>
     <input type="text" name="firstName" id="firstName">
