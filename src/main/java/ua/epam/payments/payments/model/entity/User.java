@@ -80,10 +80,15 @@ public class User implements Serializable {
     }
 
     public static class Builder {
-        private User newUser;
+        private final User newUser;
 
         public Builder() {
             newUser = new User();
+        }
+
+        public Builder withId(long id){
+            newUser.id = id;
+            return this;
         }
 
         public Builder withFirstName(String firstName){
