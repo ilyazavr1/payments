@@ -5,6 +5,7 @@ import ua.epam.payments.payments.model.dao.UserDao;
 import ua.epam.payments.payments.model.dao.impl.UserDaoImpl;
 import ua.epam.payments.payments.model.entity.User;
 import ua.epam.payments.payments.model.services.PasswordEncryption;
+import ua.epam.payments.payments.web.Path;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -16,7 +17,7 @@ import java.io.IOException;
 import java.security.NoSuchAlgorithmException;
 import java.security.spec.InvalidKeySpecException;
 
-@WebServlet(name = "registrationServlet", value = "/registration")
+@WebServlet(name = "RegistrationServlet", value = Path.REGISTRATION_PATH)
 public class RegistrationServlet extends HttpServlet {
 
 
@@ -24,10 +25,8 @@ public class RegistrationServlet extends HttpServlet {
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 
         if (req.getSession().getAttribute("user") != null) {
-            req.getRequestDispatcher("profile.jsp").forward(req, resp);;
-        } else {
-            req.getRequestDispatcher("registration.jsp").forward(req, resp);
-        }
+            resp.sendRedirect(Path.PROFILE_PATH);
+        }else req.getRequestDispatcher(Path.REGISTRATION_JSP).forward(req,resp);
     }
 
 
@@ -35,10 +34,8 @@ public class RegistrationServlet extends HttpServlet {
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 
         if (req.getSession().getAttribute("user") != null) {
-            User test = (User) req.getSession().getAttribute("user");
-            System.out.println(test.getFirstName());
-            System.out.println(1);
-            resp.sendRedirect("profile.jsp");
+            resp.sendRedirect(Path.PROFILE_PATH);
+           return;
         }
 
         String firstName = req.getParameter("firstName").trim();
@@ -47,6 +44,7 @@ public class RegistrationServlet extends HttpServlet {
         String email = req.getParameter("email").trim();
         String password = req.getParameter("password").trim();
 
+        System.out.println("regis" + password);
 
         User user = null;
         try {
@@ -66,21 +64,10 @@ public class RegistrationServlet extends HttpServlet {
 
         user = userDao.getUserByEmail(email);
 
-        try {
-            System.out.println(PasswordEncryption.isPasswordCorrect(password, user.getPassword()));
-        } catch (DecoderException e) {
-            e.printStackTrace();
-        } catch (NoSuchAlgorithmException e) {
-            e.printStackTrace();
-        } catch (InvalidKeySpecException e) {
-            e.printStackTrace();
-        }
 
-        req.getSession().setAttribute("user", user);
+        HttpSession session = req.getSession();
+        session.setAttribute("user", user);
 
-
-        System.out.println(2);
-
-        this.doGet(req, resp);
+        resp.sendRedirect(Path.PROFILE_PATH);
     }
 }

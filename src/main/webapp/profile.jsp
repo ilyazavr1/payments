@@ -25,5 +25,7 @@
 <p>User is null</p>
 </c:if>
 
+<a href="accounts">My cards</a><br/>
+
 </body>
 </html>

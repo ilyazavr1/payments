@@ -11,6 +11,7 @@
 
 
 
-<a href="registration">Login</a>
+<a href="registration">Registration</a><br/>
+<a href="login">Login</a>
 </body>
 </html>
