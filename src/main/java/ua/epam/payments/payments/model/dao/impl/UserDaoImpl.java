@@ -10,12 +10,12 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.List;
 
 public class UserDaoImpl implements UserDao {
     public static final String SQL_GET_USER_BY_ID = "SELECT * FROM \"user\" WHERE id=?";
     public static final String SQL_GET_USER_BY_EMAIL = "SELECT * FROM \"user\" WHERE email=?";
     public static final String SQL_CREATE_USER = "INSERT INTO \"user\" values (default, ?, ?, ?, ?, ?, ?, ?)";
-
 
     public static final String USER_ID = "id";
 
@@ -80,8 +80,6 @@ public class UserDaoImpl implements UserDao {
         }
         return false;
     }
-
-
 
 
 }

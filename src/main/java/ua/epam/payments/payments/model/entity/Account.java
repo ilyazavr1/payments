@@ -61,4 +61,12 @@ public class Account {
 
     }
 
+    @Override
+    public String toString() {
+        return "Account{" +
+                "id=" + id +
+                ", number='" + number + '\'' +
+                ", money=" + money +
+                '}';
+    }
 }

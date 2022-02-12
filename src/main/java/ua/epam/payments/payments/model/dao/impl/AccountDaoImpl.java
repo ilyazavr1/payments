@@ -11,6 +11,8 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
 
 public class AccountDaoImpl implements AccountDao {
     public static final String SQL_GET_ACCOUNT_BY_ID = "SELECT * FROM account WHERE id=?";
@@ -18,6 +20,8 @@ public class AccountDaoImpl implements AccountDao {
     public static final String SQL_CREATE_ACCOUNT = "INSERT INTO account values (default, ?, default)";
     public static final String SQL_IS_EXIST_ACCOUNT = "SELECT EXISTS(SELECT 1 FROM account WHERE number=?)";
     public static final String SQL_ADD_ACCOUNT_TO_USER = "INSERT INTO user_account values (?, ?)";
+    public static final String SQL_GET_ACCOUNTS_BY_USER = "SELECT * FROM account INNER JOIN  user_account ua ON account.id = ua.account_id WHERE ua.user_id =?";
+
 
     @Override
     public Account getAccountById(long id) {
@@ -103,5 +107,28 @@ public class AccountDaoImpl implements AccountDao {
             throwables.printStackTrace();
         }
         return false;
+    }
+
+    @Override
+    public List<Account> getAccountsByUser(User user) {
+        List<Account> accountsList = null;
+        try (Connection con = DBManager.getInstance().getConnection();
+             PreparedStatement stmt = con.prepareStatement(SQL_GET_ACCOUNTS_BY_USER)) {
+            stmt.setLong(1, user.getId());
+
+            try (ResultSet rs = stmt.executeQuery()) {
+                accountsList = new ArrayList<>();
+                while (rs.next()) {
+                    AccountMapper accountMapper = new AccountMapper();
+                    accountsList.add(accountMapper.mapRSToAccount(rs));
+
+                }
+            }
+
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
+        }
+
+        return accountsList;
     }
 }

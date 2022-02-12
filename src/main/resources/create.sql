@@ -2,10 +2,12 @@ truncate "user" cascade;
 truncate role cascade;
 truncate account cascade;
 truncate payment cascade;
+truncate user_account cascade;
 DROP TABLE IF EXISTS "user" CASCADE;
 DROP TABLE IF EXISTS role CASCADE;
 DROP TABLE IF EXISTS account CASCADE;
 DROP TABLE IF EXISTS payment CASCADE;
+DROP TABLE IF EXISTS user_account CASCADE;
 
 
 
@@ -58,6 +60,7 @@ create table payment
 create table user_account
 (
     user_id    bigint REFERENCES "user" (id)  NOT NULL,
-    account_id bigint REFERENCES account (id) NOT NULL NOT NULL
+    account_id bigint REFERENCES account (id) NOT NULL NOT NULL,
+    CONSTRAINT user_account_pkey PRIMARY KEY (user_id, account_id)
 );
 SET timezone = 'Europe/Kiev';

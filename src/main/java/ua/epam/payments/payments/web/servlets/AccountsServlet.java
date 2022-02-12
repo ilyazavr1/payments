@@ -12,7 +12,10 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 @WebServlet(name = "AccountsServlet", value = Path.ACCOUNTS_PATH)
 public class AccountsServlet extends HttpServlet {
@@ -21,7 +24,9 @@ public class AccountsServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 
-        req.getRequestDispatcher(Path.ACCOUNTS_JSP).forward(req, resp);
+        if (req.getSession().getAttribute("user") != null) {
+            resp.sendRedirect(Path.ACCOUNTS_PATH);
+        } else req.getRequestDispatcher(Path.LOGIN_JSP).forward(req, resp);
     }
 
 
@@ -31,20 +36,32 @@ public class AccountsServlet extends HttpServlet {
 
         String accountNumber;
         Account newAccount;
-        do {
-            accountNumber = AccountGeneration.generateAccountNumber();
-        } while (!accountDao.isExistAccount(accountNumber));
+        List<Account> accountList = new ArrayList<>();
+        User user;
 
-        User user = (User) req.getSession().getAttribute("user");
+        //add account to db
+      /*  do {
+        } while (!accountDao.isExistAccount(accountNumber));*/
+        accountNumber = AccountGeneration.generateAccountNumber();
 
+        user = (User) req.getSession().getAttribute("user");
+
+        //add account to user in db
         if (accountDao.createAccount(new Account.Builder().withNumber(accountNumber).build())) {
             newAccount = accountDao.getAccountByNumber(accountNumber);
             accountDao.addAccountToUser(newAccount, user);
-        }
+        }else System.out.println("accounts do ont added to db");
 
-        resp.sendRedirect(Path.ACCOUNTS_JSP);
+        //add accounts to session
+        accountList = accountDao.getAccountsByUser(user);
+        if (accountList != null) {
+            HttpSession session = req.getSession();
+            session.setAttribute("accounts", accountList);
+        }else System.out.println("accounts do ont added to session");
 
-        //TODO вывести аккаунты юзера 
 
+        //TODO вывести аккаунты юзера
+
+        doGet(req,resp);
     }
 }
