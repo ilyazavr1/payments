@@ -1,6 +1,5 @@
-<%@ page contentType="text/html;charset=UTF-8" language="java" %>
-<%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-
+<%@include file="/jspf/tagLibs.jspf" %>
+<%@include file="/jspf/page.jspf" %>
 
 <html>
 <head>
@@ -25,7 +24,7 @@
 <p>User is null</p>
 </c:if>
 
-<a href="accounts">My cards</a><br/>
+<a href="${Path.ACCOUNTS_PATH}">My cards</a><br/>
 
 </body>
 </html>

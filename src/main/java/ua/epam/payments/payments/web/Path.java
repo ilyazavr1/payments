@@ -10,8 +10,8 @@ public class Path {
 
 
     //JSP
-    public static final String PROFILE_JSP = "profile.jsp";
-    public static final String REGISTRATION_JSP = "registration.jsp";
-    public static final String LOGIN_JSP = "login.jsp";
-    public static final String ACCOUNTS_JSP = "accounts.jsp";
+    public static final String PROFILE_JSP = "jsp/profile.jsp";
+    public static final String REGISTRATION_JSP = "jsp/registration.jsp";
+    public static final String LOGIN_JSP = "jsp/login.jsp";
+    public static final String ACCOUNTS_JSP = "jsp/accounts.jsp";
 }

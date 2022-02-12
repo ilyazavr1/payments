@@ -21,7 +21,8 @@ import java.security.spec.InvalidKeySpecException;
 @WebServlet(name = "LoginServlet", value = Path.LOGIN_PATH)
 public class LoginServlet extends HttpServlet {
 
-
+    //  vlad@gmail.com
+    //  Qwerty12345
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         if (req.getSession().getAttribute("user") != null) {
@@ -44,7 +45,7 @@ public class LoginServlet extends HttpServlet {
             System.out.println("email and pass is null");
             req.getRequestDispatcher(Path.LOGIN_JSP).forward(req, resp);
         }
-        System.out.println("login" + password);
+
         UserDao userDao = new UserDaoImpl();
 
         User user = userDao.getUserByEmail(email);
@@ -83,5 +84,3 @@ public class LoginServlet extends HttpServlet {
         resp.sendRedirect(Path.PROFILE_PATH);
     }
 }
-//asd123@gmail.com
-//Qwerty12345

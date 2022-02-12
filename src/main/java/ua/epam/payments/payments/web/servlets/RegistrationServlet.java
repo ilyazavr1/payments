@@ -44,7 +44,7 @@ public class RegistrationServlet extends HttpServlet {
         String email = req.getParameter("email").trim();
         String password = req.getParameter("password").trim();
 
-        System.out.println("regis" + password);
+
 
         User user = null;
         try {
