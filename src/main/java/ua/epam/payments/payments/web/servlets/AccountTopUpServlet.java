@@ -1,9 +1,10 @@
 package ua.epam.payments.payments.web.servlets;
 
 
-import ua.epam.payments.payments.model.dao.AccountDao;
-import ua.epam.payments.payments.model.dao.impl.AccountDaoImpl;
+import ua.epam.payments.payments.dao.AccountDao;
+import ua.epam.payments.payments.dao.impl.AccountDaoImpl;
 import ua.epam.payments.payments.model.entity.Account;
+import ua.epam.payments.payments.model.entity.User;
 import ua.epam.payments.payments.web.Path;
 
 import javax.servlet.ServletException;
@@ -32,13 +33,19 @@ public class AccountTopUpServlet extends HttpServlet {
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        String money = req.getParameter("money");
-        req.getAttribute("user");
         AccountDao accountDao = new AccountDaoImpl();
+        int money = Integer.parseInt(req.getParameter("money"));
         long accountId = Long.parseLong(req.getParameter("id"));
-        Account account = accountDao.getAccountById(accountId);
-        System.out.println(account);
 
+        User user = (User) req.getSession().getAttribute("user");
+        Account account = accountDao.getAccountById(accountId);
+
+        if (money < 0 || user == null || account == null){
+            System.out.println("user or money or account is absent");
+            resp.sendRedirect(Path.ACCOUNTS_PATH);
+        }
+
+        accountDao.updateAccountWithMoney(account, money);
 
 
         //TODO top up account

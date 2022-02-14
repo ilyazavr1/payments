@@ -1,8 +1,7 @@
-package ua.epam.payments.payments.model.dao.impl;
+package ua.epam.payments.payments.dao.impl;
 
-import ua.epam.payments.payments.model.dao.UserDao;
-import ua.epam.payments.payments.model.db.DBManager;
-import ua.epam.payments.payments.model.entity.Account;
+import ua.epam.payments.payments.dao.UserDao;
+import ua.epam.payments.payments.db.DBManager;
 import ua.epam.payments.payments.model.entity.User;
 import ua.epam.payments.payments.model.services.mapper.UserMapper;
 
@@ -10,7 +9,6 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.List;
 
 public class UserDaoImpl implements UserDao {
     public static final String SQL_GET_USER_BY_ID = "SELECT * FROM \"user\" WHERE id=?";

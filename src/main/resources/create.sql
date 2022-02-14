@@ -18,11 +18,22 @@ create table role
     PRIMARY KEY (id)
 );
 
+create table payment_status
+(
+    id     serial      NOT NULL,
+    status varchar(50) NOT NULL,
+    PRIMARY KEY (id)
+);
+
 INSERT INTO role
 values (default, 'ADMINISTRATOR');
 INSERT INTO role
 values (default, 'CLIENT');
 
+INSERT INTO payment_status
+values (default, 'PREPARED');
+INSERT INTO payment_status
+values (default, 'SENT');
 create table "user"
 (
     id         serial       NOT NULL,
@@ -40,27 +51,33 @@ create table "user"
 
 create table account
 (
-    id     serial         NOT NULL,
-    number varchar(128)   NOT NULL,
-    money  numeric(10, 2) NOT NULL DEFAULT 0,
+    id      serial                        NOT NULL,
+    number  varchar(128)                  NOT NULL,
+    money   integer                       NOT NULL DEFAULT 0,
+    user_id bigint REFERENCES "user" (id) NOT NULL,
     PRIMARY KEY (id)
 );
 
 
 create table payment
 (
-    id                 serial         NOT NULL,
-    money              numeric(10, 2) NOT NULL DEFAULT 0,
-    sent               bool           NOT NULL DEFAULT FALSE,
-    creation_timestamp timestamp               DEFAULT CURRENT_TIMESTAMP,
-    user_id            bigint         NOT NULL REFERENCES "user" (id),
-    account_id         bigint         NOT NULL REFERENCES account (id),
+    id                     serial  NOT NULL,
+    money                  integer NOT NULL DEFAULT 0,
+    payment_status_id      integer REFERENCES payment_status (id) ON DELETE SET NULL,
+    creation_timestamp     timestamp        DEFAULT CURRENT_TIMESTAMP,
+    account_sender_id      bigint  NOT NULL REFERENCES account (id),
+    account_destination_id bigint  NOT NULL REFERENCES account (id),
     PRIMARY KEY (id)
 );
+
+
+SET timezone = 'Europe/Kiev';
+
+
+
 create table user_account
 (
     user_id    bigint REFERENCES "user" (id)  NOT NULL,
     account_id bigint REFERENCES account (id) NOT NULL NOT NULL,
     CONSTRAINT user_account_pkey PRIMARY KEY (user_id, account_id)
 );
-SET timezone = 'Europe/Kiev';

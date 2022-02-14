@@ -1,9 +1,8 @@
-package ua.epam.payments.payments.model.dao;
+package ua.epam.payments.payments.dao;
 
 import ua.epam.payments.payments.model.entity.Account;
 import ua.epam.payments.payments.model.entity.User;
 
-import java.math.BigDecimal;
 import java.util.List;
 
 public interface AccountDao {
@@ -14,12 +13,12 @@ public interface AccountDao {
 
     List<Account> getAccountsByUser(User user);
 
-    public boolean createAccount(Account account);
+    public boolean createAccountWithUser(Account account, User user);
 
     public boolean isExistAccount(String number);
 
     boolean addAccountToUser(Account account, User user);
 
-    boolean updateAccountWithMoney(Account account, BigDecimal bigDecimal);
+    boolean updateAccountWithMoney(Account account, int money);
 
 }

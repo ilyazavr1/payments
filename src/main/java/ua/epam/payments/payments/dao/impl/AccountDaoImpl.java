@@ -1,13 +1,11 @@
-package ua.epam.payments.payments.model.dao.impl;
+package ua.epam.payments.payments.dao.impl;
 
-import ua.epam.payments.payments.model.dao.AccountDao;
-import ua.epam.payments.payments.model.db.DBManager;
+import ua.epam.payments.payments.dao.AccountDao;
+import ua.epam.payments.payments.db.DBManager;
 import ua.epam.payments.payments.model.entity.Account;
 import ua.epam.payments.payments.model.entity.User;
 import ua.epam.payments.payments.model.services.mapper.AccountMapper;
-import ua.epam.payments.payments.model.services.mapper.UserMapper;
 
-import java.math.BigDecimal;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -18,11 +16,12 @@ import java.util.List;
 public class AccountDaoImpl implements AccountDao {
     public static final String SQL_GET_ACCOUNT_BY_ID = "SELECT * FROM account WHERE id=?";
     public static final String SQL_GET_ACCOUNT_BY_NUMBER = "SELECT * FROM account WHERE number=?";
-    public static final String SQL_CREATE_ACCOUNT = "INSERT INTO account values (default, ?, default)";
     public static final String SQL_IS_EXIST_ACCOUNT = "SELECT EXISTS(SELECT 1 FROM account WHERE number=?)";
-    public static final String SQL_ADD_ACCOUNT_TO_USER = "INSERT INTO user_account values (?, ?)";
-    public static final String SQL_GET_ACCOUNTS_BY_USER = "SELECT * FROM account INNER JOIN  user_account ua ON account.id = ua.account_id WHERE ua.user_id =?";
+    public static final String SQL_UPDATE_ACCOUNT_WITH_MONEY = "UPDATE account SET money=money+? WHERE id=?";
 
+    public static final String SQL_CREATE_ACCOUNT = "INSERT INTO account values (default, ?, default, ?)";
+    public static final String SQL_ADD_ACCOUNT_TO_USER = "UPDATE account SET user_id=? WHERE id=?";
+    public static final String SQL_GET_ACCOUNTS_BY_USER = "SELECT * FROM account WHERE user_id=?";
 
     @Override
     public Account getAccountById(long id) {
@@ -43,6 +42,29 @@ public class AccountDaoImpl implements AccountDao {
         }
 
         return account;
+    }
+
+    @Override
+    public List<Account> getAccountsByUser(User user) {
+        List<Account> accountsList = null;
+        try (Connection con = DBManager.getInstance().getConnection();
+             PreparedStatement stmt = con.prepareStatement(SQL_GET_ACCOUNTS_BY_USER)) {
+            stmt.setLong(1, user.getId());
+
+            try (ResultSet rs = stmt.executeQuery()) {
+                accountsList = new ArrayList<>();
+                while (rs.next()) {
+                    AccountMapper accountMapper = new AccountMapper();
+                    accountsList.add(accountMapper.mapRSToAccount(rs));
+
+                }
+            }
+
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
+        }
+
+        return accountsList;
     }
 
     @Override
@@ -67,10 +89,11 @@ public class AccountDaoImpl implements AccountDao {
     }
 
     @Override
-    public boolean createAccount(Account account) {
+    public boolean createAccountWithUser(Account account, User user) {
         try (Connection con = DBManager.getInstance().getConnection();
              PreparedStatement stmt = con.prepareStatement(SQL_CREATE_ACCOUNT)) {
             stmt.setString(1, account.getNumber());
+            stmt.setLong(2, user.getId());
 
             return stmt.executeUpdate() > 0;
         } catch (SQLException throwables) {
@@ -111,30 +134,17 @@ public class AccountDaoImpl implements AccountDao {
     }
 
     @Override
-    public boolean updateAccountWithMoney(Account account, BigDecimal bigDecimal) {
-        return false;
-    }
-
-    @Override
-    public List<Account> getAccountsByUser(User user) {
-        List<Account> accountsList = null;
+    public boolean updateAccountWithMoney(Account account, int money) {
         try (Connection con = DBManager.getInstance().getConnection();
-             PreparedStatement stmt = con.prepareStatement(SQL_GET_ACCOUNTS_BY_USER)) {
-            stmt.setLong(1, user.getId());
+             PreparedStatement stmt = con.prepareStatement(SQL_UPDATE_ACCOUNT_WITH_MONEY)) {
+           stmt.setInt(1, money);
+           stmt.setLong(2, account.getId());
 
-            try (ResultSet rs = stmt.executeQuery()) {
-                accountsList = new ArrayList<>();
-                while (rs.next()) {
-                    AccountMapper accountMapper = new AccountMapper();
-                    accountsList.add(accountMapper.mapRSToAccount(rs));
-
-                }
-            }
+            return stmt.executeUpdate() > 0;
 
         } catch (SQLException throwables) {
             throwables.printStackTrace();
         }
-
-        return accountsList;
+        return false;
     }
 }

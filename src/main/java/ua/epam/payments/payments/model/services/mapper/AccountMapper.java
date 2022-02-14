@@ -13,7 +13,7 @@ public class AccountMapper {
         return new Account.Builder()
                 .withId(rs.getInt(1))
                 .withNumber(rs.getString(2))
-                .withMoney(rs.getBigDecimal(3))
+                .withMoney(rs.getInt(3))
                 .build();
     }
 

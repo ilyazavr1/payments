@@ -1,6 +1,6 @@
 package ua.epam.payments.payments.web.listener;
 
-import ua.epam.payments.payments.model.db.DBManager;
+import ua.epam.payments.payments.db.DBManager;
 
 import javax.servlet.ServletContextEvent;
 import javax.servlet.ServletContextListener;

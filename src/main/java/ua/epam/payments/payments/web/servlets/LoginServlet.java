@@ -1,10 +1,10 @@
 package ua.epam.payments.payments.web.servlets;
 
 import org.apache.commons.codec.DecoderException;
-import ua.epam.payments.payments.model.dao.AccountDao;
-import ua.epam.payments.payments.model.dao.UserDao;
-import ua.epam.payments.payments.model.dao.impl.AccountDaoImpl;
-import ua.epam.payments.payments.model.dao.impl.UserDaoImpl;
+import ua.epam.payments.payments.dao.AccountDao;
+import ua.epam.payments.payments.dao.UserDao;
+import ua.epam.payments.payments.dao.impl.AccountDaoImpl;
+import ua.epam.payments.payments.dao.impl.UserDaoImpl;
 import ua.epam.payments.payments.model.entity.Account;
 import ua.epam.payments.payments.model.entity.User;
 import ua.epam.payments.payments.model.services.PasswordEncryption;

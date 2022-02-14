@@ -26,6 +26,7 @@
 </c:if>
 
 <a href="${Path.ACCOUNTS_PATH}">My cards</a><br/>
+<a href="${Path.PAYMENT_PATH}">My payments</a><br/>
 
 </body>
 </html>

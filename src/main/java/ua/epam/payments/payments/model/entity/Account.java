@@ -1,13 +1,13 @@
 package ua.epam.payments.payments.model.entity;
 
-import java.math.BigDecimal;
 
 public class Account {
     private static final long serialVersionUID = 123L;
 
     private long id;
     private String number;
-    private BigDecimal money;
+    private int money;
+    private long userId;
 
     public long getId() {
         return id;
@@ -25,12 +25,20 @@ public class Account {
         this.number = number;
     }
 
-    public BigDecimal getMoney() {
+    public int getMoney() {
         return money;
     }
 
-    public void setMoney(BigDecimal money) {
+    public void setMoney(int money) {
         this.money = money;
+    }
+
+    public long getUserId() {
+        return userId;
+    }
+
+    public void setUserId(long userId) {
+        this.userId = userId;
     }
 
     public static class Builder {
@@ -40,22 +48,27 @@ public class Account {
             newAccount = new Account();
         }
 
-        public Account.Builder withId(long id){
+        public Account.Builder withId(long id) {
             newAccount.id = id;
             return this;
         }
 
-        public Account.Builder withNumber(String number){
+        public Account.Builder withNumber(String number) {
             newAccount.number = number;
             return this;
         }
 
-        public Account.Builder withMoney(BigDecimal money){
+        public Account.Builder withMoney(int money) {
             newAccount.money = money;
             return this;
         }
 
-        public Account build(){
+        public Account.Builder withUserId(long userId) {
+            newAccount.userId = userId;
+            return this;
+        }
+
+        public Account build() {
             return newAccount;
         }
 
@@ -67,6 +80,7 @@ public class Account {
                 "id=" + id +
                 ", number='" + number + '\'' +
                 ", money=" + money +
+                ", userId=" + userId +
                 '}';
     }
 }
