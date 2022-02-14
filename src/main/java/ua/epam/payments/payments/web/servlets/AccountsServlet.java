@@ -28,7 +28,7 @@ public class AccountsServlet extends HttpServlet {
             AccountDao accountDao = new AccountDaoImpl();
             User user = (User) req.getSession().getAttribute("user");
             List<Account> accountList = accountDao.getAccountsByUser(user);
-            System.out.println(accountList);
+          //  System.out.println(accountList);
             req.setAttribute("accounts", accountDao.getAccountsByUser(user));
 
             req.getRequestDispatcher(Path.ACCOUNTS_JSP).forward(req,resp);

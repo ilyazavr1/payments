@@ -24,7 +24,7 @@ public class AccountTopUpServlet extends HttpServlet {
 
         Account account = accountDao.getAccountById(accountId);
         req.setAttribute("account", account);
-        Account account1 = (Account) req.getAttribute("accountToTopUp");
+
 
         req.getRequestDispatcher(Path.ACCOUNT_TOP_UP_JSP).forward(req, resp);
 
@@ -35,9 +35,13 @@ public class AccountTopUpServlet extends HttpServlet {
         String money = req.getParameter("money");
         req.getAttribute("user");
         AccountDao accountDao = new AccountDaoImpl();
-        req.getAttribute("accountToTopUp");
-        // accountDao.
-//TODO top up account
+        long accountId = Long.parseLong(req.getParameter("id"));
+        Account account = accountDao.getAccountById(accountId);
+        System.out.println(account);
+
+
+
+        //TODO top up account
         resp.sendRedirect(Path.ACCOUNTS_PATH);
     }
 }

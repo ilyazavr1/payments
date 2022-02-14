@@ -1,6 +1,6 @@
 <%@include file="/jspf/tagLibs.jspf" %>
 <%@include file="/jspf/page.jspf" %>
-
+<%@taglib prefix="acc" uri="/WEB-INF/customAccountNumberFromat.tld" %>
 
 <html>
 <head>
@@ -25,7 +25,8 @@
         </c:url>
 
         <p>Account id: <c:out value="${account.id}"> </c:out></p>
-        <p>Account number: <c:out value="${account.number}"> </c:out></p>
+       <%-- <p>Account number: <c:out value="${account.number}"> </c:out></p>--%>
+        <p>Account number: <acc:formatAccountNumber number="${account.number}"/></p>
         <p>Account money: <c:out value="${account.money}"> </c:out></p>
 
         <a href="${accountID}"> TOP UP</a>

@@ -24,7 +24,9 @@
     <input type="number"  name="money" id="money" min="1" max="10000">
     <br>
 
-    <input type="hidden" id="account" name="user" value="${requestScope.account}"/>
+    <input type="hidden" id="account" name="id" value="${requestScope.account.id}"/>
+
+    <fmt:
 
     <input type="submit"  name="submitBtn" id="submitBtn" value="Top up" >
 
