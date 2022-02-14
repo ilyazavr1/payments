@@ -37,7 +37,7 @@ public class AccountTopUpServlet extends HttpServlet {
         AccountDao accountDao = new AccountDaoImpl();
         req.getAttribute("accountToTopUp");
         // accountDao.
-//TODO top up account 
+//TODO top up account
         resp.sendRedirect(Path.ACCOUNTS_PATH);
     }
 }
