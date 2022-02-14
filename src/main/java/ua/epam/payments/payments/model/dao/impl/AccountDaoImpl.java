@@ -7,6 +7,7 @@ import ua.epam.payments.payments.model.entity.User;
 import ua.epam.payments.payments.model.services.mapper.AccountMapper;
 import ua.epam.payments.payments.model.services.mapper.UserMapper;
 
+import java.math.BigDecimal;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -106,6 +107,11 @@ public class AccountDaoImpl implements AccountDao {
         } catch (SQLException throwables) {
             throwables.printStackTrace();
         }
+        return false;
+    }
+
+    @Override
+    public boolean updateAccountWithMoney(Account account, BigDecimal bigDecimal) {
         return false;
     }
 

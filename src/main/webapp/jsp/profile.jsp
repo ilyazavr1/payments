@@ -18,6 +18,7 @@
     <p>User password: <c:out value="${sessionScope.user.password}"></c:out></p>
     <p>User blocked: <c:out value="${sessionScope.user.blocked}"></c:out></p>
     <p>User rolesId: <c:out value="${sessionScope.user.rolesId}"></c:out></p>
+    <p>User rolesId: <c:out value="${sessionScope.user.rolesId}"></c:out></p>
 </c:if>
 
 <c:if test="${sessionScope.user == null}">

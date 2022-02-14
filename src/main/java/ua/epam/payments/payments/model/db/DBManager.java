@@ -35,8 +35,11 @@ public class DBManager {
     }
 
     public static synchronized DBManager getInstance() {
+
         if (instance == null) {
+
             instance = new DBManager();
+
         }
         return instance;
     }
@@ -54,9 +57,14 @@ public class DBManager {
     }
 
     public Connection getConnection() throws SQLException {
+
         return ds.getConnection();
     }
 
+
+    public void closeConnection(){
+        ds.close();
+    }
     //test
     public void testActive(){
         System.out.println(ds.getHikariPoolMXBean().getActiveConnections());
