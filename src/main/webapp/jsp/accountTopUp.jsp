@@ -24,7 +24,7 @@
     <input type="number"  name="money" id="money" min="1" max="10000">
     <br>
 
-   <%-- <c:set var="accountToTopUp" scope="request" value="${requestScope.account}"></c:set>--%>
+    <input type="hidden" id="account" name="user" value="${requestScope.account}"/>
 
     <input type="submit"  name="submitBtn" id="submitBtn" value="Top up" >
 

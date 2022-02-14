@@ -23,6 +23,7 @@ public class AccountsServlet extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+       
         if (req.getSession().getAttribute("user") != null) {
             AccountDao accountDao = new AccountDaoImpl();
             User user = (User) req.getSession().getAttribute("user");
