@@ -16,6 +16,8 @@ import java.util.List;
 
 public class PaymentsDaoImpl implements PaymentsDao {
     public static final String SQL_GET_PAYMENT_BY_ID = "SELECT * FROM payment WHERE id=?";
+    public static final String SQL_CREATE_PAYMENT = "INSERT INTO payment VALUES (default, ?, default, default, ?, ?)";
+
 
     @Override
     public Payment getPaymentById(long id) {
@@ -44,7 +46,18 @@ public class PaymentsDaoImpl implements PaymentsDao {
     }
 
     @Override
-    public void createAccountWithAccount(Payment payment, Account account) {
+    public boolean createPayment(Account accountSender, Account accountDestination, int money) {
+        try (Connection con = DBManager.getInstance().getConnection();
+             PreparedStatement stmt = con.prepareStatement(SQL_CREATE_PAYMENT)) {
+            stmt.setLong(1, accountSender.getId());
+            stmt.setLong(2, accountDestination.getId());
+            stmt.setInt(3,money);
+
+            return stmt.executeUpdate() > 0;
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
+        }
+        return false;
 
     }
 }

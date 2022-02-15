@@ -10,6 +10,6 @@ import java.util.List;
 public interface PaymentsDao {
     Payment getPaymentById(long id);
     List<Payment> getPaymentsByUser(User user);
-    void createAccountWithAccount(Payment payment, Account account);
+    boolean createPayment(Account accountSender, Account accountDestination, int money);
 
 }

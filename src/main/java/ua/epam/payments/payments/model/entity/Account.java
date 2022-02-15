@@ -7,6 +7,7 @@ public class Account {
     private long id;
     private String number;
     private int money;
+    private boolean blocked;
     private long userId;
 
     public long getId() {
@@ -31,6 +32,14 @@ public class Account {
 
     public void setMoney(int money) {
         this.money = money;
+    }
+
+    public boolean isBlocked() {
+        return blocked;
+    }
+
+    public void setBlocked(boolean blocked) {
+        this.blocked = blocked;
     }
 
     public long getUserId() {
@@ -62,7 +71,10 @@ public class Account {
             newAccount.money = money;
             return this;
         }
-
+        public Account.Builder withBlocked(boolean blocked) {
+            newAccount.blocked = blocked;
+            return this;
+        }
         public Account.Builder withUserId(long userId) {
             newAccount.userId = userId;
             return this;

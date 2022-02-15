@@ -14,6 +14,7 @@ public class AccountMapper {
                 .withId(rs.getInt(1))
                 .withNumber(rs.getString(2))
                 .withMoney(rs.getInt(3))
+                .withBlocked(rs.getBoolean(4))
                 .build();
     }
 

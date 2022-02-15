@@ -27,6 +27,7 @@
         <p>Account id: <c:out value="${account.id}"> </c:out></p>
         <p>Account number: <acc:formatAccountNumber number="${account.number}"/></p>
         <p>Account money: <c:out value="${account.money}"> </c:out></p>
+        <p>Account blocked: <c:out value="${account.blocked}"> </c:out></p>
 
         <a href="${accountID}"> TOP UP</a>
     </c:forEach>

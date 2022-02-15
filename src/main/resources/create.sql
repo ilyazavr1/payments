@@ -2,13 +2,16 @@ truncate "user" cascade;
 truncate role cascade;
 truncate account cascade;
 truncate payment cascade;
-truncate user_account cascade;
+truncate payment_status cascade;
 DROP TABLE IF EXISTS "user" CASCADE;
 DROP TABLE IF EXISTS role CASCADE;
 DROP TABLE IF EXISTS account CASCADE;
 DROP TABLE IF EXISTS payment CASCADE;
-DROP TABLE IF EXISTS user_account CASCADE;
+DROP TABLE IF EXISTS payment_status CASCADE;
 
+/*truncate user_account cascade;
+DROP TABLE IF EXISTS user_account CASCADE;
+*/
 
 
 create table role
@@ -54,6 +57,7 @@ create table account
     id      serial                        NOT NULL,
     number  varchar(128)                  NOT NULL,
     money   integer                       NOT NULL DEFAULT 0,
+    blocked bool                          NOT NULL DEFAULT FALSE,
     user_id bigint REFERENCES "user" (id) NOT NULL,
     PRIMARY KEY (id)
 );
@@ -62,9 +66,9 @@ create table account
 create table payment
 (
     id                     serial  NOT NULL,
-    money                  integer NOT NULL DEFAULT 0,
-    payment_status_id      integer REFERENCES payment_status (id) ON DELETE SET NULL,
-    creation_timestamp     timestamp        DEFAULT CURRENT_TIMESTAMP,
+    money                  integer NOT NULL                                          DEFAULT 0,
+    payment_status_id      integer REFERENCES payment_status (id) ON DELETE SET NULL DEFAULT 1,
+    creation_timestamp     timestamp                                                 DEFAULT CURRENT_TIMESTAMP,
     account_sender_id      bigint  NOT NULL REFERENCES account (id),
     account_destination_id bigint  NOT NULL REFERENCES account (id),
     PRIMARY KEY (id)
@@ -74,10 +78,10 @@ create table payment
 SET timezone = 'Europe/Kiev';
 
 
-
-create table user_account
+/*create table user_account
 (
     user_id    bigint REFERENCES "user" (id)  NOT NULL,
     account_id bigint REFERENCES account (id) NOT NULL NOT NULL,
     CONSTRAINT user_account_pkey PRIMARY KEY (user_id, account_id)
 );
+*/
