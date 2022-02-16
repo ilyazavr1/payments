@@ -1,11 +1,11 @@
 truncate "user" cascade;
 truncate role cascade;
-truncate account cascade;
+truncate card cascade;
 truncate payment cascade;
 truncate payment_status cascade;
 DROP TABLE IF EXISTS "user" CASCADE;
 DROP TABLE IF EXISTS role CASCADE;
-DROP TABLE IF EXISTS account CASCADE;
+DROP TABLE IF EXISTS card CASCADE;
 DROP TABLE IF EXISTS payment CASCADE;
 DROP TABLE IF EXISTS payment_status CASCADE;
 
@@ -37,6 +37,7 @@ INSERT INTO payment_status
 values (default, 'PREPARED');
 INSERT INTO payment_status
 values (default, 'SENT');
+
 create table "user"
 (
     id         serial       NOT NULL,
@@ -52,7 +53,7 @@ create table "user"
 
 
 
-create table account
+create table card
 (
     id      serial                        NOT NULL,
     number  varchar(128)                  NOT NULL,
@@ -69,8 +70,8 @@ create table payment
     money                  integer NOT NULL                                          DEFAULT 0,
     payment_status_id      integer REFERENCES payment_status (id) ON DELETE SET NULL DEFAULT 1,
     creation_timestamp     timestamp                                                 DEFAULT CURRENT_TIMESTAMP,
-    account_sender_id      bigint  NOT NULL REFERENCES account (id),
-    account_destination_id bigint  NOT NULL REFERENCES account (id),
+    card_sender_id      bigint  NOT NULL REFERENCES card (id),
+    card_destination_id bigint  NOT NULL REFERENCES card (id),
     PRIMARY KEY (id)
 );
 

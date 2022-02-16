@@ -3,9 +3,9 @@ package ua.epam.payments.payments.model.services;
 
 import java.util.concurrent.ThreadLocalRandom;
 
-public class AccountGeneration {
+public class CardGeneration {
 
-    public static String generateAccountNumber() {
+    public static String generateCardNumber() {
         long randomNum = ThreadLocalRandom.current().nextLong(1,1_0000_0000_0000L);
 
         if (String.valueOf(randomNum).length() < 12) {

@@ -1,10 +1,10 @@
 package ua.epam.payments.payments.web.servlets;
 
-import ua.epam.payments.payments.dao.AccountDao;
-import ua.epam.payments.payments.dao.impl.AccountDaoImpl;
-import ua.epam.payments.payments.model.entity.Account;
+import ua.epam.payments.payments.dao.CardDao;
+import ua.epam.payments.payments.dao.impl.CardDaoImpl;
+import ua.epam.payments.payments.model.entity.Card;
 import ua.epam.payments.payments.model.entity.User;
-import ua.epam.payments.payments.model.services.AccountGeneration;
+import ua.epam.payments.payments.model.services.CardGeneration;
 import ua.epam.payments.payments.web.Path;
 
 import javax.servlet.ServletException;
@@ -15,21 +15,21 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.List;
 
-@WebServlet(name = "AccountsServlet", value = Path.ACCOUNTS_PATH)
-public class AccountsServlet extends HttpServlet {
+@WebServlet(name = "CardServlet", value = Path.CARD_PATH)
+public class CardServlet extends HttpServlet {
 
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 
         if (req.getSession().getAttribute("user") != null) {
-            AccountDao accountDao = new AccountDaoImpl();
+            CardDao cardDao = new CardDaoImpl();
             User user = (User) req.getSession().getAttribute("user");
-            List<Account> accountList = accountDao.getAccountsByUser(user);
+            List<Card> cardsList = cardDao.getCardByUser(user);
             //  System.out.println(accountList);
-            req.setAttribute("accounts", accountDao.getAccountsByUser(user));
+            req.setAttribute("cards", cardDao.getCardByUser(user));
 
-            req.getRequestDispatcher(Path.ACCOUNTS_JSP).forward(req, resp);
+            req.getRequestDispatcher(Path.CARDS_JSP).forward(req, resp);
         } else req.getRequestDispatcher(Path.LOGIN_JSP).forward(req, resp);
 
     }
@@ -37,38 +37,38 @@ public class AccountsServlet extends HttpServlet {
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        System.out.println("1");
-        AccountDao accountDao = new AccountDaoImpl();
 
-        String accountNumber;
-        Account newAccount;
-        List<Account> accountList;
+        CardDao cardDao = new CardDaoImpl();
+
+        String cardNumber;
+        Card newCard;
+        List<Card> cards;
         User user;
 
         //add account to db
       /*  do {
         } while (!accountDao.isExistAccount(accountNumber));*/
-        accountNumber = AccountGeneration.generateAccountNumber();
+        cardNumber = CardGeneration.generateCardNumber();
 
         user = (User) req.getSession().getAttribute("user");
 
         //add account to user in db
         if (user == null) {
-            System.out.println("user is null:AccServlet");
-            resp.sendRedirect(Path.ACCOUNTS_PATH);
+            System.out.println("user is null:CardServlet");
+            resp.sendRedirect(Path.CARD_PATH);
         }
 
-        newAccount = new Account.Builder().withNumber(accountNumber).build();
-        accountDao.createAccountWithUser(newAccount, user);
+        newCard = new Card.Builder().withNumber(cardNumber).build();
+        cardDao.createCardWithUser(newCard, user);
 
         //add accounts to session
-        accountList = accountDao.getAccountsByUser(user);
-        req.setAttribute("accounts", accountList);
+        cards = cardDao.getCardByUser(user);
+        req.setAttribute("cards", cards);
 
 
         //TODO вывести аккаунты юзера
 
-        resp.sendRedirect(Path.ACCOUNTS_PATH);
+        resp.sendRedirect(Path.CARD_PATH);
 
     }
 }

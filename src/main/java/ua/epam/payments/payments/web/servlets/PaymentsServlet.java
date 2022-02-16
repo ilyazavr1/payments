@@ -1,9 +1,9 @@
 package ua.epam.payments.payments.web.servlets;
 
 
-import ua.epam.payments.payments.dao.AccountDao;
-import ua.epam.payments.payments.dao.impl.AccountDaoImpl;
-import ua.epam.payments.payments.model.entity.Account;
+import ua.epam.payments.payments.dao.CardDao;
+import ua.epam.payments.payments.dao.impl.CardDaoImpl;
+import ua.epam.payments.payments.model.entity.Card;
 import ua.epam.payments.payments.model.entity.User;
 import ua.epam.payments.payments.web.Path;
 
@@ -21,13 +21,13 @@ public class PaymentsServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         // UserDao userDao = new UserDaoImpl();
-        AccountDao accountDao = new AccountDaoImpl();
+        CardDao cardDao = new CardDaoImpl();
 
         User user = (User) req.getSession().getAttribute("user");
 
-        List<Account> accounts = accountDao.getAccountsByUser(user);
+        List<Card> cards = cardDao.getCardByUser(user);
 
-        req.setAttribute("accounts", accounts);
+        req.setAttribute("cards", cards);
 
         req.getRequestDispatcher(Path.PAYMENT_JSP).forward(req, resp);
     }
@@ -35,22 +35,22 @@ public class PaymentsServlet extends HttpServlet {
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        AccountDao accountDao = new AccountDaoImpl();
+        CardDao cardDao = new CardDaoImpl();
 
-        int accountSenderNumber = Integer.parseInt(req.getParameter("accountSenderId"));
-        int accountDestinationNumber = Integer.parseInt(req.getParameter("accountDestinationId"));
+        int cardSenderNumber = Integer.parseInt(req.getParameter("cardSenderId"));
+        int cardDestinationNumber = Integer.parseInt(req.getParameter("cardDestinationId"));
         int money= Integer.parseInt(req.getParameter("money"));
 
-        Account accountFrom = accountDao.getAccountById(accountSenderNumber);
-        Account accountTo = accountDao.getAccountById(accountDestinationNumber);
+        Card cardFrom = cardDao.getCardById(cardSenderNumber);
+        Card cardTo = cardDao.getCardById(cardDestinationNumber);
 
-        if (accountFrom.getMoney() < money){
+        if (cardFrom.getMoney() < money){
             System.out.println("out of money");
             resp.sendRedirect(Path.PAYMENT_PATH);;
             return;
         }
 
-        System.out.println(accountDao.transferMoneyFromAccToAcc(accountFrom.getId(), accountTo.getId(), 20));
+        System.out.println(cardDao.transferMoneyFromCardToCard(cardFrom.getId(), cardTo.getId(), money));
 
 
 

@@ -10,8 +10,8 @@ public class Payment {
     private int money;
     private int paymentStatusId;
     private LocalDateTime creationTimestamp;
-    private long accountSenderId;
-    private long accountDestinationId;
+    private long cardSenderId;
+    private long cardDestinationId;
 
     public long getId() {
         return id;
@@ -45,20 +45,20 @@ public class Payment {
         this.creationTimestamp = creationTimestamp;
     }
 
-    public long getAccountSenderId() {
-        return accountSenderId;
+    public long getCardSenderId() {
+        return cardSenderId;
     }
 
-    public void setAccountSenderId(long accountSenderId) {
-        this.accountSenderId = accountSenderId;
+    public void setCardSenderId(long cardSenderId) {
+        this.cardSenderId = cardSenderId;
     }
 
-    public long getAccountDestinationId() {
-        return accountDestinationId;
+    public long getCardDestinationId() {
+        return cardDestinationId;
     }
 
-    public void setAccountDestinationId(long accountDestinationId) {
-        this.accountDestinationId = accountDestinationId;
+    public void setCardDestinationId(long cardDestinationId) {
+        this.cardDestinationId = cardDestinationId;
     }
 
     public static class Builder {
@@ -91,13 +91,13 @@ public class Payment {
             newPayment.creationTimestamp = timestamp.toLocalDateTime();
             return this;
         }
-        public Payment.Builder withAccountSenderId(long accountSenderId){
-            newPayment.accountSenderId = accountSenderId;
+        public Payment.Builder withCardSenderId(long cardSenderId){
+            newPayment.cardSenderId = cardSenderId;
             return this;
         }
 
-        public Payment.Builder withAccountDestinationId(long accountDestinationId){
-            newPayment.accountDestinationId = accountDestinationId;
+        public Payment.Builder withCardDestinationId(long cardDestinationId){
+            newPayment.cardDestinationId = cardDestinationId;
             return this;
         }
 

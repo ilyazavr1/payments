@@ -11,8 +11,8 @@
 
   
     <tag>
-        <name>formatAccountNumber</name>
-        <tag-class>ua.epam.payments.payments.web.AccountNumberFormatTag</tag-class>
+        <name>formatCardNumber</name>
+        <tag-class>ua.epam.payments.payments.web.CardNumberFormatTag</tag-class>
         <body-content>scriptless</body-content>
         <attribute>
             <name>number</name>

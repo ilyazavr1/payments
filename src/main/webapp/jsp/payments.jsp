@@ -1,6 +1,6 @@
 <%@include file="/jspf/tagLibs.jspf" %>
 <%@include file="/jspf/page.jspf" %>
-<%@taglib prefix="acc" uri="/WEB-INF/customAccountNumberFromat.tld" %>
+<%@taglib prefix="cardFormat" uri="/WEB-INF/customCardNumberFromat.tld" %>
 
 <html>
 <head>
@@ -11,18 +11,18 @@
 <p>hello</p>
 
 <form action="${Path.PAYMENT_PATH}" method="post">
-    <select name="accountSenderId">
-        <c:forEach items="${requestScope.accounts}" var="account">
-            <option value="${account.id}"><acc:formatAccountNumber number="${account.number}"/></option>
+    <select name="cardSenderId">
+        <c:forEach items="${requestScope.cards}" var="card">
+            <option value="${card.id}"><cardFormat:formatCardNumber number="${card.number}"/></option>
         </c:forEach>
     </select>
     <br>
 
 
 
-    <select name="accountDestinationId">
-        <c:forEach items="${requestScope.accounts}" var="account">
-            <option disabled value="${account.id}"><acc:formatAccountNumber number="${account.number}"/></option>
+    <select name="cardDestinationId">
+        <c:forEach items="${requestScope.cards}" var="card">
+            <option  value="${card.id}"><cardFormat:formatCardNumber number="${card.number}"/></option>
         </c:forEach>
     </select>
     <br>

@@ -1,7 +1,7 @@
 package ua.epam.payments.payments.model.entity;
 
 
-public class Account {
+public class Card {
     private static final long serialVersionUID = 123L;
 
     private long id;
@@ -51,47 +51,48 @@ public class Account {
     }
 
     public static class Builder {
-        private final Account newAccount;
+        private final Card newCard;
 
         public Builder() {
-            newAccount = new Account();
+            newCard = new Card();
         }
 
-        public Account.Builder withId(long id) {
-            newAccount.id = id;
-            return this;
-        }
-
-        public Account.Builder withNumber(String number) {
-            newAccount.number = number;
+        public Card.Builder withId(long id) {
+            newCard.id = id;
             return this;
         }
 
-        public Account.Builder withMoney(int money) {
-            newAccount.money = money;
-            return this;
-        }
-        public Account.Builder withBlocked(boolean blocked) {
-            newAccount.blocked = blocked;
-            return this;
-        }
-        public Account.Builder withUserId(long userId) {
-            newAccount.userId = userId;
+        public Card.Builder withNumber(String number) {
+            newCard.number = number;
             return this;
         }
 
-        public Account build() {
-            return newAccount;
+        public Card.Builder withMoney(int money) {
+            newCard.money = money;
+            return this;
+        }
+        public Card.Builder withBlocked(boolean blocked) {
+            newCard.blocked = blocked;
+            return this;
+        }
+        public Card.Builder withUserId(long userId) {
+            newCard.userId = userId;
+            return this;
+        }
+
+        public Card build() {
+            return newCard;
         }
 
     }
 
     @Override
     public String toString() {
-        return "Account{" +
+        return "Card{" +
                 "id=" + id +
                 ", number='" + number + '\'' +
                 ", money=" + money +
+                ", blocked=" + blocked +
                 ", userId=" + userId +
                 '}';
     }

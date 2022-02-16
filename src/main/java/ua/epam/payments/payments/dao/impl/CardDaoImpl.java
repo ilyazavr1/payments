@@ -1,10 +1,10 @@
 package ua.epam.payments.payments.dao.impl;
 
-import ua.epam.payments.payments.dao.AccountDao;
+import ua.epam.payments.payments.dao.CardDao;
 import ua.epam.payments.payments.db.DBManager;
-import ua.epam.payments.payments.model.entity.Account;
+import ua.epam.payments.payments.model.entity.Card;
 import ua.epam.payments.payments.model.entity.User;
-import ua.epam.payments.payments.model.services.mapper.AccountMapper;
+import ua.epam.payments.payments.model.services.mapper.CardMapper;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -13,31 +13,31 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
-public class AccountDaoImpl implements AccountDao {
-    public static final String SQL_GET_ACCOUNT_BY_ID = "SELECT * FROM account WHERE id=?";
-    public static final String SQL_GET_ACCOUNT_BY_NUMBER = "SELECT * FROM account WHERE number=?";
-    public static final String SQL_IS_EXIST_ACCOUNT = "SELECT EXISTS(SELECT 1 FROM account WHERE number=?)";
-    public static final String SQL_UPDATE_ACCOUNT_WITH_MONEY = "UPDATE account SET money=money+? WHERE id=?";
+public class CardDaoImpl implements CardDao {
+    public static final String SQL_GET_CARD_BY_ID = "SELECT * FROM card WHERE id=?";
+    public static final String SQL_GET_CARD_BY_NUMBER = "SELECT * FROM card WHERE number=?";
+    public static final String SQL_IS_EXIST_CARD = "SELECT EXISTS(SELECT 1 FROM card WHERE number=?)";
+    public static final String SQL_UPDATE_CARD_WITH_MONEY = "UPDATE card SET money=money+? WHERE id=?";
 
     public static final String SQL_TRANSFER_MONEY = "";
-    public static final String SQL_WITHDRAW_MONEY = "UPDATE account SET money=money-? WHERE id=?";
-    public static final String SQL_TOP_UP_MONEY = "UPDATE account SET money=money+? WHERE id=?";
+    public static final String SQL_WITHDRAW_MONEY = "UPDATE card SET money=money-? WHERE id=?";
+    public static final String SQL_TOP_UP_MONEY = "UPDATE card SET money=money+? WHERE id=?";
 
-    public static final String SQL_CREATE_ACCOUNT = "INSERT INTO account values (default, ?, default, default, ?)";
-    public static final String SQL_ADD_ACCOUNT_TO_USER = "UPDATE account SET user_id=? WHERE id=?";
-    public static final String SQL_GET_ACCOUNTS_BY_USER = "SELECT * FROM account WHERE user_id=?";
+    public static final String SQL_CREATE_CARD = "INSERT INTO card values (default, ?, default, default, ?)";
+    public static final String SQL_ADD_CARD_TO_USER = "UPDATE card SET user_id=? WHERE id=?";
+    public static final String SQL_GET_CARD_BY_USER = "SELECT * FROM card WHERE user_id=?";
 
     @Override
-    public Account getAccountById(long id) {
-        Account account = null;
+    public Card getCardById(long id) {
+        Card account = null;
         try (Connection con = DBManager.getInstance().getConnection();
-             PreparedStatement stmt = con.prepareStatement(SQL_GET_ACCOUNT_BY_ID)) {
+             PreparedStatement stmt = con.prepareStatement(SQL_GET_CARD_BY_ID)) {
             stmt.setLong(1, id);
 
             try (ResultSet rs = stmt.executeQuery()) {
                 while (rs.next()) {
-                    AccountMapper accountMapper = new AccountMapper();
-                    account = accountMapper.mapRSToAccount(rs);
+                    CardMapper accountMapper = new CardMapper();
+                    account = accountMapper.mapRSToCard(rs);
                 }
             }
 
@@ -49,17 +49,17 @@ public class AccountDaoImpl implements AccountDao {
     }
 
     @Override
-    public List<Account> getAccountsByUser(User user) {
-        List<Account> accountsList = null;
+    public List<Card> getCardByUser(User user) {
+        List<Card> accountsList = null;
         try (Connection con = DBManager.getInstance().getConnection();
-             PreparedStatement stmt = con.prepareStatement(SQL_GET_ACCOUNTS_BY_USER)) {
+             PreparedStatement stmt = con.prepareStatement(SQL_GET_CARD_BY_USER)) {
             stmt.setLong(1, user.getId());
 
             try (ResultSet rs = stmt.executeQuery()) {
                 accountsList = new ArrayList<>();
                 while (rs.next()) {
-                    AccountMapper accountMapper = new AccountMapper();
-                    accountsList.add(accountMapper.mapRSToAccount(rs));
+                    CardMapper accountMapper = new CardMapper();
+                    accountsList.add(accountMapper.mapRSToCard(rs));
 
                 }
             }
@@ -72,16 +72,16 @@ public class AccountDaoImpl implements AccountDao {
     }
 
     @Override
-    public Account getAccountByNumber(String number) {
-        Account account = null;
+    public Card getCardByNumber(String number) {
+        Card account = null;
         try (Connection con = DBManager.getInstance().getConnection();
-             PreparedStatement stmt = con.prepareStatement(SQL_GET_ACCOUNT_BY_NUMBER)) {
+             PreparedStatement stmt = con.prepareStatement(SQL_GET_CARD_BY_NUMBER)) {
             stmt.setString(1, number);
 
             try (ResultSet rs = stmt.executeQuery()) {
                 while (rs.next()) {
-                    AccountMapper accountMapper = new AccountMapper();
-                    account = accountMapper.mapRSToAccount(rs);
+                    CardMapper accountMapper = new CardMapper();
+                    account = accountMapper.mapRSToCard(rs);
                 }
             }
 
@@ -93,10 +93,10 @@ public class AccountDaoImpl implements AccountDao {
     }
 
     @Override
-    public boolean createAccountWithUser(Account account, User user) {
+    public boolean createCardWithUser(Card card, User user) {
         try (Connection con = DBManager.getInstance().getConnection();
-             PreparedStatement stmt = con.prepareStatement(SQL_CREATE_ACCOUNT)) {
-            stmt.setString(1, account.getNumber());
+             PreparedStatement stmt = con.prepareStatement(SQL_CREATE_CARD)) {
+            stmt.setString(1, card.getNumber());
             stmt.setLong(2, user.getId());
 
             return stmt.executeUpdate() > 0;
@@ -107,9 +107,9 @@ public class AccountDaoImpl implements AccountDao {
     }
 
     @Override
-    public boolean isExistAccount(String number) {
+    public boolean isExistCard(String number) {
         try (Connection con = DBManager.getInstance().getConnection();
-             PreparedStatement stmt = con.prepareStatement(SQL_IS_EXIST_ACCOUNT)) {
+             PreparedStatement stmt = con.prepareStatement(SQL_IS_EXIST_CARD)) {
             stmt.setString(1, number);
             try (ResultSet rs = stmt.executeQuery()) {
 
@@ -123,11 +123,11 @@ public class AccountDaoImpl implements AccountDao {
     }
 
     @Override
-    public boolean addAccountToUser(Account account, User user) {
+    public boolean addCardToUser(Card card, User user) {
         try (Connection con = DBManager.getInstance().getConnection();
-             PreparedStatement stmt = con.prepareStatement(SQL_ADD_ACCOUNT_TO_USER)) {
+             PreparedStatement stmt = con.prepareStatement(SQL_ADD_CARD_TO_USER)) {
             stmt.setLong(1, user.getId());
-            stmt.setLong(2, account.getId());
+            stmt.setLong(2, card.getId());
 
             return stmt.executeUpdate() > 0;
 
@@ -138,11 +138,11 @@ public class AccountDaoImpl implements AccountDao {
     }
 
     @Override
-    public boolean updateAccountWithMoney(Account account, int money) {
+    public boolean updateCardWithMoney(Card card, int money) {
         try (Connection con = DBManager.getInstance().getConnection();
-             PreparedStatement stmt = con.prepareStatement(SQL_UPDATE_ACCOUNT_WITH_MONEY)) {
+             PreparedStatement stmt = con.prepareStatement(SQL_UPDATE_CARD_WITH_MONEY)) {
             stmt.setInt(1, money);
-            stmt.setLong(2, account.getId());
+            stmt.setLong(2, card.getId());
 
             return stmt.executeUpdate() > 0;
 
@@ -203,7 +203,7 @@ public class AccountDaoImpl implements AccountDao {
     }*/
 
     @Override
-    public boolean transferMoneyFromAccToAcc(long accountSenderId, long accountDestinationId, int money) {
+    public boolean transferMoneyFromCardToCard(long cardSenderId, long cardDestinationId, int money) {
         Connection con = null;
         boolean result1 = false;
         boolean result2 = false;
@@ -214,11 +214,11 @@ public class AccountDaoImpl implements AccountDao {
                  PreparedStatement stmtTopUp = con.prepareStatement(SQL_TOP_UP_MONEY);) {
                 //withdraw
                 stmtWithdraw.setInt(1, money);
-                stmtWithdraw.setLong(2, accountSenderId);
+                stmtWithdraw.setLong(2, cardSenderId);
                 result1 = stmtWithdraw.executeUpdate() > 0;
                 //top up
                 stmtTopUp.setInt(1, money);
-                stmtTopUp.setLong(2, accountDestinationId);
+                stmtTopUp.setLong(2, cardDestinationId);
                 result2 = stmtTopUp.executeUpdate() > 0;
 
             }
@@ -249,7 +249,7 @@ public class AccountDaoImpl implements AccountDao {
         return false;
     }
 
-    private boolean transferMoney(Connection con, long accountSenderId, long accountDestinationId, int money) throws SQLException {
+   /* private boolean transferMoney(Connection con, long accountSenderId, long accountDestinationId, int money) throws SQLException {
         boolean result1 = false;
         boolean result2 = false;
         try (PreparedStatement stmtWithdraw = con.prepareStatement(SQL_WITHDRAW_MONEY);
@@ -271,6 +271,6 @@ public class AccountDaoImpl implements AccountDao {
             System.out.println("oshibka");
         }
         return false;
-    }
+    }*/
 
 }

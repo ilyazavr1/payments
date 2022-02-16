@@ -4,7 +4,7 @@ import javax.servlet.jsp.JspException;
 import javax.servlet.jsp.tagext.SimpleTagSupport;
 import java.io.IOException;
 
-public class AccountNumberFormatTag extends SimpleTagSupport {
+public class CardNumberFormatTag extends SimpleTagSupport {
     private String number;
 
 

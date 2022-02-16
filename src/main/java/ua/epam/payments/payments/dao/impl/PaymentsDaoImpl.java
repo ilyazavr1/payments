@@ -2,10 +2,9 @@ package ua.epam.payments.payments.dao.impl;
 
 import ua.epam.payments.payments.dao.PaymentsDao;
 import ua.epam.payments.payments.db.DBManager;
-import ua.epam.payments.payments.model.entity.Account;
+import ua.epam.payments.payments.model.entity.Card;
 import ua.epam.payments.payments.model.entity.Payment;
 import ua.epam.payments.payments.model.entity.User;
-import ua.epam.payments.payments.model.services.mapper.AccountMapper;
 import ua.epam.payments.payments.model.services.mapper.PaymentMapper;
 
 import java.sql.Connection;
@@ -46,11 +45,11 @@ public class PaymentsDaoImpl implements PaymentsDao {
     }
 
     @Override
-    public boolean createPayment(Account accountSender, Account accountDestination, int money) {
+    public boolean createPayment(Card cardSender, Card cardDestination, int money) {
         try (Connection con = DBManager.getInstance().getConnection();
              PreparedStatement stmt = con.prepareStatement(SQL_CREATE_PAYMENT)) {
-            stmt.setLong(1, accountSender.getId());
-            stmt.setLong(2, accountDestination.getId());
+            stmt.setLong(1, cardSender.getId());
+            stmt.setLong(2, cardDestination.getId());
             stmt.setInt(3,money);
 
             return stmt.executeUpdate() > 0;

@@ -1,16 +1,16 @@
 package ua.epam.payments.payments.model.services.mapper;
 
-import ua.epam.payments.payments.model.entity.Account;
+import ua.epam.payments.payments.model.entity.Card;
 
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
 
-public class AccountMapper {
+public class CardMapper {
 
-    public Account mapRSToAccount(ResultSet rs) throws SQLException {
-        return new Account.Builder()
+    public Card mapRSToCard(ResultSet rs) throws SQLException {
+        return new Card.Builder()
                 .withId(rs.getInt(1))
                 .withNumber(rs.getString(2))
                 .withMoney(rs.getInt(3))

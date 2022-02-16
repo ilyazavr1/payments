@@ -14,6 +14,7 @@
 
 <a href="${Path.REGISTRATION_PATH}">Registration</a><br/>
 <a href="${Path.LOGIN_PATH}">Login</a>
-<a href="test">Login</a>
+<a href="${Path.TEST}">test</a>
+
 </body>
 </html>

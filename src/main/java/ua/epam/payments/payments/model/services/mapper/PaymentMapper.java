@@ -14,15 +14,8 @@ public class PaymentMapper {
                 .withMoney(rs.getInt(2))
                 .withPaymentStatusId(rs.getInt(3))
                 .withCreationTimestamp(rs.getTimestamp(4))
-                .withAccountSenderId(rs.getLong(5))
-                .withAccountDestinationId(rs.getLong(6))
+                .withCardSenderId(rs.getLong(5))
+                .withCardDestinationId(rs.getLong(6))
                 .build();
     }
 }
-/*
-    id                     serial  NOT NULL,
-    money                  integer NOT NULL DEFAULT 0,
-        sent                   bool    NOT NULL DEFAULT FALSE,
-        creation_timestamp     timestamp        DEFAULT CURRENT_TIMESTAMP,
-        account_sender_id      bigint  NOT NULL REFERENCES account (id),
-        account_destination_id bigint  NOT NULL REFERENCES account (id),*/

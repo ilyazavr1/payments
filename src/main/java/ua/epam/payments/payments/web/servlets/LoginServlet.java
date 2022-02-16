@@ -1,11 +1,11 @@
 package ua.epam.payments.payments.web.servlets;
 
 import org.apache.commons.codec.DecoderException;
-import ua.epam.payments.payments.dao.AccountDao;
+import ua.epam.payments.payments.dao.CardDao;
 import ua.epam.payments.payments.dao.UserDao;
-import ua.epam.payments.payments.dao.impl.AccountDaoImpl;
+import ua.epam.payments.payments.dao.impl.CardDaoImpl;
 import ua.epam.payments.payments.dao.impl.UserDaoImpl;
-import ua.epam.payments.payments.model.entity.Account;
+import ua.epam.payments.payments.model.entity.Card;
 import ua.epam.payments.payments.model.entity.User;
 import ua.epam.payments.payments.model.services.PasswordEncryption;
 import ua.epam.payments.payments.model.services.validation.UserValidation;
@@ -30,10 +30,10 @@ public class LoginServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         if (req.getSession().getAttribute("user") != null) {
-            AccountDao accountDao = new AccountDaoImpl();
-            List<Account> accountList;
+            CardDao accountDao = new CardDaoImpl();
+            List<Card> accountList;
             User user = (User) req.getSession().getAttribute("user");
-            accountList = accountDao.getAccountsByUser(user);
+            accountList = accountDao.getCardByUser(user);
 
             req.setAttribute("accounts", accountList);
             resp.sendRedirect(Path.PROFILE_JSP);
