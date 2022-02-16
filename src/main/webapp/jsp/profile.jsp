@@ -1,12 +1,15 @@
 <%@include file="/jspf/tagLibs.jspf" %>
 <%@include file="/jspf/page.jspf" %>
+<%@include file="/jspf/navBar.jspf" %>
 
 <html>
 <head>
+
     <title>Profile</title>
 </head>
 <body>
-<h1>Profile</h1>
+
+
 
 <c:if test="${sessionScope.user != null}">
 
@@ -27,6 +30,7 @@
 
 <a href="${Path.CARD_PATH}">My cards</a><br/>
 <a href="${Path.PAYMENT_PATH}">My payments</a><br/>
+
 
 </body>
 </html>

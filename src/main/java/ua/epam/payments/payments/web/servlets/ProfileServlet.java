@@ -16,6 +16,7 @@ public class ProfileServlet extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        System.out.println(req.getSession().getAttribute("lang"));
         if (req.getSession().getAttribute("user") != null) {
             resp.sendRedirect(Path.PROFILE_JSP);
         } else  resp.sendRedirect(Path.LOGIN_JSP);;

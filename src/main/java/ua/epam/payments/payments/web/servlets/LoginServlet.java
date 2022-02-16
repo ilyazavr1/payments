@@ -29,6 +29,7 @@ public class LoginServlet extends HttpServlet {
     //  Qwerty12345
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+
         if (req.getSession().getAttribute("user") != null) {
             CardDao accountDao = new CardDaoImpl();
             List<Card> accountList;

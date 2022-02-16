@@ -1,0 +1,97 @@
+<%--
+
+<link href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.0/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
+<script src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.0/js/bootstrap.min.js"></script>
+<script src="//code.jquery.com/jquery-1.11.1.min.js"></script>
+<!------ Include the above in your HEAD tag ---------->
+<!-- Second navbar for sign in -->
+<!-- Second navbar for search -->
+<nav class="navbar navbar-inverse">
+    <div class="container">
+        <!-- Brand and toggle get grouped for better mobile display -->
+        <div  class="navbar-header">
+            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar-collapse-3">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="#">Brand</a>
+        </div>
+
+        <!-- Collect the nav links, forms, and other content for toggling -->
+        <div   class="collapse navbar-collapse" id="navbar-collapse-3">
+            <ul  class="nav navbar-nav navbar-right">
+                <li><a href="#">Home</a></li>
+                <li><a href="#">About</a></li>
+                <li><a href="#">Services</a></li>
+                <li><a href="#">Works</a></li>
+                <li><a href="#">News</a></li>
+                <li><a href="#">Contact</a></li>
+                <li>
+                    <a class="btn btn-default btn-outline btn-circle"  data-toggle="collapse" href="#nav-collapse3" aria-expanded="false" aria-controls="nav-collapse3">Search</a>
+                </li>
+            </ul>
+
+        </div><!-- /.navbar-collapse -->
+    </div><!-- /.container -->
+</nav><!-- /.navbar -->
+--%>
+<%@include file="/jspf/tagLibs.jspf" %>
+<%@include file="/jspf/page.jspf" %>
+
+<title>Bootstrap Example</title>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.1/dist/css/bootstrap.min.css">
+<script src="https://cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.slim.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.1/dist/js/bootstrap.bundle.min.js"></script>
+
+
+<nav class="navbar navbar-expand-sm bg-dark navbar-dark">
+    <!-- Brand -->
+    <a class="navbar-brand" href="#">Logo</a>
+
+    <!-- Links -->
+    <ul class="navbar-nav">
+        <li class="nav-item">
+            <a class="nav-link" href="${Path.CARD_PATH}"><fmt:message key="myCards"/></a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" href="${Path.PAYMENT_PATH}">Make payment</a>
+        </li>
+
+        <!-- Dropdown -->
+        <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle" href="#" id="navbardrop" data-toggle="dropdown">
+                Dropdown link
+            </a>
+            <div class="dropdown-menu">
+                <a class="dropdown-item" href="#">Link 1</a>
+                <a class="dropdown-item" href="#">Link 2</a>
+                <a class="dropdown-item" href="#">Link 3</a>
+            </div>
+
+        </li>
+
+        <%--  <c:choose>
+              <c:when test="${sessionScope.lang=='uk'}">
+                  <li style="margin-left: 1000px">
+
+                      <button type="button" value="ENG" onclick="${sessionScope.lang="en"}"></button>
+                  </li>
+              </c:when>
+          </c:choose>--%>
+
+    </ul>
+
+</nav>
+<br>
+
+
+<script type="text/javascript">
+    function test(str) {
+        alert(1)
+    }
+</script>
