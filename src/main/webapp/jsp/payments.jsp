@@ -4,36 +4,24 @@
 
 <html>
 <head>
-    <title>Payments</title>
+    <title>My payments</title>
 </head>
 <body>
 <%@include file="/jspf/navBar.jspf" %>
 
-<form action="${Path.PAYMENT_PATH}" method="post">
-    <select name="cardSenderId">
-        <c:forEach items="${requestScope.cards}" var="card">
-            <option value="${card.id}"><cardFormat:formatCardNumber number="${card.number}"/></option>
-        </c:forEach>
-    </select>
-    <br>
 
+<c:if test="${requestScope.payments != null}">
 
+    <c:forEach items="${requestScope.payments}" var="payment">
 
-    <select name="cardDestinationId">
-        <c:forEach items="${requestScope.cards}" var="card">
-            <option  value="${card.id}"><cardFormat:formatCardNumber number="${card.number}"/></option>
-        </c:forEach>
-    </select>
-    <br>
+        <p>id      <c:out value="${payment.id}"> </c:out></p>
+        <p>money   <c:out value="${payment.money}"> </c:out></p>
+        <p>idFrom  <c:out value="${payment.cardSenderId}"> </c:out></p>
+        <p>idTo    <c:out value="${payment.cardDestinationId}"> </c:out></p>
 
+    </c:forEach>
 
-    <label for="money">Input money</label>
-    <input type="number" name="money" id="money" min="1" max="10000">
-    <br>
-
-
-    <input type="submit" value="go">
-</form>
+</c:if>
 
 </body>
 </html>

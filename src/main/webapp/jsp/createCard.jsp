@@ -11,7 +11,10 @@
 
 <form action="${Path.CARD_CREATE_PATH}" method="post">
 
-   <p>Input name  <input type="text" value="card" name="cardName"></p>
+    <p>Input name <input type="text" value="card" name="cardName"></p>
+    <c:if test="${requestScope.emptyCardName != null}">
+        <p style="color: red"><fmt:message key="emptyCardName"> </fmt:message> </p>
+    </c:if>
     <input type="submit" value="Create">
 </form>
 

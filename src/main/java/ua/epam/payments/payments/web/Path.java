@@ -10,7 +10,8 @@ public class Path {
     public static final String CARDS_PATH = "/cards";
     public static final String CARD_TOP_UP_PATH = "/card/topUp";
     public static final String CARD_CREATE_PATH = "/card/create";
-    public static final String PAYMENT_PATH = "/payments";
+    public static final String PAYMENT_PATH = "/payment";
+    public static final String PAYMENTS_PATH = "/payments";
 
 
     //JSP
@@ -20,7 +21,8 @@ public class Path {
     public static final String CARDS_JSP = "/jsp/cards.jsp";
     public static final String CARD_TOP_UP_JSP = "/jsp/cardTopUp.jsp";
     public static final String CARD_CREATE_JSP = "/jsp/createCard.jsp";
-    public static final String PAYMENT_JSP = "/jsp/payments.jsp";
+    public static final String PAYMENT_JSP = "/jsp/payment.jsp";
+    public static final String PAYMENTS_JSP = "/jsp/payments.jsp";
 
 
     public static final String TEST = "/jsp/testLog.jsp";

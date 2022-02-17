@@ -25,8 +25,7 @@ public class CardsServlet extends HttpServlet {
         if (req.getSession().getAttribute("user") != null) {
             CardDao cardDao = new CardDaoImpl();
             User user = (User) req.getSession().getAttribute("user");
-            List<Card> cardsList = cardDao.getCardByUser(user);
-            //  System.out.println(accountList);
+
             req.setAttribute("cards", cardDao.getCardByUser(user));
 
             req.getRequestDispatcher(Path.CARDS_JSP).forward(req, resp);
