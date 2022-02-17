@@ -25,35 +25,52 @@
                     <span class="input-group-text"> <i class="fa fa-user"></i> </span>
                 </div>
                 <input  name="firstName" class="form-control" placeholder="<fmt:message key="firstName"/>" type="text">
-            </div> <!-- form-group// -->
 
+            </div> <!-- form-group// -->
+            <c:if test="${requestScope.firstNameNotValid != null}">
+                <p style="color: red"><fmt:message key="firstNameNotValid"> </fmt:message></p>
+            </c:if>
             <div class="form-group input-group">
                 <div class="input-group-prepend">
                     <span class="input-group-text"> <i class="fa fa-user"></i> </span>
                 </div>
                 <input name="lastName" class="form-control" placeholder="<fmt:message key="lastName"/>" type="text">
-            </div> <!-- form-group// -->
 
+            </div> <!-- form-group// -->
+            <c:if test="${requestScope.lastNameNotValid != null}">
+                <p style="color: red"><fmt:message key="lastNameNotValid"> </fmt:message></p>
+            </c:if>
             <div class="form-group input-group">
                 <div class="input-group-prepend">
                     <span class="input-group-text"> <i class="fa fa-user"></i> </span>
                 </div>
                 <input name="surname" class="form-control" placeholder="<fmt:message key="surname"/>" type="text">
-            </div> <!-- form-group// -->
 
+            </div> <!-- form-group// -->
+            <c:if test="${requestScope.surnameNotValid != null}">
+                <p style="color: red"><fmt:message key="surnameNotValid"> </fmt:message></p>
+            </c:if>
             <div class="form-group input-group">
                 <div class="input-group-prepend">
                     <span class="input-group-text"> <i class="fa fa-envelope"></i> </span>
                 </div>
                 <input name="email" class="form-control" placeholder="<fmt:message key="email"/>" type="email">
             </div> <!-- form-group// -->
-
+            <c:if test="${requestScope.emailNotValid != null}">
+                <p style="color: red"><fmt:message key="emailNotValid"> </fmt:message></p>
+            </c:if>
+            <c:if test="${requestScope.mailExists != null}">
+                <p style="color: red"><fmt:message key="mailExists"> </fmt:message></p>
+            </c:if>
             <div class="form-group input-group">
                 <div class="input-group-prepend">
                     <span class="input-group-text"> <i class="fa fa-lock"></i> </span>
                 </div>
                 <input name="password" class="form-control" placeholder="<fmt:message key="password"/>" type="password">
             </div> <!-- form-group// -->
+            <c:if test="${requestScope.passwordNotValid != null}">
+                <p style="color: red"><fmt:message key="passwordNotValid"> </fmt:message></p>
+            </c:if>
 
             <div class="form-group">
                 <button type="submit" class="btn btn-primary btn-block"> Create Account  </button>

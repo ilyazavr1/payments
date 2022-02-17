@@ -56,6 +56,9 @@
     <!-- Links -->
     <ul class="navbar-nav">
         <li class="nav-item">
+            <a class="nav-link" href="${Path.PROFILE_PATH}"><fmt:message key="myProfile"/></a>
+        </li>
+        <li class="nav-item">
             <a class="nav-link" href="${Path.CARD_PATH}"><fmt:message key="myCards"/></a>
         </li>
         <li class="nav-item">
@@ -72,20 +75,11 @@
                 <a class="dropdown-item" href="#">Link 2</a>
                 <a class="dropdown-item" href="#">Link 3</a>
             </div>
-
         </li>
-
-        <%--  <c:choose>
-              <c:when test="${sessionScope.lang=='uk'}">
-                  <li style="margin-left: 1000px">
-
-                      <button type="button" value="ENG" onclick="${sessionScope.lang="en"}"></button>
-                  </li>
-              </c:when>
-          </c:choose>--%>
-
     </ul>
-
+    <div style="margin-left: 70%">
+        <a class="nav-link" href="${Path.LOGOUT_PATH}">Logout</a>
+    </div>
 </nav>
 <br>
 

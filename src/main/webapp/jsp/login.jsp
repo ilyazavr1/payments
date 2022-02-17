@@ -25,13 +25,25 @@
                 <form action="${Path.LOGIN_PATH}" method="post">
                     <div class="form-group">
                         <label>Your email</label>
-                        <input name="email" class="form-control" placeholder="<fmt:message key="email"/> " type="email">
-
+                        <input name="email" class="form-control" placeholder="<fmt:message key="email"/> " type="text">
+                        <c:if test="${requestScope.emailNotValid != null}">
+                            <p style="color: red"><fmt:message key="emailNotValid"> </fmt:message></p>
+                        </c:if>
+                        <c:if test="${requestScope.wrongEmail != null}">
+                            <p style="color: red"><fmt:message key="wrongEmail"> </fmt:message></p>
+                        </c:if>
                     </div> <!-- form-group// -->
                     <div class="form-group">
                         <%--   <a class="float-right" href="#">Forgot?</a>--%>
                         <label>Your password</label>
-                        <input name="password" class="form-control" placeholder="<fmt:message key="password"/>" type="password">
+                        <input name="password" class="form-control" placeholder="<fmt:message key="password"/>"
+                               type="password">
+                            <c:if test="${requestScope.passwordNotValid != null}">
+                                <p style="color: red"><fmt:message key="passwordNotValid"></fmt:message></p>
+                            </c:if>
+                            <c:if test="${requestScope.wrongPassword != null}">
+                                <p style="color: red"><fmt:message key="wrongPassword"> </fmt:message></p>
+                            </c:if>
                     </div> <!-- form-group// -->
                     <%-- <div class="form-group">
                          <div class="checkbox">

@@ -7,8 +7,7 @@
     <title>Payments</title>
 </head>
 <body>
-
-<p>hello</p>
+<%@include file="/jspf/navBar.jspf" %>
 
 <form action="${Path.PAYMENT_PATH}" method="post">
     <select name="cardSenderId">

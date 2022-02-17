@@ -7,8 +7,8 @@
     <title>Card top up</title>
 </head>
 <body>
-<h1>Top up card</h1>
 
+<%@include file="/jspf/navBar.jspf" %>
 
 <c:if test="${requestScope.card != null}">
     <p>Number: <cardFormat:formatCardNumber number="${requestScope.card.number}"/></p>

@@ -6,6 +6,7 @@ public class Path {
     public static final String PROFILE_PATH = "/profile";
     public static final String REGISTRATION_PATH = "/registration";
     public static final String LOGIN_PATH = "/login";
+    public static final String LOGOUT_PATH = "/logout";
     public static final String CARD_PATH = "/cards";
     public static final String CARD_TOP_UP_PATH = "/card/topUp";
     public static final String PAYMENT_PATH = "/payments";

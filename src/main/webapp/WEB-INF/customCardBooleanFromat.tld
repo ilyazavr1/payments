@@ -7,20 +7,9 @@
         version="2.0">
 
     <tlib-version>2.1</tlib-version>
-    <short-name>myTags</short-name>
+    <short-name>myTagsCardBoolean</short-name>
 
-  
-    <tag>
-        <name>formatCardNumber</name>
-        <tag-class>ua.epam.payments.payments.web.CardNumberFormatTag</tag-class>
-        <body-content>scriptless</body-content>
-        <attribute>
-            <name>number</name>
-            <required>true</required>
-            <rtexprvalue>true</rtexprvalue>
-        </attribute>
-    
-    </tag>
+
     <tag>
         <name>formatCardBoolean</name>
         <tag-class>ua.epam.payments.payments.web.CardBooleanFormatTag</tag-class>
@@ -32,6 +21,7 @@
         </attribute>
 
     </tag>
-    
-    
+
+
+
 </taglib>

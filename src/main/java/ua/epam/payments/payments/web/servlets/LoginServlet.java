@@ -9,6 +9,7 @@ import ua.epam.payments.payments.model.entity.Card;
 import ua.epam.payments.payments.model.entity.User;
 import ua.epam.payments.payments.model.services.PasswordEncryption;
 import ua.epam.payments.payments.model.services.validation.UserValidation;
+import ua.epam.payments.payments.web.Constants;
 import ua.epam.payments.payments.web.Path;
 
 import javax.servlet.ServletException;
@@ -31,64 +32,45 @@ public class LoginServlet extends HttpServlet {
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 
         if (req.getSession().getAttribute("user") != null) {
-            CardDao accountDao = new CardDaoImpl();
-            List<Card> accountList;
-            User user = (User) req.getSession().getAttribute("user");
-            accountList = accountDao.getCardByUser(user);
+            req.getRequestDispatcher(Path.PROFILE_PATH).forward(req, resp);
 
-            req.setAttribute("accounts", accountList);
-            resp.sendRedirect(Path.PROFILE_JSP);
-            // req.getRequestDispatcher(Path.PROFILE_JSP).forward(req,resp);
-            return;
         } else req.getRequestDispatcher(Path.LOGIN_JSP).forward(req, resp);
     }
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         if (req.getSession().getAttribute("user") != null) {
-            doGet(req, resp);
+           resp.sendRedirect(Path.PROFILE_PATH);
             return;
         }
 
         String email = req.getParameter("email").trim();
         String password = req.getParameter("password").trim();
 
-        if (email == null || email.isEmpty() || password == null || password.isEmpty()) {
-            // TODO error
-
-            System.out.println("email and pass is null");
+        if (email == null || email.isEmpty() || !UserValidation.validateEmail(email)) {
+            req.setAttribute(Constants.INVALID_EMAIL, Constants.INVALID_EMAIL);
+            req.getRequestDispatcher(Path.LOGIN_JSP).forward(req, resp);
+        }
+        if (password == null || password.isEmpty() || !UserValidation.validatePassword(password)) {
+            req.setAttribute(Constants.INVALID_PASSWORD, Constants.INVALID_PASSWORD);
             req.getRequestDispatcher(Path.LOGIN_JSP).forward(req, resp);
         }
 
         UserDao userDao = new UserDaoImpl();
 
         User user = userDao.getUserByEmail(email);
-        if (user == null) {
-            // TODO error
-            System.out.println("user is null");
-            req.getRequestDispatcher(Path.LOGIN_JSP).forward(req, resp);
-        }
-        if (!UserValidation.validateEmail(email)) {
-            System.out.println("email is not valid");
-            req.getRequestDispatcher(Path.LOGIN_JSP).forward(req, resp);
-        }
-        if (!UserValidation.validatePassword(password)) {
-            System.out.println("password is not valid");
-            req.getRequestDispatcher(Path.LOGIN_JSP).forward(req, resp);
-        }
-
-        if (!email.equals(user.getEmail())) {
-            System.out.println("email is not correct");
+        if (user == null || !email.equals(user.getEmail())) {
+            req.setAttribute(Constants.WRONG_EMAIL, Constants.WRONG_EMAIL);
             req.getRequestDispatcher(Path.LOGIN_JSP).forward(req, resp);
         }
 
         try {
             if (!PasswordEncryption.isPasswordCorrect(password, user.getPassword())) {
-                System.out.println("password is not correct");
+                req.setAttribute(Constants.WRONG_PASSWORD, Constants.WRONG_PASSWORD);
                 req.getRequestDispatcher(Path.LOGIN_JSP).forward(req, resp);
             }
         } catch (DecoderException | NoSuchAlgorithmException | InvalidKeySpecException e) {
-            System.out.println("password is not correct exception");
+            req.setAttribute(Constants.WRONG_PASSWORD, Constants.WRONG_PASSWORD);
             req.getRequestDispatcher(Path.LOGIN_JSP).forward(req, resp);
         }
 
@@ -96,7 +78,6 @@ public class LoginServlet extends HttpServlet {
         session.setAttribute("user", user);
 
 
-        doGet(req, resp);
-
+        resp.sendRedirect(Path.PROFILE_PATH);
     }
 }
