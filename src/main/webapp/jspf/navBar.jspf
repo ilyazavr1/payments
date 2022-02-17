@@ -59,12 +59,14 @@
             <a class="nav-link" href="${Path.PROFILE_PATH}"><fmt:message key="myProfile"/></a>
         </li>
         <li class="nav-item">
-            <a class="nav-link" href="${Path.CARD_PATH}"><fmt:message key="myCards"/></a>
+            <a class="nav-link" href="${Path.CARDS_PATH}"><fmt:message key="myCards"/></a>
         </li>
         <li class="nav-item">
             <a class="nav-link" href="${Path.PAYMENT_PATH}">Make payment</a>
         </li>
-
+        <li class="nav-item">
+            <a class="nav-link" href="${Path.CARD_CREATE_PATH}">Make payment</a>
+        </li>
         <!-- Dropdown -->
         <li class="nav-item dropdown">
             <a class="nav-link dropdown-toggle" href="#" id="navbardrop" data-toggle="dropdown">

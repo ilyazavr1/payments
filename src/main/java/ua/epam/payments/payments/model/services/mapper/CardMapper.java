@@ -12,9 +12,10 @@ public class CardMapper {
     public Card mapRSToCard(ResultSet rs) throws SQLException {
         return new Card.Builder()
                 .withId(rs.getInt(1))
-                .withNumber(rs.getString(2))
-                .withMoney(rs.getInt(3))
-                .withBlocked(rs.getBoolean(4))
+                .withName(rs.getString(2))
+                .withNumber(rs.getString(3))
+                .withMoney(rs.getInt(4))
+                .withBlocked(rs.getBoolean(5))
                 .build();
     }
 

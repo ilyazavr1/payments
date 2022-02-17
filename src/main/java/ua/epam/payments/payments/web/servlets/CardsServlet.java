@@ -15,8 +15,8 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.List;
 
-@WebServlet(name = "CardServlet", value = Path.CARD_PATH)
-public class CardServlet extends HttpServlet {
+@WebServlet(name = "CardsServlet", value = Path.CARDS_PATH)
+public class CardsServlet extends HttpServlet {
 
 
     @Override
@@ -38,17 +38,9 @@ public class CardServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 
-        CardDao cardDao = new CardDaoImpl();
-
-        String cardNumber;
-        Card newCard;
+/*        CardDao cardDao = new CardDaoImpl();
         List<Card> cards;
         User user;
-
-        //add account to db
-      /*  do {
-        } while (!accountDao.isExistAccount(accountNumber));*/
-        cardNumber = CardGeneration.generateCardNumber();
 
         user = (User) req.getSession().getAttribute("user");
 
@@ -58,17 +50,15 @@ public class CardServlet extends HttpServlet {
             resp.sendRedirect(Path.CARD_PATH);
         }
 
-        newCard = new Card.Builder().withNumber(cardNumber).build();
-        cardDao.createCardWithUser(newCard, user);
 
         //add accounts to session
         cards = cardDao.getCardByUser(user);
         req.setAttribute("cards", cards);
 
 
-        //TODO вывести аккаунты юзера
+        //TODO вывести аккаунты юзера*/
 
-        resp.sendRedirect(Path.CARD_PATH);
+        resp.sendRedirect(Path.CARDS_PATH);
 
     }
 }

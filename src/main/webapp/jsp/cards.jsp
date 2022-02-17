@@ -35,6 +35,7 @@
                         <div class="card h-100 border-primary">
                             <div class="card-body">
                                 <h3 class="card-title"><cardFormat:formatCardNumber number="${card.number}"/></h3>
+                                <h3 class="card-title">${card.name}</h3>
                                 <p class="card-text"><c:out value="${card.money}"> </c:out></p>
                                 <p class="card-text"><cardFormat:formatCardBoolean
                                         status="${card.blocked}"> </cardFormat:formatCardBoolean></p>
@@ -69,7 +70,7 @@
 
 </div>
 
-<form action="${Path.CARD_PATH}" method="post">
+<form action="${Path.CARDS_PATH}" method="post">
 
     <input type="submit" name="createCart" value="Add card">
 </form>

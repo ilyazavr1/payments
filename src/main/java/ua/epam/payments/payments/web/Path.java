@@ -7,8 +7,9 @@ public class Path {
     public static final String REGISTRATION_PATH = "/registration";
     public static final String LOGIN_PATH = "/login";
     public static final String LOGOUT_PATH = "/logout";
-    public static final String CARD_PATH = "/cards";
+    public static final String CARDS_PATH = "/cards";
     public static final String CARD_TOP_UP_PATH = "/card/topUp";
+    public static final String CARD_CREATE_PATH = "/card/create";
     public static final String PAYMENT_PATH = "/payments";
 
 
@@ -18,6 +19,7 @@ public class Path {
     public static final String LOGIN_JSP = "/jsp/login.jsp";
     public static final String CARDS_JSP = "/jsp/cards.jsp";
     public static final String CARD_TOP_UP_JSP = "/jsp/cardTopUp.jsp";
+    public static final String CARD_CREATE_JSP = "/jsp/createCard.jsp";
     public static final String PAYMENT_JSP = "/jsp/payments.jsp";
 
 

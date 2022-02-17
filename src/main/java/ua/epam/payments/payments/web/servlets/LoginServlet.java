@@ -30,7 +30,7 @@ public class LoginServlet extends HttpServlet {
     //  Qwerty12345
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-
+        System.out.println(req.getSession().getAttribute("user"));
         if (req.getSession().getAttribute("user") != null) {
             req.getRequestDispatcher(Path.PROFILE_PATH).forward(req, resp);
 

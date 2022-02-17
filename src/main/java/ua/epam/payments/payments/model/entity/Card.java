@@ -5,6 +5,7 @@ public class Card {
     private static final long serialVersionUID = 123L;
 
     private long id;
+    private String name;
     private String number;
     private int money;
     private boolean blocked;
@@ -24,6 +25,14 @@ public class Card {
 
     public void setNumber(String number) {
         this.number = number;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
     }
 
     public int getMoney() {
@@ -64,6 +73,11 @@ public class Card {
 
         public Card.Builder withNumber(String number) {
             newCard.number = number;
+            return this;
+        }
+
+        public Card.Builder withName(String name) {
+            newCard.name = name;
             return this;
         }
 

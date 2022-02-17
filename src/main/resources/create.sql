@@ -56,6 +56,7 @@ create table "user"
 create table card
 (
     id      serial                        NOT NULL,
+    name    varchar(50)                   NOT NULL DEFAULT 'card',
     number  varchar(128)                  NOT NULL,
     money   integer                       NOT NULL DEFAULT 0,
     blocked bool                          NOT NULL DEFAULT FALSE,
@@ -66,10 +67,10 @@ create table card
 
 create table payment
 (
-    id                     serial  NOT NULL,
-    money                  integer NOT NULL                                          DEFAULT 0,
-    payment_status_id      integer REFERENCES payment_status (id) ON DELETE SET NULL DEFAULT 1,
-    creation_timestamp     timestamp                                                 DEFAULT CURRENT_TIMESTAMP,
+    id                  serial  NOT NULL,
+    money               integer NOT NULL                                          DEFAULT 0,
+    payment_status_id   integer REFERENCES payment_status (id) ON DELETE SET NULL DEFAULT 1,
+    creation_timestamp  timestamp                                                 DEFAULT CURRENT_TIMESTAMP,
     card_sender_id      bigint  NOT NULL REFERENCES card (id),
     card_destination_id bigint  NOT NULL REFERENCES card (id),
     PRIMARY KEY (id)

@@ -73,8 +73,9 @@ public class RegistrationServlet extends HttpServlet {
         if (userDao.getUserByEmail(email) != null){
             req.setAttribute(Constants.EMAIL_EXISTS, Constants.EMAIL_EXISTS);
             req.getRequestDispatcher(Path.REGISTRATION_JSP).forward(req, resp);
+            return;
         }
-
+        System.out.println("proshlo");
         User user = null;
         try {
             user = new User.Builder()

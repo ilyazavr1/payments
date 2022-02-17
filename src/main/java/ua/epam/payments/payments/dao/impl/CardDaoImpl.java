@@ -23,7 +23,7 @@ public class CardDaoImpl implements CardDao {
     public static final String SQL_WITHDRAW_MONEY = "UPDATE card SET money=money-? WHERE id=?";
     public static final String SQL_TOP_UP_MONEY = "UPDATE card SET money=money+? WHERE id=?";
 
-    public static final String SQL_CREATE_CARD = "INSERT INTO card values (default, ?, default, default, ?)";
+    public static final String SQL_CREATE_CARD = "INSERT INTO card values (default, ?, ?, default, default, ?)";
     public static final String SQL_ADD_CARD_TO_USER = "UPDATE card SET user_id=? WHERE id=?";
     public static final String SQL_GET_CARD_BY_USER = "SELECT * FROM card WHERE user_id=?";
 
@@ -96,8 +96,9 @@ public class CardDaoImpl implements CardDao {
     public boolean createCardWithUser(Card card, User user) {
         try (Connection con = DBManager.getInstance().getConnection();
              PreparedStatement stmt = con.prepareStatement(SQL_CREATE_CARD)) {
-            stmt.setString(1, card.getNumber());
-            stmt.setLong(2, user.getId());
+            stmt.setString(1, card.getName());
+            stmt.setString(2, card.getNumber());
+            stmt.setLong(3, user.getId());
 
             return stmt.executeUpdate() > 0;
         } catch (SQLException throwables) {
