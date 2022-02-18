@@ -10,8 +10,15 @@ import java.util.List;
 
 public interface PaymentsDao {
     Payment getPaymentById(long id);
+
     List<Payment> getPaymentsByUser(User user);
+
     List<FullPaymentDto> getFullPaymentsByUser(User user);
+
+    List<FullPaymentDto> getFullPayments();
+
+    boolean confirmPayment(long id);
+
     boolean createPayment(Card cardSender, Card cardDestination, int money);
 
 }

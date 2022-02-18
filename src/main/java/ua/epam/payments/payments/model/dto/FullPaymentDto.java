@@ -12,6 +12,14 @@ public class FullPaymentDto {
     private LocalDateTime creationTimestamp;
     private String senderCardNumber;
     private String destinationCardNumber;
+    private String senderFirstName;
+    private String senderLastName;
+    private String senderSurnameName;
+    private String destinationFirstName;
+    private String destinationLastName;
+    private String destinationSurnameName;
+    private String destinationFullName;
+    private String senderFullName;
 
     public long getId() {
         return id;
@@ -60,6 +68,71 @@ public class FullPaymentDto {
     public void setDestinationCardNumber(String destinationCardNumber) {
         this.destinationCardNumber = destinationCardNumber;
     }
+
+    public String getSenderFirstName() {
+        return senderFirstName;
+    }
+
+    public void setSenderFirstName(String senderFirstName) {
+        this.senderFirstName = senderFirstName;
+    }
+
+    public String getSenderLastName() {
+        return senderLastName;
+    }
+
+    public void setSenderLastName(String senderLastName) {
+        this.senderLastName = senderLastName;
+    }
+
+    public String getSenderSurnameName() {
+        return senderSurnameName;
+    }
+
+    public void setSenderSurnameName(String senderSurnameName) {
+        this.senderSurnameName = senderSurnameName;
+    }
+
+    public String getDestinationFirstName() {
+        return destinationFirstName;
+    }
+
+    public void setDestinationFirstName(String destinationFirstName) {
+        this.destinationFirstName = destinationFirstName;
+    }
+
+    public String getDestinationLastName() {
+        return destinationLastName;
+    }
+
+    public void setDestinationLastName(String destinationLastName) {
+        this.destinationLastName = destinationLastName;
+    }
+
+    public String getDestinationSurnameName() {
+        return destinationSurnameName;
+    }
+
+    public void setDestinationSurnameName(String destinationSurnameName) {
+        this.destinationSurnameName = destinationSurnameName;
+    }
+
+    public String getDestinationFullName() {
+        return destinationFullName;
+    }
+
+    public void setDestinationFullName(String destinationFullName) {
+        this.destinationFullName = destinationFullName;
+    }
+
+    public String getSenderFullName() {
+        return senderFullName;
+    }
+
+    public void setSenderFullName(String senderFullName) {
+        this.senderFullName = senderFullName;
+    }
+
     public static class Builder {
         private final FullPaymentDto newFullPayment;
 
@@ -67,40 +140,49 @@ public class FullPaymentDto {
             newFullPayment = new FullPaymentDto();
         }
 
-        public FullPaymentDto.Builder withId(long id){
+        public FullPaymentDto.Builder withId(long id) {
             newFullPayment.id = id;
             return this;
         }
 
-        public FullPaymentDto.Builder withMoney(int money){
+        public FullPaymentDto.Builder withMoney(int money) {
             newFullPayment.money = money;
             return this;
         }
 
-        public FullPaymentDto.Builder withPaymentStatus(String status){
+        public FullPaymentDto.Builder withPaymentStatus(String status) {
             newFullPayment.status = status;
             return this;
         }
 
-        public FullPaymentDto.Builder withCreationTimestamp(LocalDateTime creationTimestamp){
+        public FullPaymentDto.Builder withCreationTimestamp(LocalDateTime creationTimestamp) {
             newFullPayment.creationTimestamp = creationTimestamp;
             return this;
         }
+
         public FullPaymentDto.Builder withCreationTimestamp(Timestamp timestamp) {
             newFullPayment.creationTimestamp = timestamp.toLocalDateTime();
             return this;
         }
-        public FullPaymentDto.Builder withCardSenderNumber(String senderCardNumber){
+
+        public FullPaymentDto.Builder withCardSenderNumber(String senderCardNumber) {
             newFullPayment.senderCardNumber = senderCardNumber;
             return this;
         }
 
-        public FullPaymentDto.Builder withCardDestinationNumber(String destinationCardNumber){
+        public FullPaymentDto.Builder withCardDestinationNumber(String destinationCardNumber) {
             newFullPayment.destinationCardNumber = destinationCardNumber;
             return this;
         }
-
-        public FullPaymentDto build(){
+        public FullPaymentDto.Builder withUserSenderFullName(String fName, String lName, String surname) {
+            newFullPayment.senderFullName = String.format("%s %s %s", lName,fName,surname);
+            return this;
+        }
+        public FullPaymentDto.Builder withUserDestinationFullName(String fName, String lName, String surname) {
+            newFullPayment.destinationFullName = String.format("%s %s %s", lName,fName,surname);
+            return this;
+        }
+        public FullPaymentDto build() {
             return newFullPayment;
         }
 

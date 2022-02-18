@@ -64,6 +64,15 @@ create table card
     PRIMARY KEY (id)
 );
 
+create table card_unblock_request
+(
+    id      serial                        NOT NULL,
+    number  varchar(128)                  NOT NULL,
+    money   integer                       NOT NULL DEFAULT 0,
+    blocked bool                          NOT NULL DEFAULT FALSE,
+    user_id bigint REFERENCES "user" (id) NOT NULL,
+    PRIMARY KEY (id)
+);
 
 create table payment
 (

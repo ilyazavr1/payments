@@ -20,8 +20,8 @@ public class ProfileServlet extends HttpServlet {
         if (req.getSession().getAttribute("user") != null) {
             req.getRequestDispatcher(Path.PROFILE_JSP).forward(req, resp);
 
-        } else resp.sendRedirect(Path.LOGIN_JSP);
-        ;
+        } else req.getRequestDispatcher(Path.LOGIN_JSP).forward(req, resp);
+
     }
 
     @Override

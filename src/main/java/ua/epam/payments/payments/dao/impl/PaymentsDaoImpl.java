@@ -27,6 +27,20 @@ public class PaymentsDaoImpl implements PaymentsDao {
             "       (SELECT card.number as destination_card_number FROM card WHERE card.id = payment.card_destination_id)\n" +
             "FROM payment\n" +
             "WHERE card_sender_id IN (SELECT card.id FROM card WHERE user_id =?)";
+    public static final String SQL_GET_FULL_PAYMENTS = "SELECT payment.id,\n" +
+            "       payment.money,\n" +
+            "       (SELECT status  FROM payment_status WHERE payment.payment_status_id = payment_status.id),\n" +
+            "       payment.creation_timestamp,\n" +
+            "       (SELECT card.number as sender_card_number FROM card WHERE card.id = payment.card_sender_id),\n" +
+            "       (SELECT \"user\".first_name FROM \"user\",card WHERE payment.card_sender_id=card.id and card.user_id = \"user\".id),\n" +
+            "       (SELECT \"user\".last_name FROM \"user\",card WHERE payment.card_sender_id=card.id and card.user_id = \"user\".id),\n" +
+            "       (SELECT \"user\".surname FROM \"user\",card WHERE payment.card_sender_id=card.id and card.user_id = \"user\".id),\n" +
+            "       (SELECT card.number as destination_card_number FROM card WHERE card.id = payment.card_destination_id),\n" +
+            "       (SELECT \"user\".first_name FROM \"user\",card WHERE payment.card_destination_id=card.id and card.user_id = \"user\".id),\n" +
+            "       (SELECT \"user\".last_name FROM \"user\",card WHERE payment.card_destination_id=card.id and card.user_id = \"user\".id),\n" +
+            "       (SELECT \"user\".surname FROM \"user\",card WHERE payment.card_destination_id=card.id and card.user_id = \"user\".id)\n" +
+            "FROM payment;";
+    public static final String SQL_CONFIRM_PAYMENT_BY_ID = "UPDATE payment SET payment_status_id=2 WHERE id =?";
 
     @Override
     public Payment getPaymentById(long id) {
@@ -96,10 +110,43 @@ public class PaymentsDaoImpl implements PaymentsDao {
     }
 
     @Override
+    public List<FullPaymentDto> getFullPayments() {
+        List<FullPaymentDto> paymentList = null;
+        try (Connection con = DBManager.getInstance().getConnection();
+             PreparedStatement stmt = con.prepareStatement(SQL_GET_FULL_PAYMENTS)) {
+
+            try (ResultSet rs = stmt.executeQuery()) {
+                paymentList = new ArrayList<>();
+                PaymentMapper paymentMapper = new PaymentMapper();
+                while (rs.next()) {
+                    paymentList.add(paymentMapper.mapRSToFullPaymentWithNameDto(rs));
+                }
+            }
+
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
+        }
+
+        return paymentList;
+    }
+
+    @Override
+    public boolean confirmPayment(long id) {
+        try (Connection con = DBManager.getInstance().getConnection();
+             PreparedStatement stmt = con.prepareStatement(SQL_CONFIRM_PAYMENT_BY_ID)) {
+            stmt.setLong(1, id);
+            return stmt.executeUpdate() > 0;
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
+        }
+        return false;
+    }
+
+    @Override
     public boolean createPayment(Card cardSender, Card cardDestination, int money) {
         try (Connection con = DBManager.getInstance().getConnection();
              PreparedStatement stmt = con.prepareStatement(SQL_CREATE_PAYMENT)) {
-            stmt.setInt(1,money);
+            stmt.setInt(1, money);
             stmt.setLong(2, cardSender.getId());
             stmt.setLong(3, cardDestination.getId());
 

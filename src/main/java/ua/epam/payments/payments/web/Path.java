@@ -6,6 +6,13 @@ import java.util.List;
 public class Path {
 
     public static final List<String> ADMIN_PATHS = Arrays.asList(Path.ADMIN_ALL_USERS_PATH, Path.ADMIN_BLOCK_USER_PATH, Path.ADMIN_UNBLOCK_USER_PATH);
+    public static final List<String> CLIENT_PATHS = Arrays.asList(
+            Path.CARDS_PATH,
+            Path.CARD_TOP_UP_PATH,
+            Path.CARD_CREATE_PATH,
+            Path.PAYMENT_PATH,
+            Path.PAYMENTS_PATH
+    );
 
     //SERVLETS PATHS
     public static final String PROFILE_PATH = "/profile";
@@ -22,19 +29,24 @@ public class Path {
     public static final String ADMIN_BLOCK_USER_PATH = "/admin/blockUser";
     public static final String ADMIN_UNBLOCK_USER_PATH = "/admin/unblockUser";
 
+    //TODO add to security
+    public static final String ADMIN_ALL_PAYMENTS_REQUESTS_PATH = "/admin/paymentsRequests";
+    public static final String ADMIN_CONFIRM_PAYMENT_PATH = "/admin/paymentsRequests/confirm";
+    //
 
     //JSP
-    public static final String PROFILE_JSP = "/jsp/profile.jsp";
-    public static final String REGISTRATION_JSP = "/jsp/registration.jsp";
-    public static final String LOGIN_JSP = "/jsp/login.jsp";
-    public static final String CARDS_JSP = "/jsp/cards.jsp";
-    public static final String CARD_TOP_UP_JSP = "/jsp/cardTopUp.jsp";
-    public static final String CARD_CREATE_JSP = "/jsp/createCard.jsp";
-    public static final String PAYMENT_JSP = "/jsp/payment.jsp";
-    public static final String PAYMENTS_JSP = "/jsp/payments.jsp";
+    public static final String PROFILE_JSP = "/WEB-INF/jsp/profile.jsp";
+    public static final String REGISTRATION_JSP = "/WEB-INF/jsp/registration.jsp";
+    public static final String LOGIN_JSP = "/WEB-INF/jsp/login.jsp";
+    public static final String CARDS_JSP = "/WEB-INF/jsp/cards.jsp";
+    public static final String CARD_TOP_UP_JSP = "/WEB-INF/jsp/cardTopUp.jsp";
+    public static final String CARD_CREATE_JSP = "/WEB-INF/jsp/createCard.jsp";
+    public static final String PAYMENT_JSP = "/WEB-INF/jsp/payment.jsp";
+    public static final String PAYMENTS_JSP = "/WEB-INF/jsp/payments.jsp";
     //admin
-    public static final String ADMIN_ALL_USERS_JSP = "/jsp/admin/adminAllUsers.jsp";
-    public static final String ADMIN_BLOCK_USER_JSP = "/jsp/admin/adminBlockUser.jsp";
+    public static final String ADMIN_ALL_USERS_JSP = "/WEB-INF/jsp/admin/adminAllUsers.jsp";
+    public static final String ADMIN_BLOCK_USER_JSP = "/WEB-INF/jsp/admin/adminBlockUser.jsp";
+    public static final String ADMIN_ALL_PAYMENTS_REQUESTS_JSP = "/WEB-INF/jsp/admin/paymentsRequests.jsp";
 
 
     public static final String TEST = "/jsp/testLog.jsp";
