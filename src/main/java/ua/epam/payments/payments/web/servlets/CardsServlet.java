@@ -56,10 +56,7 @@ public class CardsServlet extends HttpServlet {
             req.setAttribute("records", 9);
         } else req.setAttribute("records", records);
 
-     /*   if (req.getParameter("page") != null) {
-            req.setAttribute("page", req.getParameter("page"));
-        } else req.setAttribute("page", 1);
-      */
+
         if (page == null || page.isEmpty()) {
             req.setAttribute("page", 1);
         } else req.setAttribute("page", page);
@@ -80,14 +77,18 @@ public class CardsServlet extends HttpServlet {
             if (req.getParameter("page") != null && !req.getParameter("page").isEmpty()) {
                 offset = Integer.parseInt(req.getParameter("page"));
             }
-            //System.out.println(offset);
-          //  System.out.println(limit);
+
             List<Card> cards = cardDao.getCardByUserLimit(user, limit, ((offset - 1) * limit));
-            List<Card> cards1 = cardDao.getCardByUser(user);
-            int loopPagination = cards1.size()/limit;
-//TODO ploho sdelano dobavlenie knopok
+
+            /*int test = cardDao.countCardsByUser(user);
+            Double cardsCount = (double) test;
+            System.out.println(cardsCount);
+            System.out.println(req.getParameter("records"));
+
+            cardsCount = Math.ceil(cardsCount);
+*/
             req.setAttribute("cards", cards);
-            req.setAttribute("loopPagination", loopPagination+2);
+            req.setAttribute("loopPagination", 5);
 
             req.getRequestDispatcher(Path.CARDS_JSP).forward(req, resp);
         } else req.getRequestDispatcher(Path.LOGIN_JSP).forward(req, resp);
@@ -97,6 +98,29 @@ public class CardsServlet extends HttpServlet {
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+
+
+        resp.sendRedirect(Path.CARDS_PATH + "?page" + req.getParameter("page") + "&records=" + req.getParameter("re"));
+
+    }
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 /*        CardDao cardDao = new CardDaoImpl();
         List<Card> cards;
@@ -118,7 +142,14 @@ public class CardsServlet extends HttpServlet {
 
         //TODO вывести аккаунты юзера*/
 
-        resp.sendRedirect(Path.CARDS_PATH + "?page" + req.getParameter("page") + "&records=" + req.getParameter("re"));
-
-    }
-}
+ /*int loopPagination = 2;
+            System.out.println(cardsCount);
+            System.out.println(limit);
+            System.out.println(loopPagination+1);*/
+//TODO ploho sdelano dobavlenie knopok
+//System.out.println(offset);
+//  System.out.println(limit);
+ /*   if (req.getParameter("page") != null) {
+            req.setAttribute("page", req.getParameter("page"));
+        } else req.setAttribute("page", 1);
+      */

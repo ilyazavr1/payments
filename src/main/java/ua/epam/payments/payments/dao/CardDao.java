@@ -12,6 +12,7 @@ public interface CardDao {
     Card getCardByNumber(String number);
 
     List<Card> getCardByUser(User user);
+    int countCardsByUser(User user);
 
     List<Card> getCardByUserLimit(User user, int limit, int offset);
 

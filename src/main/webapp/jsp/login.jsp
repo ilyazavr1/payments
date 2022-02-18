@@ -24,6 +24,9 @@
                 <h4 class="card-title mb-4 mt-1">Sign in</h4>
                 <form action="${Path.LOGIN_PATH}" method="post">
                     <div class="form-group">
+                        <c:if test="${requestScope.userIsBlocked != null}">
+                           <p><fmt:message key="userIsBlocked"> </fmt:message></p>
+                        </c:if>
                         <label>Your email</label>
                         <input name="email" class="form-control" placeholder="<fmt:message key="email"/> " type="text">
                         <c:if test="${requestScope.emailNotValid != null}">

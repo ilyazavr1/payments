@@ -1,6 +1,6 @@
 <%@include file="/jspf/tagLibs.jspf" %>
 <%@include file="/jspf/page.jspf" %>
-<%@taglib prefix="cardFormat" uri="/WEB-INF/customCardNumberFromat.tld" %>
+
 
 <html>
 <head>

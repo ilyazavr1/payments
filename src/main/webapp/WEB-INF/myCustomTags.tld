@@ -22,8 +22,8 @@
     
     </tag>
     <tag>
-        <name>formatCardBoolean</name>
-        <tag-class>ua.epam.payments.payments.web.CardBooleanFormatTag</tag-class>
+        <name>formatActiveBlockedBoolean</name>
+        <tag-class>ua.epam.payments.payments.web.BooleanActiveBlockedFormatTag</tag-class>
         <body-content>scriptless</body-content>
         <attribute>
             <name>status</name>

@@ -4,7 +4,7 @@
 <!------ Include the above in your HEAD tag ---------->
 <%@include file="/jspf/tagLibs.jspf" %>
 <%@include file="/jspf/page.jspf" %>
-<%@taglib prefix="cardFormat" uri="/WEB-INF/customCardNumberFromat.tld" %>
+
 <html>
 <head>
 

@@ -1,6 +1,6 @@
 <%@include file="/jspf/tagLibs.jspf" %>
 <%@include file="/jspf/page.jspf" %>
-<%@taglib prefix="cardFormat" uri="/WEB-INF/customCardNumberFromat.tld" %>
+
 <%--<%@taglib prefix="cardStatus" uri="/WEB-INF/customCardBooleanFromat.tld" %>--%>
 
 <html>
@@ -37,8 +37,8 @@
                                 <h3 class="card-title"><cardFormat:formatCardNumber number="${card.number}"/></h3>
                                 <h3 class="card-title">${card.name}</h3>
                                 <p class="card-text"><c:out value="${card.money}"> </c:out></p>
-                                <p class="card-text"><cardFormat:formatCardBoolean
-                                        status="${card.blocked}"> </cardFormat:formatCardBoolean></p>
+                                <p class="card-text"><cardFormat:formatActiveBlockedBoolean
+                                        status="${card.blocked}"> </cardFormat:formatActiveBlockedBoolean></p>
                                 <a style="background-color: lightgreen" href="${cardID}"
                                    class="btn btn-outline-secondary">TOP UP</a>
                                 <a style="margin-left: 150px; background-color: lightcoral" href="${cardID}"
@@ -53,8 +53,8 @@
                             <div class="card-body">
                                 <h3 class="card-title"><cardFormat:formatCardNumber number="${card.number}"/></h3>
                                 <p class="card-text"><c:out value="${card.money}"> </c:out></p>
-                                <p class="card-text"><cardFormat:formatCardBoolean
-                                        status="${card.blocked}"> </cardFormat:formatCardBoolean></p>
+                                <p class="card-text"><cardFormat:formatActiveBlockedBoolean
+                                        status="${card.blocked}"> </cardFormat:formatActiveBlockedBoolean></p>
                                 <a style="background-color: lightgreen" onclick="alert('Card is blocked')"
                                    class="btn btn-outline-secondary">TOP UP</a>
                                 <a style="margin-left: 150px; background-color: lightcoral" href="${cardID}"
@@ -130,7 +130,8 @@
         <c:set var="rec" value="${requestScope.records}" scope="request"> </c:set>
         <c:set var="lenght" value="${requestScope.loopPagination}" scope="request"> </c:set>
 
-        <c:forEach begin="1" end="${lenght}" varStatus="loop">
+      <%--  <c:forEach begin="1" end="${(requestScope.loopPagination/rec)+3}" varStatus="loop">--%>
+        <c:forEach begin="1" end="${requestScope.loopPagination}" varStatus="loop">
             <c:set var="num" value="${loop.index}" scope="page"> </c:set>
             <c:choose>
                 <c:when test="${requestScope.page == num}">

@@ -4,7 +4,7 @@ import javax.servlet.jsp.JspException;
 import javax.servlet.jsp.tagext.SimpleTagSupport;
 import java.io.IOException;
 
-public class CardBooleanFormatTag extends SimpleTagSupport {
+public class BooleanActiveBlockedFormatTag extends SimpleTagSupport {
     private boolean status;
 
 
