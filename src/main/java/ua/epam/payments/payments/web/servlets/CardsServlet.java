@@ -26,14 +26,14 @@ public class CardsServlet extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        String recordsOnPage = req.getParameter("recordsOnPage");
+       /* String recordsOnPage = req.getParameter("recordsOnPage");
         String records = req.getParameter("records");
         System.out.println("[" + recordsOnPage + "]");
         System.out.println("[" + records + "]");
 
         if (recordsOnPage != null) {
             req.setAttribute("recordsOnPage", recordsOnPage);
-          //  req.setAttribute("records", recordsOnPage);
+            //  req.setAttribute("records", recordsOnPage);
         } else recordsOnPage = records;
 
         if (recordsOnPage == null) {
@@ -44,30 +44,45 @@ public class CardsServlet extends HttpServlet {
 //save recordsOnPage
         if (records != null) {
             req.setAttribute("recordsOnPage", records);
-        }
+        } else records = recordsOnPage;
         //req.setAttribute("records", 9);
+*/
 
-        if (req.getParameter("page") != null) {
+        String records = req.getParameter("records");
+        String page = req.getParameter("page");
+
+
+        if (records == null || records.isEmpty()) {
+            req.setAttribute("records", 9);
+        } else req.setAttribute("records", records);
+
+     /*   if (req.getParameter("page") != null) {
             req.setAttribute("page", req.getParameter("page"));
         } else req.setAttribute("page", 1);
-
-
+      */
+        if (page == null || page.isEmpty()) {
+            req.setAttribute("page", 1);
+        } else req.setAttribute("page", page);
 
 
         if (req.getSession().getAttribute("user") != null) {
             CardDao cardDao = new CardDaoImpl();
             User user = (User) req.getSession().getAttribute("user");
 
-            System.out.println("r - " + recordsOnPage);
-            System.out.println("p - " + req.getParameter("records"));
 
-          // int limit = Integer.parseInt(recordsOnPage);
-           int limit = Integer.parseInt(getInitParameter("records"));
-
-            List<Card> cards = cardDao.getCardByUserLimit(user, limit, 0);
+            int limit = 9;
+            int offset = 1;
+            if (req.getParameter("records") != null && !req.getParameter("records").isEmpty()) {
+                limit = Integer.parseInt(req.getParameter("records"));
+            }
+            if (req.getParameter("page") != null && !req.getParameter("page").isEmpty()) {
+                offset = Integer.parseInt(req.getParameter("page"));
+            }
+            System.out.println(offset);
+            System.out.println(limit);
+            List<Card> cards = cardDao.getCardByUserLimit(user, limit, ((offset-1)*limit));
 
             req.setAttribute("cards", cards);
-            //req.setAttribute("cards", cardDao.getCardByUser(user));
 
             req.getRequestDispatcher(Path.CARDS_JSP).forward(req, resp);
         } else req.getRequestDispatcher(Path.LOGIN_JSP).forward(req, resp);
