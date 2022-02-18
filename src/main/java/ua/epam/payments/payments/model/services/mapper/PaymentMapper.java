@@ -1,6 +1,7 @@
 package ua.epam.payments.payments.model.services.mapper;
 
 
+import ua.epam.payments.payments.model.dto.FullPaymentDto;
 import ua.epam.payments.payments.model.entity.Payment;
 
 import java.sql.ResultSet;
@@ -16,6 +17,17 @@ public class PaymentMapper {
                 .withCreationTimestamp(rs.getTimestamp(4))
                 .withCardSenderId(rs.getLong(5))
                 .withCardDestinationId(rs.getLong(6))
+                .build();
+    }
+
+    public FullPaymentDto mapRSToFullPaymentDto(ResultSet rs) throws SQLException {
+        return new FullPaymentDto.Builder()
+                .withId(rs.getInt(1))
+                .withMoney(rs.getInt(2))
+                .withPaymentStatus(rs.getString(3))
+                .withCreationTimestamp(rs.getTimestamp(4))
+                .withCardSenderNumber(rs.getString(5))
+                .withCardDestinationNumber(rs.getString(6))
                 .build();
     }
 }

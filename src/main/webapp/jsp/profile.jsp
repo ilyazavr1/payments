@@ -28,7 +28,7 @@
 <p>User is null</p>
 </c:if>
 
-<a href="${Path.CARDS_PATH}">My cards</a><br/>
+<a href="${Path.CARDS_PATH}?page=2&records=6">My cards</a><br/>
 <a href="${Path.PAYMENT_PATH}">My payments</a><br/>
 
 

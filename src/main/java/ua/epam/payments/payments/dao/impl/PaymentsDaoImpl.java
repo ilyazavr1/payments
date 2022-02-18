@@ -2,6 +2,7 @@ package ua.epam.payments.payments.dao.impl;
 
 import ua.epam.payments.payments.dao.PaymentsDao;
 import ua.epam.payments.payments.db.DBManager;
+import ua.epam.payments.payments.model.dto.FullPaymentDto;
 import ua.epam.payments.payments.model.entity.Card;
 import ua.epam.payments.payments.model.entity.Payment;
 import ua.epam.payments.payments.model.entity.User;
@@ -18,6 +19,14 @@ public class PaymentsDaoImpl implements PaymentsDao {
     public static final String SQL_GET_PAYMENT_BY_ID = "SELECT * FROM payment WHERE id=?";
     public static final String SQL_CREATE_PAYMENT = "INSERT INTO payment VALUES (default, ?, default, default, ?, ?)";
     public static final String SQL_GET_PAYMENTS_BY_USER = "SELECT * FROM payment WHERE card_sender_id IN (SELECT card.id FROM card WHERE user_id =?);";
+    public static final String SQL_GET_FULL_PAYMENTS_BY_USER = "SELECT payment.id,\n" +
+            "       payment.money,\n" +
+            "       (SELECT status  FROM payment_status WHERE payment.payment_status_id = payment_status.id),\n" +
+            "       payment.creation_timestamp,\n" +
+            "       (SELECT card.number as sender_card_number FROM card WHERE card.id = payment.card_sender_id),\n" +
+            "       (SELECT card.number as destination_card_number FROM card WHERE card.id = payment.card_destination_id)\n" +
+            "FROM payment\n" +
+            "WHERE card_sender_id IN (SELECT card.id FROM card WHERE user_id =?)";
 
     @Override
     public Payment getPaymentById(long id) {
@@ -52,6 +61,29 @@ public class PaymentsDaoImpl implements PaymentsDao {
                 PaymentMapper paymentMapper = new PaymentMapper();
                 while (rs.next()) {
                     paymentList.add(paymentMapper.mapRSToPayment(rs));
+
+                }
+            }
+
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
+        }
+
+        return paymentList;
+    }
+
+    @Override
+    public List<FullPaymentDto> getFullPaymentsByUser(User user) {
+        List<FullPaymentDto> paymentList = null;
+        try (Connection con = DBManager.getInstance().getConnection();
+             PreparedStatement stmt = con.prepareStatement(SQL_GET_FULL_PAYMENTS_BY_USER)) {
+            stmt.setLong(1, user.getId());
+
+            try (ResultSet rs = stmt.executeQuery()) {
+                paymentList = new ArrayList<>();
+                PaymentMapper paymentMapper = new PaymentMapper();
+                while (rs.next()) {
+                    paymentList.add(paymentMapper.mapRSToFullPaymentDto(rs));
 
                 }
             }

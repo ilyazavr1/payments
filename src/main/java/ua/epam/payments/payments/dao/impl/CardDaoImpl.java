@@ -26,6 +26,7 @@ public class CardDaoImpl implements CardDao {
     public static final String SQL_CREATE_CARD = "INSERT INTO card values (default, ?, ?, default, default, ?)";
     public static final String SQL_ADD_CARD_TO_USER = "UPDATE card SET user_id=? WHERE id=?";
     public static final String SQL_GET_CARD_BY_USER = "SELECT * FROM card WHERE user_id=?";
+    public static final String SQL_GET_CARD_BY_USER_LIMIT = "SELECT * FROM card WHERE user_id=? LIMIT ? OFFSET ?";
 
     @Override
     public Card getCardById(long id) {
@@ -46,6 +47,30 @@ public class CardDaoImpl implements CardDao {
         }
 
         return account;
+    }
+
+    @Override
+    public List<Card> getCardByUserLimit(User user, int limit, int offset) {
+        List<Card> accountsList = null;
+        try (Connection con = DBManager.getInstance().getConnection();
+             PreparedStatement stmt = con.prepareStatement(SQL_GET_CARD_BY_USER_LIMIT)) {
+            stmt.setLong(1, user.getId());
+            stmt.setInt(2, limit);
+            stmt.setInt(3, offset);
+            try (ResultSet rs = stmt.executeQuery()) {
+                accountsList = new ArrayList<>();
+                while (rs.next()) {
+                    CardMapper accountMapper = new CardMapper();
+                    accountsList.add(accountMapper.mapRSToCard(rs));
+
+                }
+            }
+
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
+        }
+
+        return accountsList;
     }
 
     @Override

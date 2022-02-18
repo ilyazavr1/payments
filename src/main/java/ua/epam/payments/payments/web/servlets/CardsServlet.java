@@ -7,7 +7,9 @@ import ua.epam.payments.payments.model.entity.User;
 import ua.epam.payments.payments.model.services.CardGeneration;
 import ua.epam.payments.payments.web.Path;
 
+import javax.servlet.ServletConfig;
 import javax.servlet.ServletException;
+import javax.servlet.annotation.WebInitParam;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -15,18 +17,57 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.List;
 
-@WebServlet(name = "CardsServlet", value = Path.CARDS_PATH)
+@WebServlet(name = "CardsServlet", value = Path.CARDS_PATH, initParams = {
+        @WebInitParam(name = "records", value = "9"),
+        @WebInitParam(name = "page", value = "1")
+})
 public class CardsServlet extends HttpServlet {
 
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        String recordsOnPage = req.getParameter("recordsOnPage");
+        String records = req.getParameter("records");
+        System.out.println("[" + recordsOnPage + "]");
+        System.out.println("[" + records + "]");
+
+        if (recordsOnPage != null) {
+            req.setAttribute("recordsOnPage", recordsOnPage);
+          //  req.setAttribute("records", recordsOnPage);
+        } else recordsOnPage = records;
+
+        if (recordsOnPage == null) {
+            System.out.println("---------");
+            recordsOnPage = getInitParameter("records");
+        }
+
+//save recordsOnPage
+        if (records != null) {
+            req.setAttribute("recordsOnPage", records);
+        }
+        //req.setAttribute("records", 9);
+
+        if (req.getParameter("page") != null) {
+            req.setAttribute("page", req.getParameter("page"));
+        } else req.setAttribute("page", 1);
+
+
+
 
         if (req.getSession().getAttribute("user") != null) {
             CardDao cardDao = new CardDaoImpl();
             User user = (User) req.getSession().getAttribute("user");
 
-            req.setAttribute("cards", cardDao.getCardByUser(user));
+            System.out.println("r - " + recordsOnPage);
+            System.out.println("p - " + req.getParameter("records"));
+
+          // int limit = Integer.parseInt(recordsOnPage);
+           int limit = Integer.parseInt(getInitParameter("records"));
+
+            List<Card> cards = cardDao.getCardByUserLimit(user, limit, 0);
+
+            req.setAttribute("cards", cards);
+            //req.setAttribute("cards", cardDao.getCardByUser(user));
 
             req.getRequestDispatcher(Path.CARDS_JSP).forward(req, resp);
         } else req.getRequestDispatcher(Path.LOGIN_JSP).forward(req, resp);
@@ -57,7 +98,7 @@ public class CardsServlet extends HttpServlet {
 
         //TODO вывести аккаунты юзера*/
 
-        resp.sendRedirect(Path.CARDS_PATH);
+        resp.sendRedirect(Path.CARDS_PATH + "?page" + req.getParameter("page") + "&records=" + req.getParameter("re"));
 
     }
 }

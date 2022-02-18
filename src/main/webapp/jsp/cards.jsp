@@ -2,12 +2,13 @@
 <%@include file="/jspf/page.jspf" %>
 <%@taglib prefix="cardFormat" uri="/WEB-INF/customCardNumberFromat.tld" %>
 <%@taglib prefix="cardStatus" uri="/WEB-INF/customCardBooleanFromat.tld" %>
-<link href="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
-<script src="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js"></script>
-<script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
 
 <html>
 <head>
+    <%--    <link href="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
+        <script src="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js"></script>
+        <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>--%>
+    <%@include file="/jspf/bootstrap.jspf" %>
     <title>Cards</title>
 </head>
 <body>
@@ -55,8 +56,8 @@
                                 <p class="card-text"><c:out value="${card.money}"> </c:out></p>
                                 <p class="card-text"><cardFormat:formatCardBoolean
                                         status="${card.blocked}"> </cardFormat:formatCardBoolean></p>
-                                <a  style="background-color: lightgreen" onclick="alert('Card is blocked')"
-                                   class="btn btn-outline-secondary" >TOP UP</a>
+                                <a style="background-color: lightgreen" onclick="alert('Card is blocked')"
+                                   class="btn btn-outline-secondary">TOP UP</a>
                                 <a style="margin-left: 150px; background-color: lightcoral" href="${cardID}"
                                    class="btn btn-outline-secondary">BLOCK</a>
                             </div>
@@ -70,11 +71,73 @@
 
 </div>
 
-<form action="${Path.CARDS_PATH}" method="post">
+<nav aria-label="Page navigation example">
+    <ul class="pagination">
+        <li class="page-item">
+            <a class="page-link" href="#" aria-label="Previous">
+                <span aria-hidden="true"><</span>
+                <span class="sr-only">Previous</span>
+            </a>
+        </li>
+        <c:set var="rec" value="${requestScope.recordsOnPage}" scope="request"> </c:set>
 
-    <input type="submit" name="createCart" value="Add card">
+        <c:choose>
+            <c:when test="${requestScope.page == 1}">
+                <li class="page-item active"><a class="page-link" href="${Path.CARDS_PATH}?page=1&records=${rec}">1</a>
+                </li>
+            </c:when>
+            <c:otherwise>
+                <li class="page-item"><a class="page-link" href="${Path.CARDS_PATH}?page=1&records=${rec}">1</a></li>
+            </c:otherwise>
+        </c:choose>
+        <c:choose>
+            <c:when test="${requestScope.page == 2}">
+                <li class="page-item active"><a class="page-link" href="${Path.CARDS_PATH}?page=2&records=${rec}">2</a>
+                </li>
+            </c:when>
+            <c:otherwise>
+                <li class="page-item"><a class="page-link" href="${Path.CARDS_PATH}?page=2&records=${rec}">2</a></li>
+            </c:otherwise>
+        </c:choose>
+        <c:choose>
+            <c:when test="${requestScope.page == 3}">
+                <li class="page-item active"><a class="page-link" href="${Path.CARDS_PATH}?page=3&records=${rec}">3</a>
+                </li>
+            </c:when>
+            <c:otherwise>
+                <li class="page-item"><a class="page-link" href="${Path.CARDS_PATH}?page=3&records=${rec}">3</a></li>
+            </c:otherwise>
+        </c:choose>
+        <li class="page-item">
+            <a class="page-link" href="#" aria-label="Next">
+                <span aria-hidden="true">></span>
+                <span class="sr-only">Next</span>
+            </a>
+        </li>
+    </ul>
+
+
+</nav>
+
+<form action="${Path.CARDS_PATH}" method="get">
+    <select name="recordsOnPage"> <!--Supplement an id here instead of using 'name'-->
+        <c:if test="${requestScope.recordsOnPage == 3}">
+            <option selected value="3">3</option>
+        </c:if>
+        <option value="3">3</option>
+        <c:if test="${requestScope.recordsOnPage == 6}">
+            <option selected value="6">6</option>
+        </c:if>
+        <option value="6">6</option>
+        <c:if test="${requestScope.recordsOnPage == 9}">
+            <option selected value="9">9</option>
+        </c:if>
+        <option value="9">9</option>
+    </select>
+    <input type="submit" value="go">
 </form>
 
+<%--<%@include file="/jspf/pagination.jspf" %>--%>
 
 </body>
 </html>

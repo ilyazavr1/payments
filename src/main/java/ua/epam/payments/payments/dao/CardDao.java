@@ -13,6 +13,8 @@ public interface CardDao {
 
     List<Card> getCardByUser(User user);
 
+    List<Card> getCardByUserLimit(User user, int limit, int offset);
+
     boolean createCardWithUser(Card card, User user);
 
     boolean addCardToUser(Card card, User user);

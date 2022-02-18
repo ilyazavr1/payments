@@ -2,6 +2,7 @@ package ua.epam.payments.payments.web.servlets;
 
 import ua.epam.payments.payments.dao.PaymentsDao;
 import ua.epam.payments.payments.dao.impl.PaymentsDaoImpl;
+import ua.epam.payments.payments.model.dto.FullPaymentDto;
 import ua.epam.payments.payments.model.entity.Payment;
 import ua.epam.payments.payments.model.entity.User;
 import ua.epam.payments.payments.web.Path;
@@ -25,7 +26,7 @@ public class PaymentsServlet extends HttpServlet {
 
         User user = (User) req.getSession().getAttribute("user");
 
-        List<Payment> paymentList = paymentsDao.getPaymentsByUser(user);
+        List<FullPaymentDto> paymentList = paymentsDao.getFullPaymentsByUser(user);
         req.setAttribute("payments", paymentList);
 
         req.getRequestDispatcher(Path.PAYMENTS_JSP).forward(req, resp);

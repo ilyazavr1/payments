@@ -14,10 +14,12 @@
 
     <c:forEach items="${requestScope.payments}" var="payment">
 
-        <p>id      <c:out value="${payment.id}"> </c:out></p>
-        <p>money   <c:out value="${payment.money}"> </c:out></p>
-        <p>idFrom  <c:out value="${payment.cardSenderId}"> </c:out></p>
-        <p>idTo    <c:out value="${payment.cardDestinationId}"> </c:out></p>
+        <p>id         <c:out value="${payment.id}"> </c:out></p>
+        <p>money      <c:out value="${payment.money}"> </c:out></p>
+        <p>status     <c:out value="${payment.status}"> </c:out></p>
+        <p>time       <c:out value="${payment.creationTimestamp}"> </c:out></p>
+        <p>cardTo     <c:out value="${payment.senderCardNumber}"> </c:out></p>
+        <p>cardFrom   <c:out value="${payment.destinationCardNumber}"> </c:out></p>
 
     </c:forEach>
 
