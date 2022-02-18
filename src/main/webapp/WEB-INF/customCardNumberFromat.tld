@@ -32,6 +32,20 @@
         </attribute>
 
     </tag>
-    
+    <tag>
+        <name>paginationButtons</name>
+        <tag-class>ua.epam.payments.payments.web.PaginationButtonsTag</tag-class>
+        <body-content>scriptless</body-content>
+        <attribute>
+            <name>length</name>
+            <required>true</required>
+            <rtexprvalue>true</rtexprvalue>
+        </attribute>
+        <attribute>
+            <name>records</name>
+            <required>true</required>
+            <rtexprvalue>true</rtexprvalue>
+        </attribute>
+    </tag>
     
 </taglib>

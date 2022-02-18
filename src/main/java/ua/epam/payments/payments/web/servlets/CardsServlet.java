@@ -72,17 +72,22 @@ public class CardsServlet extends HttpServlet {
 
             int limit = 9;
             int offset = 1;
+            int countOfButtons = limit;
             if (req.getParameter("records") != null && !req.getParameter("records").isEmpty()) {
                 limit = Integer.parseInt(req.getParameter("records"));
+                countOfButtons = limit;
             }
             if (req.getParameter("page") != null && !req.getParameter("page").isEmpty()) {
                 offset = Integer.parseInt(req.getParameter("page"));
             }
-            System.out.println(offset);
-            System.out.println(limit);
-            List<Card> cards = cardDao.getCardByUserLimit(user, limit, ((offset-1)*limit));
-
+            //System.out.println(offset);
+          //  System.out.println(limit);
+            List<Card> cards = cardDao.getCardByUserLimit(user, limit, ((offset - 1) * limit));
+            List<Card> cards1 = cardDao.getCardByUser(user);
+            int loopPagination = cards1.size()/limit;
+//TODO ploho sdelano dobavlenie knopok
             req.setAttribute("cards", cards);
+            req.setAttribute("loopPagination", loopPagination+2);
 
             req.getRequestDispatcher(Path.CARDS_JSP).forward(req, resp);
         } else req.getRequestDispatcher(Path.LOGIN_JSP).forward(req, resp);

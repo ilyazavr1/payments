@@ -1,7 +1,7 @@
 <%@include file="/jspf/tagLibs.jspf" %>
 <%@include file="/jspf/page.jspf" %>
 <%@taglib prefix="cardFormat" uri="/WEB-INF/customCardNumberFromat.tld" %>
-<%@taglib prefix="cardStatus" uri="/WEB-INF/customCardBooleanFromat.tld" %>
+<%--<%@taglib prefix="cardStatus" uri="/WEB-INF/customCardBooleanFromat.tld" %>--%>
 
 <html>
 <head>
@@ -19,7 +19,6 @@
     <h1>Yot do not have any cards</h1>
 </c:if>
 <c:out value="${requestScope.cards.size()}"> size</c:out>
-
 
 <div class="container">
 
@@ -119,6 +118,7 @@
 
 </nav>--%>
 <nav aria-label="Page navigation example">
+
     <ul class="pagination">
         <li class="page-item">
             <a class="page-link" href="#" aria-label="Previous">
@@ -126,37 +126,56 @@
                 <span class="sr-only">Previous</span>
             </a>
         </li>
+
         <c:set var="rec" value="${requestScope.records}" scope="request"> </c:set>
+        <c:set var="lenght" value="${requestScope.loopPagination}" scope="request"> </c:set>
 
-        <c:choose>
-            <c:when test="${requestScope.page == 1}">
-                <li class="page-item active"><a class="page-link" href="${Path.CARDS_PATH}?page=1&records=${rec}">1</a>
-                </li>
-            </c:when>
-            <c:otherwise>
-                <li class="page-item"><a class="page-link" href="${Path.CARDS_PATH}?page=1&records=${rec}">1</a></li>
-            </c:otherwise>
-        </c:choose>
+        <c:forEach begin="1" end="${lenght}" varStatus="loop">
+            <c:set var="num" value="${loop.index}" scope="page"> </c:set>
+            <c:choose>
+                <c:when test="${requestScope.page == num}">
+                    <li class="page-item active"><a class="page-link"
+                                                    href="${Path.CARDS_PATH}?page=${num}&records=${rec}">${num}</a>
+                    </li>
+                </c:when>
+                <c:otherwise>
+                    <li class="page-item"><a class="page-link"
+                                             href="${Path.CARDS_PATH}?page=${num}&records=${rec}">${num}</a></li>
+                </c:otherwise>
+            </c:choose>
 
-        <c:choose>
-            <c:when test="${requestScope.page == 2}">
-                <li class="page-item active"><a class="page-link" href="${Path.CARDS_PATH}?page=2&records=${rec}">2</a>
-                </li>
-            </c:when>
-            <c:otherwise>
-                <li class="page-item"><a class="page-link" href="${Path.CARDS_PATH}?page=2&records=${rec}">2</a></li>
-            </c:otherwise>
-        </c:choose>
-        
-        <c:choose>
-            <c:when test="${requestScope.page == 3}">
-                <li class="page-item active"><a class="page-link" href="${Path.CARDS_PATH}?page=3&records=${rec}">3</a>
-                </li>
-            </c:when>
-            <c:otherwise>
-                <li class="page-item"><a class="page-link" href="${Path.CARDS_PATH}?page=3&records=${rec}">3</a></li>
-            </c:otherwise>
-        </c:choose>
+
+        </c:forEach>
+
+        <%--   <c:choose>
+               <c:when test="${requestScope.page == 1}">
+                   <li class="page-item active"><a class="page-link" href="${Path.CARDS_PATH}?page=1&records=${rec}">1</a>
+                   </li>
+               </c:when>
+               <c:otherwise>
+                   <li class="page-item"><a class="page-link" href="${Path.CARDS_PATH}?page=1&records=${rec}">1</a></li>
+               </c:otherwise>
+           </c:choose>
+
+           <c:choose>
+               <c:when test="${requestScope.page == 2}">
+                   <li class="page-item active"><a class="page-link" href="${Path.CARDS_PATH}?page=2&records=${rec}">2</a>
+                   </li>
+               </c:when>
+               <c:otherwise>
+                   <li class="page-item"><a class="page-link" href="${Path.CARDS_PATH}?page=2&records=${rec}">2</a></li>
+               </c:otherwise>
+           </c:choose>
+
+           <c:choose>
+               <c:when test="${requestScope.page == 3}">
+                   <li class="page-item active"><a class="page-link" href="${Path.CARDS_PATH}?page=3&records=${rec}">3</a>
+                   </li>
+               </c:when>
+               <c:otherwise>
+                   <li class="page-item"><a class="page-link" href="${Path.CARDS_PATH}?page=3&records=${rec}">3</a></li>
+               </c:otherwise>
+           </c:choose>--%>
         <li class="page-item">
             <a class="page-link" href="#" aria-label="Next">
                 <span aria-hidden="true">></span>
