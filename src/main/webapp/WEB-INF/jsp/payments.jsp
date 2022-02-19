@@ -24,6 +24,34 @@
     </c:forEach>
 
 </c:if>--%>
+
+<%--<select>
+    <option value="1">1</option>
+    <option  value="2">2</option>
+    <a href="${Path.PROFILE_PATH}"><option  value="3">3</option></a>
+</select>--%>
+<form action="${Path.PAYMENTS_PATH}" method="get">
+    <div style="width: 10%" class="form-group">
+        <label for="sel1">SORT BY NUMBER:</label>
+        <select name="sorting" class="form-control" id="sel1">
+           
+            <%--<option value="asc">From smaller</option>
+            <option value="desc">From greater</option>--%>
+       <c:choose>
+           <c:when test="${requestScope.sorting.equals('asc')}">
+               <option selected value="asc">From smaller</option>
+               <option value="desc">From greater</option>
+           </c:when>
+           <c:otherwise>
+               <option  value="asc">From smaller</option>
+               <option selected value="desc">From greater</option>
+           </c:otherwise>
+       </c:choose>
+       
+        </select>
+    </div>
+<input type="submit" value="go">
+</form>
 <div class="container">
 
 

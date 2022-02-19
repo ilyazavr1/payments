@@ -47,5 +47,15 @@
             <rtexprvalue>true</rtexprvalue>
         </attribute>
     </tag>
+    <tag>
+        <name>dateTimeFormat</name>
+        <tag-class>ua.epam.payments.payments.web.DateTimeFormatTag</tag-class>
+        <body-content>scriptless</body-content>
+        <attribute>
+            <name>dateTime</name>
+            <required>true</required>
+            <rtexprvalue>true</rtexprvalue>
+        </attribute>
+    </tag>
     
 </taglib>

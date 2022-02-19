@@ -28,11 +28,11 @@
         <tr>
             <th>Payment ID</th>
             <th style="padding-right: 100px">Sender</th>
-            <th>Sender card</th>
+            <th style="padding-right: 200px">Sender card</th>
             <th>Money</th>
             <th style="padding-right: 100px">Recipient</th>
-            <th>Recipient card</th>
-            <th>Time</th>
+            <th style="padding-right: 200px">Recipient card</th>
+            <th style="padding-right: 100px">Time</th>
             <th>Status</th>
 
             <th class="text-center">Action</th>
@@ -45,11 +45,12 @@
                 <tr style="margin-right: 100px">
                     <td>${payment.id}</td>
                     <td>${payment.senderFullName}</td>
-                    <td>${payment.senderCardNumber}</td>
+                    <td><cardFormat:formatCardNumber number="${payment.senderCardNumber}"></cardFormat:formatCardNumber></td>
                     <td style="background-color: #cdf7ff">${payment.money}</td>
                     <td>${payment.destinationFullName}</td>
-                    <td>${payment.destinationCardNumber}</td>
-                    <td>${payment.creationTimestamp}</td>
+                    <td>  <cardFormat:formatCardNumber number="${payment.destinationCardNumber}"></cardFormat:formatCardNumber></td>
+                    <%--<td>${payment.creationTimestamp}</td>--%>
+                    <td><cardFormat:dateTimeFormat dateTime="${payment.creationTimestamp}"></cardFormat:dateTimeFormat></td>
                         <%-- <td>${payment.status}</td>--%>
 
                     <c:if test="${payment.status.equals('PREPARED')}">
