@@ -9,27 +9,6 @@
 <body>
 <%@include file="/jspf/navBar.jspf" %>
 
-<%--
-<c:if test="${requestScope.payments != null}">
-
-    <c:forEach items="${requestScope.payments}" var="payment">
-
-        <p>id <c:out value="${payment.id}"> </c:out></p>
-        <p>money <c:out value="${payment.money}"> </c:out></p>
-        <p>status <c:out value="${payment.status}"> </c:out></p>
-        <p>time <c:out value="${payment.creationTimestamp}"> </c:out></p>
-        <p>cardTo <c:out value="${payment.senderCardNumber}"> </c:out></p>
-        <p>cardFrom <c:out value="${payment.destinationCardNumber}"> </c:out></p>
-
-    </c:forEach>
-
-</c:if>--%>
-
-<%--<select>
-    <option value="1">1</option>
-    <option  value="2">2</option>
-    <a href="${Path.PROFILE_PATH}"><option  value="3">3</option></a>
-</select>--%>
 <form>
 
 
@@ -81,7 +60,7 @@
     <div class="row col-md-6 col-md-offset-2 custyle">
         <table class="table table-striped custab">
             <thead>
-            <%--  <a href="#" class="btn btn-primary btn-xs pull-right"><b>+</b> Add new categories</a>--%>
+
 
             <tr>
                 <th>Number</th>
@@ -94,17 +73,6 @@
             </tr>
             </thead>
             <c:if test="${requestScope.payments != null}">
-                <%--   <c:forEach items="${requestScope.payments}" var="payment">
-
-                       <p>id </p>
-                       <p>money <c:out value="${payment.money}"> </c:out></p>
-                       <p>status <c:out value="${payment.status}"> </c:out></p>
-                       <p>time <c:out value="${payment.creationTimestamp}"> </c:out></p>
-                       <p>cardTo <c:out value="${payment.senderCardNumber}"> </c:out></p>
-                       <p>cardFrom <c:out value="${payment.destinationCardNumber}"> </c:out></p>
-
-                   </c:forEach>--%>
-
                 <c:forEach var="payment" items="${requestScope.payments }">
                     <tr>
 
@@ -116,23 +84,6 @@
                         <td>${payment.money}</td>
                         <td>${payment.creationTimestamp}</td>
                         <td>${payment.status}</td>
-
-                            <%--   <td> <a href="#" class="btn btn-danger btn-xs"><span class="glyphicon glyphicon-remove"></span> Block</a></td>--%>
-                            <%--<c:choose>
-                                <c:when test="${user.blocked == false}">
-                                    <form action="${Path.ADMIN_BLOCK_USER_PATH}" method="post">
-                                        <td><input type="submit" class="btn btn-danger btn-xs" value="Block"></td>
-                                        <input type="hidden" name="userId" value="${user.id}">
-                                    </form>
-                                </c:when>
-                                <c:otherwise>
-                                    <form action="${Path.ADMIN_BLOCK_USER_PATH}" method="post">
-                                        <td><input disabled type="submit" class="btn btn-danger btn-xs" value="Blocked">
-                                        </td>
-                                        <input type="hidden" name="userId" value="${user.id}">
-                                    </form>
-                                </c:otherwise>
-                            </c:choose>--%>
 
                     </tr>
                 </c:forEach>
@@ -175,35 +126,7 @@
 
         </c:forEach>
 
-        <%--   <c:choose>
-               <c:when test="${requestScope.page == 1}">
-                   <li class="page-item active"><a class="page-link" href="${Path.CARDS_PATH}?page=1&records=${rec}">1</a>
-                   </li>
-               </c:when>
-               <c:otherwise>
-                   <li class="page-item"><a class="page-link" href="${Path.CARDS_PATH}?page=1&records=${rec}">1</a></li>
-               </c:otherwise>
-           </c:choose>
 
-           <c:choose>
-               <c:when test="${requestScope.page == 2}">
-                   <li class="page-item active"><a class="page-link" href="${Path.CARDS_PATH}?page=2&records=${rec}">2</a>
-                   </li>
-               </c:when>
-               <c:otherwise>
-                   <li class="page-item"><a class="page-link" href="${Path.CARDS_PATH}?page=2&records=${rec}">2</a></li>
-               </c:otherwise>
-           </c:choose>
-
-           <c:choose>
-               <c:when test="${requestScope.page == 3}">
-                   <li class="page-item active"><a class="page-link" href="${Path.CARDS_PATH}?page=3&records=${rec}">3</a>
-                   </li>
-               </c:when>
-               <c:otherwise>
-                   <li class="page-item"><a class="page-link" href="${Path.CARDS_PATH}?page=3&records=${rec}">3</a></li>
-               </c:otherwise>
-           </c:choose>--%>
         <li class="page-item">
             <a class="page-link" href="#" aria-label="Next">
                 <span aria-hidden="true">></span>
@@ -217,7 +140,7 @@
 <form action="${Path.PAYMENTS_PATH}" method="get">
     <input type="hidden" name="page" value="${requestScope.page}">
 
-    <select name="records"> <!--Supplement an id here instead of using 'name'-->
+    <select name="records">
 
         <c:choose>
         <c:when test="${requestScope.records == 3}">

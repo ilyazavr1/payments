@@ -38,14 +38,25 @@ public class PaymentServlet extends HttpServlet {
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        CardDao cardDao = new CardDaoImpl();
         PaymentsDao paymentsDao = new PaymentsDaoImpl();
 
-        int cardSenderNumber = Integer.parseInt(req.getParameter("cardSenderId"));
-        int cardDestinationNumber = Integer.parseInt(req.getParameter("cardDestinationId"));
-        int money = Integer.parseInt(req.getParameter("money"));
+        String cardSenderNumber = req.getParameter("cardSenderId");
+        String cardDestinationNumber = req.getParameter("cardDestinationNumber").trim();
+        String money = req.getParameter("money");
+        System.out.println(cardDestinationNumber);
+        System.out.println(cardDestinationNumber.matches("^[0-9]{16}$"));
+        if (cardDestinationNumber == null || cardDestinationNumber.isEmpty() || !cardDestinationNumber.matches("^[0-9]{16}$")){
+            req.setAttribute(Constants.INVALID_CARD_NUMBER, Constants.INVALID_CARD_NUMBER);
+            doGet(req, resp);
+            return;
+        }
+        if (money == null || money.isEmpty() || !money.matches("^[0-9]{1,4}$")){
+            req.setAttribute(Constants.INVALID_MONEY_AMOUNT, Constants.INVALID_MONEY_AMOUNT);
+            doGet(req, resp);
+            return;
+        }
 
-        Card cardSender = cardDao.getCardById(cardSenderNumber);
+     /*   Card cardSender = cardDao.getCardById(cardSenderNumber);
         Card cardDestination = cardDao.getCardById(cardDestinationNumber);
 
         if (cardSender.getMoney() < money) {
@@ -55,11 +66,9 @@ public class PaymentServlet extends HttpServlet {
         }
 
         paymentsDao.createPayment(cardSender, cardDestination, money);
+*/
 
 
-        //  System.out.println(cardDao.transferMoneyFromCardToCard(cardSender.getId(), cardDestination.getId(), money));
-
-
-        resp.sendRedirect(Path.PROFILE_PATH);
+            resp.sendRedirect(Path.PAYMENTS_PATH);
     }
 }

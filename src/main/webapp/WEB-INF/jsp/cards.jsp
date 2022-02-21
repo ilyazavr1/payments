@@ -112,53 +112,7 @@
 
 </div>
 
-<%--<nav aria-label="Page navigation example">
-    <ul class="pagination">
-        <li class="page-item">
-            <a class="page-link" href="#" aria-label="Previous">
-                <span aria-hidden="true"><</span>
-                <span class="sr-only">Previous</span>
-            </a>
-        </li>
-        <c:set var="rec" value="${requestScope.recordsOnPage}" scope="request"> </c:set>
 
-        <c:choose>
-            <c:when test="${requestScope.page == 1}">
-                <li class="page-item active"><a class="page-link" href="${Path.CARDS_PATH}?page=1&records=${rec}">1</a>
-                </li>
-            </c:when>
-            <c:otherwise>
-                <li class="page-item"><a class="page-link" href="${Path.CARDS_PATH}?page=1&records=${rec}">1</a></li>
-            </c:otherwise>
-        </c:choose>
-        <c:choose>
-            <c:when test="${requestScope.page == 2}">
-                <li class="page-item active"><a class="page-link" href="${Path.CARDS_PATH}?page=2&records=${rec}">2</a>
-                </li>
-            </c:when>
-            <c:otherwise>
-                <li class="page-item"><a class="page-link" href="${Path.CARDS_PATH}?page=2&records=${rec}">2</a></li>
-            </c:otherwise>
-        </c:choose>
-        <c:choose>
-            <c:when test="${requestScope.page == 3}">
-                <li class="page-item active"><a class="page-link" href="${Path.CARDS_PATH}?page=3&records=${rec}">3</a>
-                </li>
-            </c:when>
-            <c:otherwise>
-                <li class="page-item"><a class="page-link" href="${Path.CARDS_PATH}?page=3&records=${rec}">3</a></li>
-            </c:otherwise>
-        </c:choose>
-        <li class="page-item">
-            <a class="page-link" href="#" aria-label="Next">
-                <span aria-hidden="true">></span>
-                <span class="sr-only">Next</span>
-            </a>
-        </li>
-    </ul>
-
-
-</nav>--%>
 <nav aria-label="Page navigation example">
 
     <ul class="pagination">
@@ -174,7 +128,7 @@
         <c:set var="sortType" value="${requestScope.sortingType}" scope="request"> </c:set>
         <c:set var="sortOrder" value="${requestScope.sortingOrder}" scope="request"> </c:set>
 
-        <%--  <c:forEach begin="1" end="${(requestScope.loopPagination/rec)+3}" varStatus="loop">--%>
+
         <c:forEach begin="1" end="${requestScope.loopPagination}" varStatus="loop">
             <c:set var="num" value="${loop.index}" scope="page"> </c:set>
             <c:choose>
@@ -193,35 +147,7 @@
 
         </c:forEach>
 
-        <%--   <c:choose>
-               <c:when test="${requestScope.page == 1}">
-                   <li class="page-item active"><a class="page-link" href="${Path.CARDS_PATH}?page=1&records=${rec}">1</a>
-                   </li>
-               </c:when>
-               <c:otherwise>
-                   <li class="page-item"><a class="page-link" href="${Path.CARDS_PATH}?page=1&records=${rec}">1</a></li>
-               </c:otherwise>
-           </c:choose>
 
-           <c:choose>
-               <c:when test="${requestScope.page == 2}">
-                   <li class="page-item active"><a class="page-link" href="${Path.CARDS_PATH}?page=2&records=${rec}">2</a>
-                   </li>
-               </c:when>
-               <c:otherwise>
-                   <li class="page-item"><a class="page-link" href="${Path.CARDS_PATH}?page=2&records=${rec}">2</a></li>
-               </c:otherwise>
-           </c:choose>
-
-           <c:choose>
-               <c:when test="${requestScope.page == 3}">
-                   <li class="page-item active"><a class="page-link" href="${Path.CARDS_PATH}?page=3&records=${rec}">3</a>
-                   </li>
-               </c:when>
-               <c:otherwise>
-                   <li class="page-item"><a class="page-link" href="${Path.CARDS_PATH}?page=3&records=${rec}">3</a></li>
-               </c:otherwise>
-           </c:choose>--%>
         <li class="page-item">
             <a class="page-link" href="#" aria-label="Next">
                 <span aria-hidden="true">></span>
@@ -235,7 +161,7 @@
 <form action="${Path.CARDS_PATH}" method="get">
     <input type="hidden" name="page" value="${requestScope.page}">
 
-    <select name="records"> <!--Supplement an id here instead of using 'name'-->
+    <select name="records">
 
         <c:choose>
         <c:when test="${requestScope.records == 3}">
@@ -267,25 +193,7 @@
         <input type="submit" value="go">
 
 </form>
-<%--<form action="${Path.CARDS_PATH}" method="get">
-    <select name="recordsOnPage"> <!--Supplement an id here instead of using 'name'-->
-        <c:if test="${requestScope.recordsOnPage == 3}">
-            <option selected value="3">3</option>
-        </c:if>
-        <option value="3">3</option>
-        <c:if test="${requestScope.recordsOnPage == 6}">
-            <option selected value="6">6</option>
-        </c:if>
-        <option value="6">6</option>
-        <c:if test="${requestScope.recordsOnPage == 9}">
-            <option selected value="9">9</option>
-        </c:if>
-        <option value="9">9</option>
-    </select>
-    <input type="submit" value="go">
-</form>--%>
 
-<%--<%@include file="/jspf/pagination.jspf" %>--%>
 
 </body>
 </html>
