@@ -28,6 +28,7 @@ public class CardDaoImpl implements CardDao {
     public static final String SQL_GET_CARD_BY_USER = "SELECT * FROM card WHERE user_id=?";
     public static final String SQL_COUNT_CARD_BY_USER = "SELECT count(card.id) FROM card WHERE user_id =?;";
     public static final String SQL_GET_CARD_BY_USER_LIMIT = "SELECT * FROM card WHERE user_id=? LIMIT ? OFFSET ?";
+    public static final String SQL_GET_CARD_BY_USER_LIMIT_SORTED = "SELECT * FROM card WHERE user_id=? ORDER BY ? LIMIT ? OFFSET ?";
 
     @Override
     public Card getCardById(long id) {
@@ -74,11 +75,22 @@ public class CardDaoImpl implements CardDao {
         return accountsList;
     }
 
+    //"SELECT * FROM card WHERE user_id=? ORDER BY ? ? LIMIT ? OFFSET ?";
+    @Override
+    public List<Card> getCardByUserLimitSorted(User user, String query) {
+        return getCards(user, query);
+    }
+
     @Override
     public List<Card> getCardByUser(User user) {
+        return getCards(user, SQL_GET_CARD_BY_USER);
+    }
+
+    private List<Card> getCards(User user, String query) {
         List<Card> accountsList = null;
+
         try (Connection con = DBManager.getInstance().getConnection();
-             PreparedStatement stmt = con.prepareStatement(SQL_GET_CARD_BY_USER)) {
+             PreparedStatement stmt = con.prepareStatement(query)) {
             stmt.setLong(1, user.getId());
 
             try (ResultSet rs = stmt.executeQuery()) {
@@ -97,6 +109,8 @@ public class CardDaoImpl implements CardDao {
         return accountsList;
     }
 
+
+
     @Override
     public int countCardsByUser(User user) {
         int countCards = 0;
@@ -106,7 +120,7 @@ public class CardDaoImpl implements CardDao {
 
             try (ResultSet rs = stmt.executeQuery()) {
                 while (rs.next()) {
-                  countCards = rs.getInt(1);
+                    countCards = rs.getInt(1);
                 }
             }
 

@@ -4,7 +4,7 @@ import ua.epam.payments.payments.dao.CardDao;
 import ua.epam.payments.payments.dao.impl.CardDaoImpl;
 import ua.epam.payments.payments.model.entity.Card;
 import ua.epam.payments.payments.model.entity.User;
-import ua.epam.payments.payments.services.sorting.CardsSorting;
+import ua.epam.payments.payments.services.sorting.CardsService;
 import ua.epam.payments.payments.web.Path;
 
 import javax.servlet.ServletException;
@@ -25,67 +25,53 @@ public class CardsServlet extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        CardsService cardsSorting = new CardsService();
+        CardDao cardDao = new CardDaoImpl();
+        User user = (User) req.getSession().getAttribute("user");
 
+        int limit;
+        int offset;
 
         String records = req.getParameter("records");
         String page = req.getParameter("page");
+        String sortingType = req.getParameter("sortingType");
+        String sortingOrder = req.getParameter("sortingOrder");
 
         if (records == null || records.isEmpty()) {
+
             req.setAttribute("records", 9);
         } else req.setAttribute("records", records);
-
 
         if (page == null || page.isEmpty()) {
             req.setAttribute("page", 1);
         } else req.setAttribute("page", page);
 
-
-        if (req.getSession().getAttribute("user") != null) {
-            CardDao cardDao = new CardDaoImpl();
-            User user = (User) req.getSession().getAttribute("user");
-
-            int limit = 9;
-            int offset = 1;
-
-            if (req.getParameter("records") != null && !req.getParameter("records").isEmpty()) {
-                limit = Integer.parseInt(req.getParameter("records"));
-            }
-            if (req.getParameter("page") != null && !req.getParameter("page").isEmpty()) {
-                offset = Integer.parseInt(req.getParameter("page"));
-            }
-
-            List<Card> cards = cardDao.getCardByUserLimit(user, limit, ((offset - 1) * limit));
-            req.setAttribute("cards", cards);
-            req.setAttribute("loopPagination", 5);
-            /*int test = cardDao.countCardsByUser(user);
-            Double cardsCount = (double) test;
-            System.out.println(cardsCount);
-            System.out.println(req.getParameter("records"));
-
-            cardsCount = Math.ceil(cardsCount);
-*/
-//sorting
-            CardsSorting cardsSorting = new CardsSorting();
-            String sortingType = req.getParameter("sortingType");
-            String sortingOrder = req.getParameter("sortingOrder");
-            if (sortingType== null ) {
-                req.setAttribute("sortingType", "name");
-            }
-            if (sortingOrder == null ) {
-                req.setAttribute("sortingOrder","asc");
-            }
-
-            if (sortingType != null || sortingOrder != null){
-                cardsSorting.sortByNumberOrOrderOrMoney(cards, sortingType,sortingOrder);
-                req.setAttribute("sortingType", sortingType);
-                req.setAttribute("sortingOrder", sortingOrder);
-            }else{
-                cardsSorting.sortByNumberOrOrderOrMoney(cards, "name","asc");
-            }
+        if (sortingType == null || sortingType.isEmpty()) {
+            sortingType = "name";
+        } else req.setAttribute("sortingType", sortingType);
 
 
-            req.getRequestDispatcher(Path.CARDS_JSP).forward(req, resp);
-        } else req.getRequestDispatcher(Path.LOGIN_JSP).forward(req, resp);
+        if (sortingOrder == null || sortingOrder.isEmpty()) {
+            sortingOrder = "asc";
+        } else req.setAttribute("sortingOrder", sortingOrder);
+
+
+        if (records != null && !records.isEmpty()) {
+            limit = Integer.parseInt(req.getParameter("records"));
+        } else limit = 9;
+        if (page != null && !page.isEmpty()) {
+            offset = Integer.parseInt(req.getParameter("page"));
+        } else offset = 1;
+
+
+        List<Card> cards = cardsSorting.sort(cardDao, user, sortingType, sortingOrder, limit, (limit * (offset - 1)));
+
+
+        req.setAttribute("cards", cards);
+        req.setAttribute("loopPagination", 5);
+
+        req.getRequestDispatcher(Path.CARDS_JSP).forward(req, resp);
+
 
     }
 

@@ -16,6 +16,8 @@ public interface CardDao {
 
     List<Card> getCardByUserLimit(User user, int limit, int offset);
 
+    List<Card> getCardByUserLimitSorted(User user, String query);
+
     boolean createCardWithUser(Card card, User user);
 
     boolean addCardToUser(Card card, User user);
