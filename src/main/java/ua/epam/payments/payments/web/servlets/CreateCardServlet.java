@@ -4,7 +4,7 @@ import ua.epam.payments.payments.dao.CardDao;
 import ua.epam.payments.payments.dao.impl.CardDaoImpl;
 import ua.epam.payments.payments.model.entity.Card;
 import ua.epam.payments.payments.model.entity.User;
-import ua.epam.payments.payments.model.services.CardGeneration;
+import ua.epam.payments.payments.services.CardGeneration;
 import ua.epam.payments.payments.web.Constants;
 import ua.epam.payments.payments.web.Path;
 

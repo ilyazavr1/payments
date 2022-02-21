@@ -26,7 +26,7 @@ public class LanguageFilter implements Filter {
 
         if (language != null &&(language.equals(LANG_UK) || language.equals(LANG_EN))) {
             req.getSession().setAttribute("lang",language);
-        } else req.getSession().setAttribute("lang", LANG_UK);
+        } else req.getSession().setAttribute("lang", LANG_EN);
 
 
         filterChain.doFilter(servletRequest, servletResponse);

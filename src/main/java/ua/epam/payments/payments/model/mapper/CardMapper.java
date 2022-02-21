@@ -1,4 +1,4 @@
-package ua.epam.payments.payments.model.services.mapper;
+package ua.epam.payments.payments.model.mapper;
 
 import ua.epam.payments.payments.model.entity.Card;
 

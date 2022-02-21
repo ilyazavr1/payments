@@ -1,14 +1,11 @@
 package ua.epam.payments.payments.web.servlets;
 
 import org.apache.commons.codec.DecoderException;
-import ua.epam.payments.payments.dao.CardDao;
 import ua.epam.payments.payments.dao.UserDao;
-import ua.epam.payments.payments.dao.impl.CardDaoImpl;
 import ua.epam.payments.payments.dao.impl.UserDaoImpl;
-import ua.epam.payments.payments.model.entity.Card;
 import ua.epam.payments.payments.model.entity.User;
-import ua.epam.payments.payments.model.services.PasswordEncryption;
-import ua.epam.payments.payments.model.services.validation.UserValidation;
+import ua.epam.payments.payments.services.PasswordEncryption;
+import ua.epam.payments.payments.services.validation.UserValidation;
 import ua.epam.payments.payments.web.Constants;
 import ua.epam.payments.payments.web.Path;
 
@@ -21,7 +18,6 @@ import javax.servlet.http.HttpSession;
 import java.io.IOException;
 import java.security.NoSuchAlgorithmException;
 import java.security.spec.InvalidKeySpecException;
-import java.util.List;
 
 @WebServlet(name = "LoginServlet", value = Path.LOGIN_PATH)
 public class LoginServlet extends HttpServlet {

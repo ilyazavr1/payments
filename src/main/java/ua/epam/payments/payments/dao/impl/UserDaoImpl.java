@@ -3,7 +3,7 @@ package ua.epam.payments.payments.dao.impl;
 import ua.epam.payments.payments.dao.UserDao;
 import ua.epam.payments.payments.db.DBManager;
 import ua.epam.payments.payments.model.entity.User;
-import ua.epam.payments.payments.model.services.mapper.UserMapper;
+import ua.epam.payments.payments.model.mapper.UserMapper;
 
 import java.sql.*;
 import java.util.ArrayList;

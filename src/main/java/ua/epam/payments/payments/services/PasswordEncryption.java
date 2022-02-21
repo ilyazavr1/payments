@@ -1,4 +1,4 @@
-package ua.epam.payments.payments.model.services;
+package ua.epam.payments.payments.services;
 
 
 import org.apache.commons.codec.DecoderException;

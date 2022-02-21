@@ -5,6 +5,7 @@ import ua.epam.payments.payments.dao.impl.PaymentsDaoImpl;
 import ua.epam.payments.payments.model.dto.FullPaymentDto;
 import ua.epam.payments.payments.model.entity.Payment;
 import ua.epam.payments.payments.model.entity.User;
+import ua.epam.payments.payments.services.sorting.PaymentSorting;
 import ua.epam.payments.payments.web.Path;
 
 import javax.servlet.ServletException;
@@ -13,10 +14,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.List;
+import java.util.*;
 import java.util.stream.Collectors;
 
 
@@ -27,20 +25,21 @@ public class PaymentsServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         PaymentsDao paymentsDao = new PaymentsDaoImpl();
-
         User user = (User) req.getSession().getAttribute("user");
+        PaymentSorting paymentSorting = new PaymentSorting();
 
         List<FullPaymentDto> paymentList = paymentsDao.getFullPaymentsByUser(user);
 
-        String sorting = req.getParameter("sorting");
+        String sortingType = req.getParameter("sortingType");
+        String sortingOrder = req.getParameter("sortingOrder");
 
-        System.out.println(sorting);
-        if (sorting != null && sorting.equals("asc")){
-            paymentList = paymentList.stream().sorted(Comparator.comparingLong(FullPaymentDto::getId)).collect(Collectors.toList());
-            req.setAttribute("sorting", "asc");
-        }else if (sorting != null && sorting.equals("desc")){
-            req.setAttribute("sorting", "desc");
-            Collections.reverse(paymentList);
+
+        if (sortingType != null || sortingOrder != null){
+            paymentSorting.sortByNumberAndOrder(paymentList, sortingType,sortingOrder);
+            req.setAttribute("sortingType", sortingType);
+            req.setAttribute("sortingOrder", sortingOrder);
+        }else{
+            paymentSorting.sortByNumberAndOrder(paymentList, "id","asc");
         }
         req.setAttribute("payments", paymentList);
 

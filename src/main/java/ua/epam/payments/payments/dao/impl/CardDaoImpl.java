@@ -4,7 +4,7 @@ import ua.epam.payments.payments.dao.CardDao;
 import ua.epam.payments.payments.db.DBManager;
 import ua.epam.payments.payments.model.entity.Card;
 import ua.epam.payments.payments.model.entity.User;
-import ua.epam.payments.payments.model.services.mapper.CardMapper;
+import ua.epam.payments.payments.model.mapper.CardMapper;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;

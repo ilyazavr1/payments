@@ -6,7 +6,7 @@ import ua.epam.payments.payments.model.dto.FullPaymentDto;
 import ua.epam.payments.payments.model.entity.Card;
 import ua.epam.payments.payments.model.entity.Payment;
 import ua.epam.payments.payments.model.entity.User;
-import ua.epam.payments.payments.model.services.mapper.PaymentMapper;
+import ua.epam.payments.payments.model.mapper.PaymentMapper;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -39,7 +39,7 @@ public class PaymentsDaoImpl implements PaymentsDao {
             "       (SELECT \"user\".first_name FROM \"user\",card WHERE payment.card_destination_id=card.id and card.user_id = \"user\".id),\n" +
             "       (SELECT \"user\".last_name FROM \"user\",card WHERE payment.card_destination_id=card.id and card.user_id = \"user\".id),\n" +
             "       (SELECT \"user\".surname FROM \"user\",card WHERE payment.card_destination_id=card.id and card.user_id = \"user\".id)\n" +
-            "FROM payment;";
+            "FROM payment";
     public static final String SQL_CONFIRM_PAYMENT_BY_ID = "UPDATE payment SET payment_status_id=2 WHERE id =?";
 
     @Override
@@ -129,6 +129,7 @@ public class PaymentsDaoImpl implements PaymentsDao {
 
         return paymentList;
     }
+
 
     @Override
     public boolean confirmPayment(long id) {

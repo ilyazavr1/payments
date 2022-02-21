@@ -57,8 +57,9 @@
                         <td><span class="badge badge-primary">PREPARED</span></td>
                     </c:if>
                     <c:if test="${!payment.status.equals('PREPARED')}">
-                        <td><span class="btn btn-success">SENT</span></td>
+                        <td><span class="badge badge-success">SENT</span></td>
                     </c:if>
+
                     <c:if test="${payment.status.equals('PREPARED')}">
                         <form action="${Path.ADMIN_CONFIRM_PAYMENT_PATH}" method="post">
                             <td><input type="submit" class="btn btn-success" value="Confirm"></td>

@@ -3,8 +3,8 @@ package ua.epam.payments.payments.web.servlets;
 import ua.epam.payments.payments.dao.UserDao;
 import ua.epam.payments.payments.dao.impl.UserDaoImpl;
 import ua.epam.payments.payments.model.entity.User;
-import ua.epam.payments.payments.model.services.PasswordEncryption;
-import ua.epam.payments.payments.model.services.validation.UserValidation;
+import ua.epam.payments.payments.services.PasswordEncryption;
+import ua.epam.payments.payments.services.validation.UserValidation;
 import ua.epam.payments.payments.web.Constants;
 import ua.epam.payments.payments.web.Path;
 

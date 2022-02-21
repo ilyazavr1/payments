@@ -1,4 +1,4 @@
-package ua.epam.payments.payments.model.services.validation;
+package ua.epam.payments.payments.services.validation;
 
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;

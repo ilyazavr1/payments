@@ -1,13 +1,10 @@
 <%@include file="/jspf/tagLibs.jspf" %>
 <%@include file="/jspf/page.jspf" %>
 
-<%--<%@taglib prefix="cardStatus" uri="/WEB-INF/customCardBooleanFromat.tld" %>--%>
 
 <html>
 <head>
-    <%--    <link href="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
-        <script src="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js"></script>
-        <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>--%>
+
     <%@include file="/jspf/bootstrap.jspf" %>
     <title>Cards</title>
 </head>
@@ -18,7 +15,52 @@
 <c:if test="${requestScope.cards == null}">
     <h1>Yot do not have any cards</h1>
 </c:if>
-<c:out value="${requestScope.cards.size()}"> size</c:out>
+<form action="${Path.CARDS_PATH}" method="get">
+    <input type="hidden" value="${requestScope.page}" name="page">
+    <input type="hidden" value="${requestScope.records}" name="records">
+    <div style="width: 30%" class="row">
+        <div class="col">
+            <label for="typeSort">Sort by:</label>
+            <select name="sortingType" class="form-control" id="typeSort">
+                <c:choose>
+                    <c:when test="${requestScope.sortingType.equals('number')}">
+                        <option selected value="number">Number</option>
+                        <option value="name">Name</option>
+                        <option value="money">Money</option>
+                    </c:when>
+                    <c:when test="${requestScope.sortingType.equals('name')}">
+                        <option value="number">Number</option>
+                        <option selected value="name">Name</option>
+                        <option value="money">Money</option>
+                    </c:when>
+                    <c:otherwise>
+                        <option value="number">Number</option>
+                        <option value="name">Name</option>
+                        <option selected value="money">Money</option>
+                    </c:otherwise>
+                </c:choose>
+            </select>
+        </div>
+        <div class="col">
+            <label for="orderSort">Sorting order:</label>
+            <select name="sortingOrder" class="form-control" id="orderSort">
+                <c:choose>
+                    <c:when test="${requestScope.sortingOrder.equals('asc')}">
+                        <option selected value="asc">Ascending</option>
+                        <option value="desc">Descending</option>
+                    </c:when>
+                    <c:otherwise>
+                        <option value="asc">Ascending</option>
+                        <option selected value="desc">Descending</option>
+                    </c:otherwise>
+                </c:choose>
+            </select>
+        </div>
+        <div class="col">
+            <input type="submit" value="Sort">
+        </div>
+    </div>
+</form>
 
 <div class="container">
 
@@ -129,19 +171,22 @@
 
         <c:set var="rec" value="${requestScope.records}" scope="request"> </c:set>
         <c:set var="lenght" value="${requestScope.loopPagination}" scope="request"> </c:set>
+        <c:set var="sortType" value="${requestScope.sortingType}" scope="request"> </c:set>
+        <c:set var="sortOrder" value="${requestScope.sortingOrder}" scope="request"> </c:set>
 
-      <%--  <c:forEach begin="1" end="${(requestScope.loopPagination/rec)+3}" varStatus="loop">--%>
+        <%--  <c:forEach begin="1" end="${(requestScope.loopPagination/rec)+3}" varStatus="loop">--%>
         <c:forEach begin="1" end="${requestScope.loopPagination}" varStatus="loop">
             <c:set var="num" value="${loop.index}" scope="page"> </c:set>
             <c:choose>
                 <c:when test="${requestScope.page == num}">
-                    <li class="page-item active"><a class="page-link"
-                                                    href="${Path.CARDS_PATH}?page=${num}&records=${rec}">${num}</a>
+                    <li class="page-item active">
+                        <a class="page-link"
+                           href="${Path.CARDS_PATH}?page=${num}&records=${rec}&sortingType=${sortType}&sortingOrder=${sortOrder}">${num}</a>
                     </li>
                 </c:when>
                 <c:otherwise>
-                    <li class="page-item"><a class="page-link"
-                                             href="${Path.CARDS_PATH}?page=${num}&records=${rec}">${num}</a></li>
+                    <li class="page-item">
+                        <a class="page-link" href="${Path.CARDS_PATH}?page=${num}&records=${rec}&sortingType=${sortType}&sortingOrder=${sortOrder}">${num}</a></li>
                 </c:otherwise>
             </c:choose>
 
@@ -189,6 +234,7 @@
 </nav>
 <form action="${Path.CARDS_PATH}" method="get">
     <input type="hidden" name="page" value="${requestScope.page}">
+
     <select name="records"> <!--Supplement an id here instead of using 'name'-->
 
         <c:choose>
@@ -216,6 +262,8 @@
         <option value="9">9</option>
         </c:otherwise>
         </c:choose>
+        <input type="hidden" name="sortingType" value="${requestScope.sortingType}">
+        <input type="hidden" name="sortingOrder" value="${requestScope.sortingOrder}">
         <input type="submit" value="go">
 
 </form>

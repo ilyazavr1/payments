@@ -4,10 +4,9 @@ import ua.epam.payments.payments.dao.CardDao;
 import ua.epam.payments.payments.dao.impl.CardDaoImpl;
 import ua.epam.payments.payments.model.entity.Card;
 import ua.epam.payments.payments.model.entity.User;
-import ua.epam.payments.payments.model.services.CardGeneration;
+import ua.epam.payments.payments.services.sorting.CardsSorting;
 import ua.epam.payments.payments.web.Path;
 
-import javax.servlet.ServletConfig;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebInitParam;
 import javax.servlet.annotation.WebServlet;
@@ -26,31 +25,10 @@ public class CardsServlet extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-       /* String recordsOnPage = req.getParameter("recordsOnPage");
-        String records = req.getParameter("records");
-        System.out.println("[" + recordsOnPage + "]");
-        System.out.println("[" + records + "]");
 
-        if (recordsOnPage != null) {
-            req.setAttribute("recordsOnPage", recordsOnPage);
-            //  req.setAttribute("records", recordsOnPage);
-        } else recordsOnPage = records;
-
-        if (recordsOnPage == null) {
-            System.out.println("---------");
-            recordsOnPage = getInitParameter("records");
-        }
-
-//save recordsOnPage
-        if (records != null) {
-            req.setAttribute("recordsOnPage", records);
-        } else records = recordsOnPage;
-        //req.setAttribute("records", 9);
-*/
 
         String records = req.getParameter("records");
         String page = req.getParameter("page");
-
 
         if (records == null || records.isEmpty()) {
             req.setAttribute("records", 9);
@@ -66,20 +44,19 @@ public class CardsServlet extends HttpServlet {
             CardDao cardDao = new CardDaoImpl();
             User user = (User) req.getSession().getAttribute("user");
 
-
             int limit = 9;
             int offset = 1;
-            int countOfButtons = limit;
+
             if (req.getParameter("records") != null && !req.getParameter("records").isEmpty()) {
                 limit = Integer.parseInt(req.getParameter("records"));
-                countOfButtons = limit;
             }
             if (req.getParameter("page") != null && !req.getParameter("page").isEmpty()) {
                 offset = Integer.parseInt(req.getParameter("page"));
             }
 
             List<Card> cards = cardDao.getCardByUserLimit(user, limit, ((offset - 1) * limit));
-
+            req.setAttribute("cards", cards);
+            req.setAttribute("loopPagination", 5);
             /*int test = cardDao.countCardsByUser(user);
             Double cardsCount = (double) test;
             System.out.println(cardsCount);
@@ -87,8 +64,25 @@ public class CardsServlet extends HttpServlet {
 
             cardsCount = Math.ceil(cardsCount);
 */
-            req.setAttribute("cards", cards);
-            req.setAttribute("loopPagination", 5);
+//sorting
+            CardsSorting cardsSorting = new CardsSorting();
+            String sortingType = req.getParameter("sortingType");
+            String sortingOrder = req.getParameter("sortingOrder");
+            if (sortingType== null ) {
+                req.setAttribute("sortingType", "name");
+            }
+            if (sortingOrder == null ) {
+                req.setAttribute("sortingOrder","asc");
+            }
+
+            if (sortingType != null || sortingOrder != null){
+                cardsSorting.sortByNumberOrOrderOrMoney(cards, sortingType,sortingOrder);
+                req.setAttribute("sortingType", sortingType);
+                req.setAttribute("sortingOrder", sortingOrder);
+            }else{
+                cardsSorting.sortByNumberOrOrderOrMoney(cards, "name","asc");
+            }
+
 
             req.getRequestDispatcher(Path.CARDS_JSP).forward(req, resp);
         } else req.getRequestDispatcher(Path.LOGIN_JSP).forward(req, resp);
