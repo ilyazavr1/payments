@@ -38,7 +38,6 @@ public class CardsServlet extends HttpServlet {
         String sortingOrder = req.getParameter("sortingOrder");
 
         if (records == null || records.isEmpty()) {
-
             req.setAttribute("records", 9);
         } else req.setAttribute("records", records);
 

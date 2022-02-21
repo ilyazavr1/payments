@@ -188,12 +188,24 @@ public class FullPaymentDto {
 
 
     }
+
+    @Override
+    public String toString() {
+        return "FullPaymentDto{" +
+                "id=" + id +
+                ", money=" + money +
+                ", status='" + status + '\'' +
+                ", creationTimestamp=" + creationTimestamp +
+                ", senderCardNumber='" + senderCardNumber + '\'' +
+                ", destinationCardNumber='" + destinationCardNumber + '\'' +
+                ", senderFirstName='" + senderFirstName + '\'' +
+                ", senderLastName='" + senderLastName + '\'' +
+                ", senderSurnameName='" + senderSurnameName + '\'' +
+                ", destinationFirstName='" + destinationFirstName + '\'' +
+                ", destinationLastName='" + destinationLastName + '\'' +
+                ", destinationSurnameName='" + destinationSurnameName + '\'' +
+                ", destinationFullName='" + destinationFullName + '\'' +
+                ", senderFullName='" + senderFullName + '\'' +
+                '}';
+    }
 }
-/*
-    private long id;
-    private int money;
-    private String status;
-    private LocalDateTime creationTimestamp;
-    private String senderCardNumber;
-    private String destinationCardNumber;
-*/

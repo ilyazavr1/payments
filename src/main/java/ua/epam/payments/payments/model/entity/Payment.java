@@ -108,6 +108,17 @@ public class Payment {
 
     }
 
+    @Override
+    public String toString() {
+        return "Payment{" +
+                "id=" + id +
+                ", money=" + money +
+                ", paymentStatusId=" + paymentStatusId +
+                ", creationTimestamp=" + creationTimestamp +
+                ", cardSenderId=" + cardSenderId +
+                ", cardDestinationId=" + cardDestinationId +
+                '}';
+    }
 }
 
 

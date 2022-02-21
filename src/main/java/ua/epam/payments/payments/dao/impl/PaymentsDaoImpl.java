@@ -110,6 +110,29 @@ public class PaymentsDaoImpl implements PaymentsDao {
     }
 
     @Override
+    public List<FullPaymentDto> getFullPaymentsByUserLimitSorted(User user, String query) {
+        List<FullPaymentDto> paymentList = null;
+        try (Connection con = DBManager.getInstance().getConnection();
+             PreparedStatement stmt = con.prepareStatement(query)) {
+            stmt.setLong(1, user.getId());
+
+            try (ResultSet rs = stmt.executeQuery()) {
+                paymentList = new ArrayList<>();
+                PaymentMapper paymentMapper = new PaymentMapper();
+                while (rs.next()) {
+                    paymentList.add(paymentMapper.mapRSToFullPaymentDto(rs));
+
+                }
+            }
+
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
+        }
+
+        return paymentList;
+    }
+
+    @Override
     public List<FullPaymentDto> getFullPayments() {
         List<FullPaymentDto> paymentList = null;
         try (Connection con = DBManager.getInstance().getConnection();

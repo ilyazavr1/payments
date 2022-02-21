@@ -37,19 +37,20 @@
 
 
 <form action="${Path.PAYMENTS_PATH}" method="get">
-
+    <input type="hidden" value="${requestScope.page}" name="page">
+    <input type="hidden" value="${requestScope.records}" name="records">
     <div style="width: 30%" class="row">
         <div class="col">
             <label for="typeSort">Sort by:</label>
             <select name="sortingType" class="form-control" id="typeSort">
                 <c:choose>
-                    <c:when test="${requestScope.sortingType.equals('date')}">
-                        <option selected value="date">Date</option>
-                        <option value="number">Descending</option>
+                    <c:when test="${requestScope.sortingType.equals('creation_timestamp')}">
+                        <option selected value="creation_timestamp">Date</option>
+                        <option value="payment.id">Number</option>
                     </c:when>
                     <c:otherwise>
-                        <option value="date">Date</option>
-                        <option selected value="number">Number</option>
+                        <option value="creation_timestamp">Date</option>
+                        <option selected value="payment.id">Number</option>
                     </c:otherwise>
                 </c:choose>
             </select>
@@ -140,5 +141,114 @@
         </table>
     </div>
 </div>
+<nav aria-label="Page navigation example">
+
+    <ul class="pagination">
+        <li class="page-item">
+            <a class="page-link" href="#" aria-label="Previous">
+                <span aria-hidden="true"><</span>
+                <span class="sr-only">Previous</span>
+            </a>
+        </li>
+
+        <c:set var="rec" value="${requestScope.records}" scope="request"> </c:set>
+        <c:set var="lenght" value="${requestScope.loopPagination}" scope="request"> </c:set>
+        <c:set var="sortType" value="${requestScope.sortingType}" scope="request"> </c:set>
+        <c:set var="sortOrder" value="${requestScope.sortingOrder}" scope="request"> </c:set>
+
+
+        <c:forEach begin="1" end="5" varStatus="loop">
+            <c:set var="num" value="${loop.index}" scope="page"> </c:set>
+            <c:choose>
+                <c:when test="${requestScope.page == num}">
+                    <li class="page-item active">
+                        <a class="page-link"
+                           href="${Path.PAYMENTS_PATH}?page=${num}&records=${rec}&sortingType=${sortType}&sortingOrder=${sortOrder}">${num}</a>
+                    </li>
+                </c:when>
+                <c:otherwise>
+                    <li class="page-item">
+                        <a class="page-link" href="${Path.PAYMENTS_PATH}?page=${num}&records=${rec}&sortingType=${sortType}&sortingOrder=${sortOrder}">${num}</a></li>
+                </c:otherwise>
+            </c:choose>
+
+
+        </c:forEach>
+
+        <%--   <c:choose>
+               <c:when test="${requestScope.page == 1}">
+                   <li class="page-item active"><a class="page-link" href="${Path.CARDS_PATH}?page=1&records=${rec}">1</a>
+                   </li>
+               </c:when>
+               <c:otherwise>
+                   <li class="page-item"><a class="page-link" href="${Path.CARDS_PATH}?page=1&records=${rec}">1</a></li>
+               </c:otherwise>
+           </c:choose>
+
+           <c:choose>
+               <c:when test="${requestScope.page == 2}">
+                   <li class="page-item active"><a class="page-link" href="${Path.CARDS_PATH}?page=2&records=${rec}">2</a>
+                   </li>
+               </c:when>
+               <c:otherwise>
+                   <li class="page-item"><a class="page-link" href="${Path.CARDS_PATH}?page=2&records=${rec}">2</a></li>
+               </c:otherwise>
+           </c:choose>
+
+           <c:choose>
+               <c:when test="${requestScope.page == 3}">
+                   <li class="page-item active"><a class="page-link" href="${Path.CARDS_PATH}?page=3&records=${rec}">3</a>
+                   </li>
+               </c:when>
+               <c:otherwise>
+                   <li class="page-item"><a class="page-link" href="${Path.CARDS_PATH}?page=3&records=${rec}">3</a></li>
+               </c:otherwise>
+           </c:choose>--%>
+        <li class="page-item">
+            <a class="page-link" href="#" aria-label="Next">
+                <span aria-hidden="true">></span>
+                <span class="sr-only">Next</span>
+            </a>
+        </li>
+    </ul>
+
+
+</nav>
+<form action="${Path.PAYMENTS_PATH}" method="get">
+    <input type="hidden" name="page" value="${requestScope.page}">
+
+    <select name="records"> <!--Supplement an id here instead of using 'name'-->
+
+        <c:choose>
+        <c:when test="${requestScope.records == 3}">
+        <option selected value="3">3</option>
+        </c:when>
+        <c:otherwise>
+        <option value="3">3</option>
+        </c:otherwise>
+        </c:choose>
+
+        <c:choose>
+        <c:when test="${requestScope.records == 6}">
+        <option selected value="6">6</option>
+        </c:when>
+        <c:otherwise>
+        <option value="6">6</option>
+        </c:otherwise>
+        </c:choose>
+        <c:choose>
+        <c:when test="${requestScope.records == 9}">
+        <option selected value="9">9</option>
+        </c:when>
+        <c:otherwise>
+        <option value="9">9</option>
+        </c:otherwise>
+        </c:choose>
+        <input type="hidden" name="sortingType" value="${requestScope.sortingType}">
+        <input type="hidden" name="sortingOrder" value="${requestScope.sortingOrder}">
+        <input type="submit" value="go">
+
+</form>
+
 </body>
 </html>
