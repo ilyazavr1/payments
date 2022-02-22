@@ -64,6 +64,23 @@ public class PaymentServlet extends HttpServlet {
         Card cardSender = cardDao.getCardById(cardSenderId);
         Card cardDestination = cardDao.getCardByNumber(cardDestinationNumber);
 
+        if (cardSender.isBlocked()){
+            req.setAttribute(Constants.CARD_SENDER_IS_BLOCKED, Constants.CARD_SENDER_IS_BLOCKED);
+            doGet(req, resp);
+            return;
+        }
+        if (cardDestination.isBlocked()){
+            req.setAttribute(Constants.CARD_DESTINATION_IS_BLOCKED, Constants.CARD_DESTINATION_IS_BLOCKED);
+            doGet(req, resp);
+            return;
+        }
+
+        if (cardSender.getId() == cardDestination.getId()){
+            req.setAttribute(Constants.CARDS_ARE_SAME, Constants.CARDS_ARE_SAME);
+            doGet(req, resp);
+            return;
+        }
+
         if (cardDestination == null) {
             req.setAttribute(Constants.INVALID_CARD, Constants.INVALID_CARD);
             doGet(req, resp);

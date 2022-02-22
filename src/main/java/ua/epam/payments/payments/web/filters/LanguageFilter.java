@@ -5,21 +5,29 @@ import javax.servlet.annotation.WebFilter;
 import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
 
-@WebFilter("/*")
+
 public class LanguageFilter implements Filter {
-    public static final String ENCODING = "UTF-8";
+
     public static final String LANG_UK = "uk";
     public static final String LANG_EN = "en";
+    private String encoding = "utf-8";
 
     @Override
     public void init(FilterConfig filterConfig) throws ServletException {
-        Filter.super.init(filterConfig);
+        String encodingParam =
+                filterConfig.getInitParameter("encoding");
+        if (encodingParam != null) {
+            encoding = encodingParam;
+        }
     }
 
     @Override
     public void doFilter(ServletRequest servletRequest, ServletResponse servletResponse, FilterChain filterChain) throws IOException, ServletException {
-        servletRequest.setCharacterEncoding(ENCODING);
-        servletResponse.setCharacterEncoding(ENCODING);
+    /* public static final String ENCODING = "UTF-8";
+     servletRequest.setCharacterEncoding("UTF-8");
+       servletResponse.setCharacterEncoding(ENCODING);
+        servletResponse.setContentType("text/html;charset=UTF-8");
+        servletRequest.setCharacterEncoding(encoding);*/
 
         HttpServletRequest req = (HttpServletRequest) servletRequest;
         String language = (String) req.getSession().getAttribute("lang");
@@ -28,7 +36,7 @@ public class LanguageFilter implements Filter {
             req.getSession().setAttribute("lang",language);
         } else req.getSession().setAttribute("lang", LANG_EN);
 
-
+        servletRequest.setCharacterEncoding(encoding);
         filterChain.doFilter(servletRequest, servletResponse);
     }
 

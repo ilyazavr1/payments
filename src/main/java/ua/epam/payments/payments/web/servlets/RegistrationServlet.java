@@ -33,28 +33,29 @@ public class RegistrationServlet extends HttpServlet {
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        System.out.println(1);
+
         if (req.getSession().getAttribute("user") != null) {
             resp.sendRedirect(Path.PROFILE_PATH);
            return;
         }
-        System.out.println(2);
+
         String firstName = req.getParameter("firstName").trim();
         String lastName = req.getParameter("lastName").trim();
         String surname = req.getParameter("surname").trim();
         String email = req.getParameter("email").trim();
         String password = req.getParameter("password").trim();
 
+
         if (firstName == null || firstName.isEmpty() || !UserValidation.validateName(firstName)) {
             req.setAttribute(Constants.INVALID_FIRST_NAME, Constants.INVALID_FIRST_NAME);
             req.getRequestDispatcher(Path.REGISTRATION_JSP).forward(req, resp);
         }
-        System.out.println(3);
+
         if (lastName == null || lastName.isEmpty() || !UserValidation.validateName(lastName)) {
             req.setAttribute(Constants.INVALID_LAST_NAME, Constants.INVALID_LAST_NAME);
             req.getRequestDispatcher(Path.REGISTRATION_JSP).forward(req, resp);
         }
-        System.out.println(3);
+
         if (surname == null || surname.isEmpty() || !UserValidation.validateName(surname)) {
             req.setAttribute(Constants.INVALID_SURNAME, Constants.INVALID_SURNAME);
             req.getRequestDispatcher(Path.REGISTRATION_JSP).forward(req, resp);

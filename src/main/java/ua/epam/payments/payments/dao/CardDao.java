@@ -12,6 +12,7 @@ public interface CardDao {
     Card getCardByNumber(String number);
 
     List<Card> getCardByUser(User user);
+
     int countCardsByUser(User user);
 
     List<Card> getCardByUserLimit(User user, int limit, int offset);
@@ -23,6 +24,12 @@ public interface CardDao {
     boolean addCardToUser(Card card, User user);
 
     boolean updateCardWithMoney(Card card, int money);
+
+    boolean blockCardById(long id);
+
+    boolean updateCardConsiderationById(long id);
+
+    boolean createCardUnblockRequest(Card card, User user);
 
     boolean transferMoneyFromCardToCard(long cardSenderId, long cardDestinationId, int money);
 

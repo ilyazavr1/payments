@@ -113,6 +113,10 @@
                     <a class="nav-link" href="${Path.ADMIN_ALL_PAYMENTS_REQUESTS_PATH}">Payments requests</a>
                 </li>
 
+                <li class="nav-item">
+                    <a class="nav-link" href="${Path.ADMIN_UNBLOCK_USERS_CARDS_REQUESTS_PATH}">Cards unblock request</a>
+                </li>
+
             </ul>
             <div style="margin-left: 70%">
                 <span class="badge badge-warning"> <a class="nav-link" href="${Path.LOGOUT_PATH}">Logout</a></span>

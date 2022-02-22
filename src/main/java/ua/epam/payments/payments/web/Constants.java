@@ -16,6 +16,9 @@ public class Constants {
     public static final String OUT_OF_MONEY = "outOfMoney";
 
     public static final String USER_IS_BLOCKED = "userIsBlocked";
+    public static final String CARD_SENDER_IS_BLOCKED = "cardSenderIsBlocked";
+    public static final String CARD_DESTINATION_IS_BLOCKED = "cardDestinationIsBlocked";
+    public static final String CARDS_ARE_SAME = "cardsAreSame";
 
     public static final String INVALID_CARD_NUMBER = "invalidCardNumber";
     public static final String INVALID_MONEY_AMOUNT = "invalidMoneyAmount";

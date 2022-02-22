@@ -7,4 +7,30 @@
     <welcome-file-list>
         <welcome-file>/WEB-INF/jsp/login.jsp</welcome-file>
     </welcome-file-list>
+
+    <jsp-config>
+        <jsp-property-group>
+            <url-pattern>*.jsp</url-pattern>
+            <page-encoding>UTF-8</page-encoding>
+        </jsp-property-group>
+    </jsp-config>
+
+
+    <filter>
+
+        <filter-name>LanguageFilter</filter-name>
+        <filter-class>
+           ua.epam.payments.payments.web.filters.LanguageFilter
+        </filter-class>
+
+        <init-param>
+            <param-name>encoding</param-name>
+            <param-value>UTF-8</param-value>
+        </init-param>
+    </filter>
+
+    <filter-mapping>
+        <filter-name>LanguageFilter</filter-name>
+        <url-pattern>/*</url-pattern>
+    </filter-mapping>
 </web-app>

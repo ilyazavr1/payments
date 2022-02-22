@@ -16,6 +16,8 @@ public class CardMapper {
                 .withNumber(rs.getString(3))
                 .withMoney(rs.getInt(4))
                 .withBlocked(rs.getBoolean(5))
+                .withUnderConsideration(rs.getBoolean(6))
+                .withUserId(rs.getLong(7))
                 .build();
     }
 

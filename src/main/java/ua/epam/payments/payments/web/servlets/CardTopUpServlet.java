@@ -24,6 +24,10 @@ public class CardTopUpServlet extends HttpServlet {
         long cardId = Long.parseLong(req.getParameter("id"));
 
         Card card = cardDao.getCardById(cardId);
+        if (card.isBlocked()){
+            resp.sendRedirect(Path.CARDS_PATH);
+            return;
+        }
         req.setAttribute("card", card);
 
 
@@ -39,6 +43,11 @@ public class CardTopUpServlet extends HttpServlet {
 
         User user = (User) req.getSession().getAttribute("user");
         Card card = cardDao.getCardById(cardId);
+
+        if (card.isBlocked()){
+            resp.sendRedirect(Path.CARDS_PATH);
+            return;
+        }
 
         if (money < 0 || user == null || card == null){
             System.out.println("user or money or card is absent");

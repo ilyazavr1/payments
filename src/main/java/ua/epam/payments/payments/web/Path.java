@@ -26,14 +26,19 @@ public class Path {
     public static final String PAYMENTS_PATH = "/payments";
     public static final String PAYMENTS_CONFIRM_PATH = "/confirmPayment";
     public static final String CARD_BLOCK_PATH = "/card/block";
+    public static final String CARD_UNBLOCK_REQUEST_PATH = "/card/unblockRequest";
     //admin
     public static final String ADMIN_ALL_USERS_PATH = "/admin/allUsers";
     public static final String ADMIN_BLOCK_USER_PATH = "/admin/blockUser";
     public static final String ADMIN_UNBLOCK_USER_PATH = "/admin/unblockUser";
 
+    public static final String ADMIN_UNBLOCK_USERS_CARDS_REQUESTS_PATH = "/admin/cards/unblock";
+
     //TODO add to security
     public static final String ADMIN_ALL_PAYMENTS_REQUESTS_PATH = "/admin/paymentsRequests";
     public static final String ADMIN_CONFIRM_PAYMENT_PATH = "/admin/paymentsRequests/confirm";
+
+
     //
 
     //JSP

@@ -75,6 +75,7 @@
                 <c:url var="cardBlockID" value="${Path.CARD_BLOCK_PATH}">
                     <c:param name="id" value="${card.id}"/>
                 </c:url>
+
                 <c:if test="${card.blocked == false}">
                     <div class="col-sm-4 py-2">
                         <div class="card h-100 border-primary">
@@ -92,23 +93,40 @@
                         </div>
                     </div>
                 </c:if>
-                <c:if test="${card.blocked == true}">
+                <c:if test="${card.blocked == true && card.underConsideration == false}">
+                    <c:url var="cardUnblockId" value="${Path.CARD_UNBLOCK_REQUEST_PATH}">
+                        <c:param name="id" value="${card.id}"/>
+                    </c:url>
                     <div class="col-sm-4 py-2">
-                        <div style="background-color: red" class="card h-100 border-primary">
+                        <div style="background-color: lightcoral" class="card h-100 border-primary">
                             <div class="card-body">
                                 <h3 class="card-title"><cardFormat:formatCardNumber number="${card.number}"/></h3>
+                                <h3 class="card-title">${card.name}</h3>
                                 <p class="card-text"><c:out value="${card.money}"> </c:out></p>
                                 <p class="card-text"><cardFormat:formatActiveBlockedBoolean
                                         status="${card.blocked}"> </cardFormat:formatActiveBlockedBoolean></p>
-                                <a style="background-color: lightgreen" onclick="alert('Card is blocked')"
-                                   class="btn btn-outline-secondary">TOP UP</a>
-                                <a style="margin-left: 140px; background-color: lightcoral" href="${cardID}"
-                                   class="btn btn-outline-secondary">BLOCK</a>
+                                <a style="background-color: lightgreen" href="${cardUnblockId}"
+                                   class="btn btn-outline-secondary">UNBLOCK</a>
+
                             </div>
                         </div>
                     </div>
                 </c:if>
+                <c:if test="${card.underConsideration == true}">
+                    <div class="col-sm-4 py-2">
+                        <div style="background-color: darkgrey" class="card h-100 border-primary">
+                            <div class="card-body">
+                                <h3 class="card-title"><cardFormat:formatCardNumber number="${card.number}"/></h3>
+                                <h3 class="card-title">${card.name}</h3>
+                                <p class="card-text"><c:out value="${card.money}"> </c:out></p>
+                                <p class="card-text"><cardFormat:formatActiveBlockedBoolean
+                                        status="${card.blocked}"> </cardFormat:formatActiveBlockedBoolean></p>
+                               <p>Under consideration</p>
 
+                            </div>
+                        </div>
+                    </div>
+                </c:if>
             </c:forEach>
         </c:if>
     </div>
@@ -143,7 +161,9 @@
                 </c:when>
                 <c:otherwise>
                     <li class="page-item">
-                        <a class="page-link" href="${Path.CARDS_PATH}?page=${num}&records=${rec}&sortingType=${sortType}&sortingOrder=${sortOrder}">${num}</a></li>
+                        <a class="page-link"
+                           href="${Path.CARDS_PATH}?page=${num}&records=${rec}&sortingType=${sortType}&sortingOrder=${sortOrder}">${num}</a>
+                    </li>
                 </c:otherwise>
             </c:choose>
 

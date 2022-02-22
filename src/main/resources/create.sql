@@ -3,11 +3,13 @@ truncate role cascade;
 truncate card cascade;
 truncate payment cascade;
 truncate payment_status cascade;
+truncate card_unblock_request cascade;
 DROP TABLE IF EXISTS "user" CASCADE;
 DROP TABLE IF EXISTS role CASCADE;
 DROP TABLE IF EXISTS card CASCADE;
 DROP TABLE IF EXISTS payment CASCADE;
 DROP TABLE IF EXISTS payment_status CASCADE;
+DROP TABLE IF EXISTS card_unblock_request CASCADE;
 
 /*truncate user_account cascade;
 DROP TABLE IF EXISTS user_account CASCADE;
@@ -55,22 +57,26 @@ create table "user"
 
 create table card
 (
-    id      serial                        NOT NULL,
-    name    varchar(50)                   NOT NULL DEFAULT 'card',
-    number  varchar(128)                  NOT NULL,
-    money   integer                       NOT NULL DEFAULT 0,
-    blocked bool                          NOT NULL DEFAULT FALSE,
-    user_id bigint REFERENCES "user" (id) NOT NULL,
+    id                  serial                        NOT NULL,
+    name                varchar(50)                   NOT NULL DEFAULT 'card',
+    number              varchar(128)                  NOT NULL,
+    money               integer                       NOT NULL DEFAULT 0,
+    blocked             bool                          NOT NULL DEFAULT FALSE,
+    under_consideration bool                          NOT NULL DEFAULT FALSE,
+    user_id             bigint REFERENCES "user" (id) NOT NULL,
     PRIMARY KEY (id)
 );
 
 create table card_unblock_request
 (
-    id      serial                        NOT NULL,
-    number  varchar(128)                  NOT NULL,
-    money   integer                       NOT NULL DEFAULT 0,
-    blocked bool                          NOT NULL DEFAULT FALSE,
-    user_id bigint REFERENCES "user" (id) NOT NULL,
+    id          serial                        NOT NULL,
+    user_id     bigint REFERENCES "user" (id) NOT NULL,
+    first_name  varchar(50)                   NOT NULL,
+    last_name   varchar(50)                   NOT NULL,
+    surname     varchar(50)                   NOT NULL,
+    card_number varchar(128)                  NOT NULL,
+    money       integer                       NOT NULL DEFAULT 0,
+    blocked     bool                          NOT NULL DEFAULT FALSE,
     PRIMARY KEY (id)
 );
 

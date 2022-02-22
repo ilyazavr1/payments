@@ -1,6 +1,8 @@
 package ua.epam.payments.payments.web.servlets;
 
 import org.apache.commons.codec.DecoderException;
+import ua.epam.payments.payments.dao.CardDao;
+import ua.epam.payments.payments.dao.impl.CardDaoImpl;
 import ua.epam.payments.payments.model.entity.User;
 import ua.epam.payments.payments.services.PasswordEncryption;
 import ua.epam.payments.payments.services.validation.UserValidation;
@@ -23,15 +25,16 @@ public class CardBlock extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         req.setAttribute("cardId", req.getParameter("id"));
-        System.out.println(req.getParameter("cardBlockID"));
-        req.getRequestDispatcher(Path.CARD_BLOCK_JSP).forward(req,resp);
+
+        req.getRequestDispatcher(Path.CARD_BLOCK_JSP).forward(req, resp);
     }
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        System.out.println(req.getParameter("cardId"));
-        System.out.println(req.getParameter("password"));
+        String cardIdToBlock = req.getParameter("cardId");
+        req.setAttribute("cardId", cardIdToBlock);
 
+        CardDao cardDao = new CardDaoImpl();
 
         User user = (User) req.getSession().getAttribute("user");
         String password = req.getParameter("password").trim();
@@ -39,7 +42,6 @@ public class CardBlock extends HttpServlet {
         if (password == null || password.isEmpty() || !UserValidation.validatePassword(password)) {
             req.setAttribute(Constants.INVALID_PASSWORD, Constants.INVALID_PASSWORD);
             req.getRequestDispatcher(Path.CARD_BLOCK_JSP).forward(req, resp);
-
         }
 
         try {
@@ -51,6 +53,8 @@ public class CardBlock extends HttpServlet {
             req.setAttribute(Constants.WRONG_PASSWORD, Constants.WRONG_PASSWORD);
             req.getRequestDispatcher(Path.CARD_BLOCK_JSP).forward(req, resp);
         }
+        System.out.println( cardDao.blockCardById(Long.parseLong(cardIdToBlock)));
+       // cardDao.blockCardById(Long.parseLong(cardIdToBlock));
 
         resp.sendRedirect(Path.CARDS_PATH);
     }

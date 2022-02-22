@@ -27,9 +27,13 @@
                    <%-- <input type="text" class="form-control" id="cc_name" pattern="\w+ \w+.*" title="First and last name" required="required">--%>
                     <select name="cardSenderId" id="cardSender" class="form-control" name="cardSenderId">
                         <c:forEach items="${requestScope.cards}" var="card">
+                            <c:set var="cardSender" value="${card.blocked}"> </c:set>
                             <option value="${card.id}"><cardFormat:formatCardNumber number="${card.number}"/> [name: ${card.name}  balance: ${card.money}]</option>
                         </c:forEach>
                     </select>
+                    <c:if test="${requestScope.cardSenderIsBlocked != null}">
+                        <p style="color: red"><fmt:message key="${requestScope.cardSenderIsBlocked}"> </fmt:message></p>
+                    </c:if>
                     <c:if test="${requestScope.outOfMoney != null}">
                         <p style="color: red"><fmt:message key="${requestScope.outOfMoney}"></fmt:message></p>
                     </c:if>
@@ -38,6 +42,12 @@
                     <label>Destination card number</label>
                     <input name="cardDestinationNumber" type="text" class="form-control" >
                 </div>
+                <c:if test="${requestScope.cardsAreSame != null}">
+                    <p style="color: red"><fmt:message key="${requestScope.cardsAreSame}"> </fmt:message></p>
+                </c:if>
+                <c:if test="${requestScope.cardDestinationIsBlocked != null}">
+                    <p style="color: red"><fmt:message key="${requestScope.cardDestinationIsBlocked}"> </fmt:message></p>
+                </c:if>
                 <c:if test="${requestScope.invalidCard != null}">
                     <p style="color: red"><fmt:message key="${requestScope.invalidCard}"></fmt:message></p>
                 </c:if>

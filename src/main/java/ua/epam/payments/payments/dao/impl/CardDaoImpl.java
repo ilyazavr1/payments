@@ -18,12 +18,16 @@ public class CardDaoImpl implements CardDao {
     public static final String SQL_GET_CARD_BY_NUMBER = "SELECT * FROM card WHERE number=?";
     public static final String SQL_IS_EXIST_CARD = "SELECT EXISTS(SELECT 1 FROM card WHERE number=?)";
     public static final String SQL_UPDATE_CARD_WITH_MONEY = "UPDATE card SET money=money+? WHERE id=?";
+    public static final String SQL_BLOCK_CARD = "UPDATE card SET blocked=true WHERE id=?";
 
-    public static final String SQL_TRANSFER_MONEY = "";
+    public static final String SQL_UPDATE_CARD_CONSIDERATION = "UPDATE card SET under_consideration=true WHERE id=?";
+    public static final String SQL_CREATE_CARD_UNBLOCK_REQUEST = "INSERT INTO card_unblock_request VALUES (default, ?, ?, ?, ?, ?, ?, ?);";
+
+
     public static final String SQL_WITHDRAW_MONEY = "UPDATE card SET money=money-? WHERE id=?";
     public static final String SQL_TOP_UP_MONEY = "UPDATE card SET money=money+? WHERE id=?";
 
-    public static final String SQL_CREATE_CARD = "INSERT INTO card values (default, ?, ?, default, default, ?)";
+    public static final String SQL_CREATE_CARD = "INSERT INTO card values (default, ?, ?, default, default,default, ?)";
     public static final String SQL_ADD_CARD_TO_USER = "UPDATE card SET user_id=? WHERE id=?";
     public static final String SQL_GET_CARD_BY_USER = "SELECT * FROM card WHERE user_id=?";
     public static final String SQL_COUNT_CARD_BY_USER = "SELECT count(card.id) FROM card WHERE user_id =?;";
@@ -213,55 +217,52 @@ public class CardDaoImpl implements CardDao {
         return false;
     }
 
-  /*  public boolean transferMoneyFromAccToAcc(Account accountSender, Account accountDestination, int money) {
+    @Override
+    public boolean blockCardById(long id) {
+        try (Connection con = DBManager.getInstance().getConnection();
+             PreparedStatement stmt = con.prepareStatement(SQL_BLOCK_CARD)) {
+            stmt.setLong(1, id);
+            return stmt.executeUpdate() > 0;
 
-        boolean result1 = false;
-        boolean result2 = false;
-
-        Connection con = null;
-        PreparedStatement stmtWithdraw = null;
-        PreparedStatement stmtTopUp = null;
-        try {
-            con = DBManager.getInstance().getConnection();
-            con.setAutoCommit(false);
-            //withdraw
-            stmtWithdraw = con.prepareStatement(SQL_WITHDRAW_MONEY);
-            stmtWithdraw.setLong(1, accountSender.getId());
-            stmtWithdraw.setInt(2, money);
-            result1 = stmtWithdraw.executeUpdate() > 0;
-            //top up
-            stmtTopUp = con.prepareStatement(SQL_TOP_UP_MONEY);
-            stmtTopUp.setLong(1, accountDestination.getId());
-            stmtTopUp.setInt(2, money);
-            result2 = stmtTopUp.executeUpdate() > 0;
-
-
-
-            con.commit();
-            con.setAutoCommit(true);
-
-            return true;
         } catch (SQLException throwables) {
-            if (con != null) {
-                try {
-                    con.rollback();
-                } catch (SQLException e) {
-                    e.printStackTrace();
-                }
-            }
-        } finally {
-            if (con != null && stmtWithdraw != null&& stmtTopUp != null) {
-                try {
-                    stmtWithdraw.close();
-                    stmtTopUp.close();
-                    con.close();
-                } catch (SQLException throwables) {
-                    throwables.printStackTrace();
-                }
-            }
+            throwables.printStackTrace();
         }
         return false;
-    }*/
+    }
+
+    @Override
+    public boolean updateCardConsiderationById(long id) {
+        try (Connection con = DBManager.getInstance().getConnection();
+             PreparedStatement stmt = con.prepareStatement(SQL_UPDATE_CARD_CONSIDERATION)) {
+            stmt.setLong(1, id);
+            return stmt.executeUpdate() > 0;
+
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
+        }
+        return false;
+    }
+//"INSERT INTO card_unblock_request VALUES (default, ?, ?, ?, ?, ?, ?, ?);";
+    @Override
+    public boolean createCardUnblockRequest(Card card, User user) {
+        try (Connection con = DBManager.getInstance().getConnection();
+             PreparedStatement stmt = con.prepareStatement(SQL_CREATE_CARD_UNBLOCK_REQUEST)) {
+            stmt.setLong(1, user.getId());
+            stmt.setString(2, user.getFirstName());
+            stmt.setString(3, user.getLastName());
+            stmt.setString(4, user.getSurname());
+            stmt.setString(5, card.getNumber());
+            stmt.setInt(6, card.getMoney());
+            stmt.setBoolean(7, card.isBlocked());
+
+
+            return stmt.executeUpdate() > 0;
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
+        }
+        return false;
+    }
+
 
     @Override
     public boolean transferMoneyFromCardToCard(long cardSenderId, long cardDestinationId, int money) {
@@ -330,6 +331,55 @@ public class CardDaoImpl implements CardDao {
             }
         } catch (Exception e) {
             System.out.println("oshibka");
+        }
+        return false;
+    }*/
+  /*  public boolean transferMoneyFromAccToAcc(Account accountSender, Account accountDestination, int money) {
+
+        boolean result1 = false;
+        boolean result2 = false;
+
+        Connection con = null;
+        PreparedStatement stmtWithdraw = null;
+        PreparedStatement stmtTopUp = null;
+        try {
+            con = DBManager.getInstance().getConnection();
+            con.setAutoCommit(false);
+            //withdraw
+            stmtWithdraw = con.prepareStatement(SQL_WITHDRAW_MONEY);
+            stmtWithdraw.setLong(1, accountSender.getId());
+            stmtWithdraw.setInt(2, money);
+            result1 = stmtWithdraw.executeUpdate() > 0;
+            //top up
+            stmtTopUp = con.prepareStatement(SQL_TOP_UP_MONEY);
+            stmtTopUp.setLong(1, accountDestination.getId());
+            stmtTopUp.setInt(2, money);
+            result2 = stmtTopUp.executeUpdate() > 0;
+
+
+
+            con.commit();
+            con.setAutoCommit(true);
+
+            return true;
+        } catch (SQLException throwables) {
+            if (con != null) {
+                try {
+                    con.rollback();
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                }
+            }
+        } finally {
+            if (con != null && stmtWithdraw != null&& stmtTopUp != null) {
+                try {
+                    stmtWithdraw.close();
+                    stmtTopUp.close();
+                    con.close();
+                } catch (SQLException throwables) {
+                    throwables.printStackTrace();
+                }
+            }
         }
         return false;
     }*/

@@ -9,6 +9,7 @@ public class Card {
     private String number;
     private int money;
     private boolean blocked;
+    private boolean underConsideration;
     private long userId;
 
     public long getId() {
@@ -51,6 +52,14 @@ public class Card {
         this.blocked = blocked;
     }
 
+    public boolean isUnderConsideration() {
+        return underConsideration;
+    }
+
+    public void setUnderConsideration(boolean underConsideration) {
+        this.underConsideration = underConsideration;
+    }
+
     public long getUserId() {
         return userId;
     }
@@ -89,6 +98,11 @@ public class Card {
             newCard.blocked = blocked;
             return this;
         }
+        public Card.Builder withUnderConsideration(boolean underConsideration) {
+            newCard.underConsideration = underConsideration;
+            return this;
+        }
+
         public Card.Builder withUserId(long userId) {
             newCard.userId = userId;
             return this;
@@ -104,9 +118,11 @@ public class Card {
     public String toString() {
         return "Card{" +
                 "id=" + id +
+                ", name='" + name + '\'' +
                 ", number='" + number + '\'' +
                 ", money=" + money +
                 ", blocked=" + blocked +
+                ", underConsideration=" + underConsideration +
                 ", userId=" + userId +
                 '}';
     }

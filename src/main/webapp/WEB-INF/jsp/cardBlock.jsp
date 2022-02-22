@@ -11,8 +11,7 @@
 
 <div class="container">
 
-    <hr>
-<p><c:out value="${requestScope.cardId}"> </c:out></p>
+
     <div class="row">
 
         <div style="width:400px; margin-top:30%; margin-left: 30%" class="card">
@@ -36,7 +35,7 @@
                         <button style="margin-left: 150px" type="submit" class="btn btn-primary"> Confirm</button>
                     </div>
 
-                    <input type="hidden" name="cardIdToBlock" value="${requestScope.cardId}">
+                    <input type="hidden" name="cardId" value="${requestScope.cardId}">
                 </form>
             </article>
         </div> <!-- card.// -->
