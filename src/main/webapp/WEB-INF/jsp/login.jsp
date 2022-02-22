@@ -35,9 +35,9 @@
                         <c:if test="${requestScope.wrongEmail != null}">
                             <p style="color: red"><fmt:message key="wrongEmail"> </fmt:message></p>
                         </c:if>
-                    </div> <!-- form-group// -->
+                    </div>
                     <div class="form-group">
-                        <%--   <a class="float-right" href="#">Forgot?</a>--%>
+
                         <label>Your password</label>
                         <input name="password" class="form-control" placeholder="<fmt:message key="password"/>"
                                type="password">
@@ -47,15 +47,10 @@
                             <c:if test="${requestScope.wrongPassword != null}">
                                 <p style="color: red"><fmt:message key="wrongPassword"> </fmt:message></p>
                             </c:if>
-                    </div> <!-- form-group// -->
-                    <%-- <div class="form-group">
-                         <div class="checkbox">
-                             <label> <input type="checkbox"> Save password </label>
-                         </div> <!-- checkbox .// -->
-                     </div> <!-- form-group// -->--%>
+                    </div>
                     <div class="form-group">
                         <button type="submit" class="btn btn-primary btn-block"> Login</button>
-                    </div> <!-- form-group// -->
+                    </div>
                 </form>
             </article>
         </div> <!-- card.// -->

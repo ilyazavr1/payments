@@ -65,8 +65,9 @@
             <tr>
                 <th>Number</th>
                 <th style="padding-right: 150px">Card from</th>
-                <th>Balance</th>
-                <th>Money</th>
+                <th>Balance before</th>
+                <th>Payment</th>
+                <th>Balance after</th>
                 <th style="padding-right: 150px">Recipient name</th>
                 <th style="padding-right: 150px">Card to</th>
                 <th style="padding-right: 100px">Time</th>
@@ -82,6 +83,7 @@
                                 number="${payment.senderCardNumber}"> </cardFormat:formatCardNumber></td>
                         <td>${payment.senderBalance}</td>
                         <td>${payment.money}</td>
+                        <td>${payment.senderBalance - payment.money}</td>
 
                         <td><ufn:fullName firstName="${payment.destinationFirstName}" lastName="${payment.destinationLastName}" surname="${payment.destinationSurname}"></ufn:fullName></td>
                       <%--  <td>${payment.destinationFirstName}</td>--%>

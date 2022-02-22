@@ -7,6 +7,7 @@ public class Payment {
     private static final long serialVersionUID = 123L;
 
     private long id;
+    private int balance;
     private int money;
     private int paymentStatusId;
     private LocalDateTime creationTimestamp;
@@ -19,6 +20,14 @@ public class Payment {
 
     public void setId(long id) {
         this.id = id;
+    }
+
+    public int getBalance() {
+        return balance;
+    }
+
+    public void setBalance(int balance) {
+        this.balance = balance;
     }
 
     public int getMoney() {
@@ -80,6 +89,10 @@ public class Payment {
 
         public Payment.Builder withMoney(int money){
             newPayment.money = money;
+            return this;
+        }
+        public Payment.Builder withBalance(int balance){
+            newPayment.balance = balance;
             return this;
         }
 

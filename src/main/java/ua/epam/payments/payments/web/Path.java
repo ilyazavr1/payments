@@ -25,6 +25,7 @@ public class Path {
     public static final String PAYMENT_PATH = "/payment";
     public static final String PAYMENTS_PATH = "/payments";
     public static final String PAYMENTS_CONFIRM_PATH = "/confirmPayment";
+    public static final String CARD_BLOCK_PATH = "/card/block";
     //admin
     public static final String ADMIN_ALL_USERS_PATH = "/admin/allUsers";
     public static final String ADMIN_BLOCK_USER_PATH = "/admin/blockUser";
@@ -44,6 +45,7 @@ public class Path {
     public static final String CARD_CREATE_JSP = "/WEB-INF/jsp/createCard.jsp";
     public static final String PAYMENT_JSP = "/WEB-INF/jsp/payment.jsp";
     public static final String PAYMENTS_JSP = "/WEB-INF/jsp/payments.jsp";
+    public static final String CARD_BLOCK_JSP = "/WEB-INF/jsp/cardBlock.jsp";
     //admin
     public static final String ADMIN_ALL_USERS_JSP = "/WEB-INF/jsp/admin/adminAllUsers.jsp";
     public static final String ADMIN_BLOCK_USER_JSP = "/WEB-INF/jsp/admin/adminBlockUser.jsp";

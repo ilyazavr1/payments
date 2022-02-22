@@ -17,8 +17,8 @@ import java.util.List;
 
 public class PaymentsDaoImpl implements PaymentsDao {
     public static final String SQL_GET_PAYMENT_BY_ID = "SELECT * FROM payment WHERE id=?";
-    public static final String SQL_CREATE_PREPARED_PAYMENT = "INSERT INTO payment VALUES (default, ?, default, default, ?, ?)";
-    public static final String SQL_CREATE_CONFIRMED_PAYMENT = "INSERT INTO payment VALUES (default, ?, 2, default, ?, ?)";
+    public static final String SQL_CREATE_PREPARED_PAYMENT = "INSERT INTO payment VALUES (default, ?, ?, default, default, ?, ?)";
+    public static final String SQL_CREATE_CONFIRMED_PAYMENT = "INSERT INTO payment VALUES (default, ?,  ?, 2, default, ?, ?)";
     public static final String SQL_GET_PAYMENTS_BY_USER = "SELECT * FROM payment WHERE card_sender_id IN (SELECT card.id FROM card WHERE user_id =?);";
     public static final String SQL_GET_FULL_PAYMENTS_BY_USER = "SELECT payment.id,\n" +
             "       payment.money,\n" +
@@ -171,9 +171,10 @@ public class PaymentsDaoImpl implements PaymentsDao {
     public boolean createPreparedPayment(Card cardSender, Card cardDestination, int money) {
         try (Connection con = DBManager.getInstance().getConnection();
              PreparedStatement stmt = con.prepareStatement(SQL_CREATE_PREPARED_PAYMENT)) {
-            stmt.setInt(1, money);
-            stmt.setLong(2, cardSender.getId());
-            stmt.setLong(3, cardDestination.getId());
+            stmt.setInt(1, cardSender.getMoney());
+            stmt.setInt(2, money);
+            stmt.setLong(3, cardSender.getId());
+            stmt.setLong(4, cardDestination.getId());
 
             return stmt.executeUpdate() > 0;
         } catch (SQLException throwables) {
@@ -187,9 +188,10 @@ public class PaymentsDaoImpl implements PaymentsDao {
     public boolean createConfirmedPayment(Card cardSender, Card cardDestination, int money) {
         try (Connection con = DBManager.getInstance().getConnection();
              PreparedStatement stmt = con.prepareStatement(SQL_CREATE_CONFIRMED_PAYMENT)) {
-            stmt.setInt(1, money);
-            stmt.setLong(2, cardSender.getId());
-            stmt.setLong(3, cardDestination.getId());
+            stmt.setInt(1, cardSender.getMoney());
+            stmt.setInt(2, money);
+            stmt.setLong(3, cardSender.getId());
+            stmt.setLong(4, cardDestination.getId());
 
             return stmt.executeUpdate() > 0;
         } catch (SQLException throwables) {

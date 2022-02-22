@@ -72,6 +72,9 @@
                 <c:url var="cardID" value="${Path.CARD_TOP_UP_PATH}">
                     <c:param name="id" value="${card.id}"/>
                 </c:url>
+                <c:url var="cardBlockID" value="${Path.CARD_BLOCK_PATH}">
+                    <c:param name="id" value="${card.id}"/>
+                </c:url>
                 <c:if test="${card.blocked == false}">
                     <div class="col-sm-4 py-2">
                         <div class="card h-100 border-primary">
@@ -83,7 +86,7 @@
                                         status="${card.blocked}"> </cardFormat:formatActiveBlockedBoolean></p>
                                 <a style="background-color: lightgreen" href="${cardID}"
                                    class="btn btn-outline-secondary">TOP UP</a>
-                                <a style="margin-left: 140px; background-color: lightcoral" href="${cardID}"
+                                <a style="margin-left: 140px; background-color: lightcoral" href="${cardBlockID}"
                                    class="btn btn-outline-secondary">BLOCK</a>
                             </div>
                         </div>

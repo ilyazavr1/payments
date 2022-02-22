@@ -21,7 +21,7 @@ public class PaymentService {
                 "WHERE card_sender_id IN (SELECT card.id FROM card WHERE user_id =?) ORDER BY %s %s LIMIT %d OFFSET %d";*/
         String query = "SELECT payment.id,\n" +
                 "       (SELECT card.number as sender_card_number FROM card WHERE card.id = payment.card_sender_id),\n" +
-                "       (SELECT money as sender_balance FROM card WHERE payment.card_sender_id = card.id ),\n" +
+                "        payment.balance,\n" +
                 "       payment.money,\n" +
                 "       (SELECT \"user\".first_name FROM \"user\",card WHERE payment.card_destination_id=card.id and card.user_id = \"user\".id),\n" +
                 "       (SELECT \"user\".last_name FROM \"user\",card WHERE payment.card_destination_id=card.id and card.user_id = \"user\".id),\n" +

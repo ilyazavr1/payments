@@ -12,11 +12,12 @@ public class PaymentMapper {
     public Payment mapRSToPayment(ResultSet rs) throws SQLException {
         return new Payment.Builder()
                 .withId(rs.getInt(1))
-                .withMoney(rs.getInt(2))
-                .withPaymentStatusId(rs.getInt(3))
-                .withCreationTimestamp(rs.getTimestamp(4))
-                .withCardSenderId(rs.getLong(5))
-                .withCardDestinationId(rs.getLong(6))
+                .withBalance(2)
+                .withMoney(rs.getInt(3))
+                .withPaymentStatusId(rs.getInt(4))
+                .withCreationTimestamp(rs.getTimestamp(5))
+                .withCardSenderId(rs.getLong(6))
+                .withCardDestinationId(rs.getLong(7))
                 .build();
     }
 

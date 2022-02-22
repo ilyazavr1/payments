@@ -1,0 +1,57 @@
+package ua.epam.payments.payments.web.servlets;
+
+import org.apache.commons.codec.DecoderException;
+import ua.epam.payments.payments.model.entity.User;
+import ua.epam.payments.payments.services.PasswordEncryption;
+import ua.epam.payments.payments.services.validation.UserValidation;
+import ua.epam.payments.payments.web.Constants;
+import ua.epam.payments.payments.web.Path;
+
+import javax.servlet.ServletException;
+import javax.servlet.annotation.WebServlet;
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
+import java.security.NoSuchAlgorithmException;
+import java.security.spec.InvalidKeySpecException;
+
+
+@WebServlet(name = "CardBlock", value = Path.CARD_BLOCK_PATH)
+public class CardBlock extends HttpServlet {
+
+    @Override
+    protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        req.setAttribute("cardId", req.getParameter("id"));
+        System.out.println(req.getParameter("cardBlockID"));
+        req.getRequestDispatcher(Path.CARD_BLOCK_JSP).forward(req,resp);
+    }
+
+    @Override
+    protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        System.out.println(req.getParameter("cardId"));
+        System.out.println(req.getParameter("password"));
+
+
+        User user = (User) req.getSession().getAttribute("user");
+        String password = req.getParameter("password").trim();
+
+        if (password == null || password.isEmpty() || !UserValidation.validatePassword(password)) {
+            req.setAttribute(Constants.INVALID_PASSWORD, Constants.INVALID_PASSWORD);
+            req.getRequestDispatcher(Path.CARD_BLOCK_JSP).forward(req, resp);
+
+        }
+
+        try {
+            if (!PasswordEncryption.isPasswordCorrect(password, user.getPassword())) {
+                req.setAttribute(Constants.WRONG_PASSWORD, Constants.WRONG_PASSWORD);
+                req.getRequestDispatcher(Path.CARD_BLOCK_JSP).forward(req, resp);
+            }
+        } catch (DecoderException | NoSuchAlgorithmException | InvalidKeySpecException e) {
+            req.setAttribute(Constants.WRONG_PASSWORD, Constants.WRONG_PASSWORD);
+            req.getRequestDispatcher(Path.CARD_BLOCK_JSP).forward(req, resp);
+        }
+
+        resp.sendRedirect(Path.CARDS_PATH);
+    }
+}

@@ -77,6 +77,7 @@ create table card_unblock_request
 create table payment
 (
     id                  serial  NOT NULL,
+    balance             integer,
     money               integer NOT NULL                                          DEFAULT 0,
     payment_status_id   integer REFERENCES payment_status (id) ON DELETE SET NULL DEFAULT 1,
     creation_timestamp  timestamp                                                 DEFAULT CURRENT_TIMESTAMP,
