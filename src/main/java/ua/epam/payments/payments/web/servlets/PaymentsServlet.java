@@ -26,6 +26,7 @@ public class PaymentsServlet extends HttpServlet {
         User user = (User) req.getSession().getAttribute("user");
         PaymentService paymentService = new PaymentService();
 
+        req.setAttribute("invalidPayment", req.getParameter("invalidPayment"));
         int limit;
         int offset;
         String sortingType = req.getParameter("sortingType");

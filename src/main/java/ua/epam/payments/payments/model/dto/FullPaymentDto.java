@@ -1,7 +1,5 @@
 package ua.epam.payments.payments.model.dto;
 
-import ua.epam.payments.payments.model.entity.Payment;
-
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
 
@@ -11,13 +9,14 @@ public class FullPaymentDto {
     private String status;
     private LocalDateTime creationTimestamp;
     private String senderCardNumber;
+    private int senderBalance;
     private String destinationCardNumber;
     private String senderFirstName;
     private String senderLastName;
     private String senderSurnameName;
     private String destinationFirstName;
     private String destinationLastName;
-    private String destinationSurnameName;
+    private String destinationSurname;
     private String destinationFullName;
     private String senderFullName;
 
@@ -35,6 +34,14 @@ public class FullPaymentDto {
 
     public void setMoney(int money) {
         this.money = money;
+    }
+
+    public int getSenderBalance() {
+        return senderBalance;
+    }
+
+    public void setSenderBalance(int senderBalance) {
+        this.senderBalance = senderBalance;
     }
 
     public String getStatus() {
@@ -109,12 +116,12 @@ public class FullPaymentDto {
         this.destinationLastName = destinationLastName;
     }
 
-    public String getDestinationSurnameName() {
-        return destinationSurnameName;
+    public String getDestinationSurname() {
+        return destinationSurname;
     }
 
-    public void setDestinationSurnameName(String destinationSurnameName) {
-        this.destinationSurnameName = destinationSurnameName;
+    public void setDestinationSurname(String destinationSurname) {
+        this.destinationSurname = destinationSurname;
     }
 
     public String getDestinationFullName() {
@@ -150,6 +157,11 @@ public class FullPaymentDto {
             return this;
         }
 
+        public FullPaymentDto.Builder withSenderBalance(int senderBalance) {
+            newFullPayment.senderBalance = senderBalance;
+            return this;
+        }
+
         public FullPaymentDto.Builder withPaymentStatus(String status) {
             newFullPayment.status = status;
             return this;
@@ -174,14 +186,29 @@ public class FullPaymentDto {
             newFullPayment.destinationCardNumber = destinationCardNumber;
             return this;
         }
+
+        public FullPaymentDto.Builder withUserDestinationFirstName(String destinationFirstName) {
+            newFullPayment.destinationFirstName = destinationFirstName;
+            return this;
+        }
+        public FullPaymentDto.Builder withUserDestinationLastName(String destinationLastName) {
+            newFullPayment.destinationLastName = destinationLastName;
+            return this;
+        }
+        public FullPaymentDto.Builder withUserDestinationSurname(String destinationSurname) {
+            newFullPayment.destinationSurname = destinationSurname;
+            return this;
+        }
         public FullPaymentDto.Builder withUserSenderFullName(String fName, String lName, String surname) {
-            newFullPayment.senderFullName = String.format("%s %s %s", lName,fName,surname);
+            newFullPayment.senderFullName = String.format("%s %s %s", lName, fName, surname);
             return this;
         }
+
         public FullPaymentDto.Builder withUserDestinationFullName(String fName, String lName, String surname) {
-            newFullPayment.destinationFullName = String.format("%s %s %s", lName,fName,surname);
+            newFullPayment.destinationFullName = String.format("%s %s %s", lName, fName, surname);
             return this;
         }
+
         public FullPaymentDto build() {
             return newFullPayment;
         }
@@ -189,23 +216,5 @@ public class FullPaymentDto {
 
     }
 
-    @Override
-    public String toString() {
-        return "FullPaymentDto{" +
-                "id=" + id +
-                ", money=" + money +
-                ", status='" + status + '\'' +
-                ", creationTimestamp=" + creationTimestamp +
-                ", senderCardNumber='" + senderCardNumber + '\'' +
-                ", destinationCardNumber='" + destinationCardNumber + '\'' +
-                ", senderFirstName='" + senderFirstName + '\'' +
-                ", senderLastName='" + senderLastName + '\'' +
-                ", senderSurnameName='" + senderSurnameName + '\'' +
-                ", destinationFirstName='" + destinationFirstName + '\'' +
-                ", destinationLastName='" + destinationLastName + '\'' +
-                ", destinationSurnameName='" + destinationSurnameName + '\'' +
-                ", destinationFullName='" + destinationFullName + '\'' +
-                ", senderFullName='" + senderFullName + '\'' +
-                '}';
-    }
+
 }

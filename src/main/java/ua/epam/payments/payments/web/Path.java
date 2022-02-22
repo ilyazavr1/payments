@@ -24,6 +24,7 @@ public class Path {
     public static final String CARD_CREATE_PATH = "/card/create";
     public static final String PAYMENT_PATH = "/payment";
     public static final String PAYMENTS_PATH = "/payments";
+    public static final String PAYMENTS_CONFIRM_PATH = "/confirmPayment";
     //admin
     public static final String ADMIN_ALL_USERS_PATH = "/admin/allUsers";
     public static final String ADMIN_BLOCK_USER_PATH = "/admin/blockUser";

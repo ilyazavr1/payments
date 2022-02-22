@@ -10,31 +10,7 @@
 <body>
 <%@include file="/jspf/navBar.jspf" %>
 
-<form action="${Path.PAYMENT_PATH}" method="post">
-    <select name="cardSenderId">
-        <c:forEach items="${requestScope.cards}" var="card">
-            <option value="${card.id}"><cardFormat:formatCardNumber number="${card.number}"/></option>
-        </c:forEach>
-    </select>
-    <br>
 
-
-
-    <select name="cardDestinationId">
-        <c:forEach items="${requestScope.cards}" var="card">
-            <option  value="${card.id}"><cardFormat:formatCardNumber number="${card.number}"/></option>
-        </c:forEach>
-    </select>
-    <br>
-
-
-    <label for="money">Input money</label>
-    <input type="number" name="money" id="money" min="1" max="10000">
-    <br>
-
-
-    <input type="submit" value="go">
-</form>
 <div class="col-md-6 offset-md-3">
     <span class="anchor" id="formPayment"></span>
     <hr class="my-5">
@@ -51,14 +27,20 @@
                    <%-- <input type="text" class="form-control" id="cc_name" pattern="\w+ \w+.*" title="First and last name" required="required">--%>
                     <select name="cardSenderId" id="cardSender" class="form-control" name="cardSenderId">
                         <c:forEach items="${requestScope.cards}" var="card">
-                            <option value="${card.id}"><cardFormat:formatCardNumber number="${card.number}"/>       ${card.name}</option>
+                            <option value="${card.id}"><cardFormat:formatCardNumber number="${card.number}"/> [name: ${card.name}  balance: ${card.money}]</option>
                         </c:forEach>
                     </select>
+                    <c:if test="${requestScope.outOfMoney != null}">
+                        <p style="color: red"><fmt:message key="${requestScope.outOfMoney}"></fmt:message></p>
+                    </c:if>
                 </div>
                 <div class="form-group">
                     <label>Destination card number</label>
                     <input name="cardDestinationNumber" type="text" class="form-control" >
                 </div>
+                <c:if test="${requestScope.invalidCard != null}">
+                    <p style="color: red"><fmt:message key="${requestScope.invalidCard}"></fmt:message></p>
+                </c:if>
                 <c:if test="${requestScope.invalidCardNumber != null}">
                     <p style="color: red"><fmt:message key="${requestScope.invalidCardNumber}"></fmt:message></p>
                 </c:if>
@@ -81,7 +63,10 @@
                         <button type="reset" class="btn btn-default btn-lg btn-block">Cancel</button>
                     </div>
                     <div class="col-md-6">
-                        <button type="submit" class="btn btn-success btn-lg btn-block">Submit</button>
+                        <button name="prepare" type="submit" class="btn btn-warning btn-lg btn-block">Prepare</button>
+                    </div>
+                    <div class="col-md-6">
+                        <button name="send" type="submit" class="btn btn-success btn-lg btn-block">Send</button>
                     </div>
                 </div>
             </form>

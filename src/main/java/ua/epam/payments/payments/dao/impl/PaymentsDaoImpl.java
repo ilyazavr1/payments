@@ -17,7 +17,8 @@ import java.util.List;
 
 public class PaymentsDaoImpl implements PaymentsDao {
     public static final String SQL_GET_PAYMENT_BY_ID = "SELECT * FROM payment WHERE id=?";
-    public static final String SQL_CREATE_PAYMENT = "INSERT INTO payment VALUES (default, ?, default, default, ?, ?)";
+    public static final String SQL_CREATE_PREPARED_PAYMENT = "INSERT INTO payment VALUES (default, ?, default, default, ?, ?)";
+    public static final String SQL_CREATE_CONFIRMED_PAYMENT = "INSERT INTO payment VALUES (default, ?, 2, default, ?, ?)";
     public static final String SQL_GET_PAYMENTS_BY_USER = "SELECT * FROM payment WHERE card_sender_id IN (SELECT card.id FROM card WHERE user_id =?);";
     public static final String SQL_GET_FULL_PAYMENTS_BY_USER = "SELECT payment.id,\n" +
             "       payment.money,\n" +
@@ -40,7 +41,7 @@ public class PaymentsDaoImpl implements PaymentsDao {
             "       (SELECT \"user\".last_name FROM \"user\",card WHERE payment.card_destination_id=card.id and card.user_id = \"user\".id),\n" +
             "       (SELECT \"user\".surname FROM \"user\",card WHERE payment.card_destination_id=card.id and card.user_id = \"user\".id)\n" +
             "FROM payment";
-    public static final String SQL_CONFIRM_PAYMENT_BY_ID = "UPDATE payment SET payment_status_id=2 WHERE id =?";
+    public static final String SQL_CONFIRM_PAYMENT_BY_ID = "UPDATE payment SET creation_timestamp = default, payment_status_id=2 WHERE id =?";
 
     @Override
     public Payment getPaymentById(long id) {
@@ -167,9 +168,9 @@ public class PaymentsDaoImpl implements PaymentsDao {
     }
 
     @Override
-    public boolean createPayment(Card cardSender, Card cardDestination, int money) {
+    public boolean createPreparedPayment(Card cardSender, Card cardDestination, int money) {
         try (Connection con = DBManager.getInstance().getConnection();
-             PreparedStatement stmt = con.prepareStatement(SQL_CREATE_PAYMENT)) {
+             PreparedStatement stmt = con.prepareStatement(SQL_CREATE_PREPARED_PAYMENT)) {
             stmt.setInt(1, money);
             stmt.setLong(2, cardSender.getId());
             stmt.setLong(3, cardDestination.getId());
@@ -180,5 +181,20 @@ public class PaymentsDaoImpl implements PaymentsDao {
         }
         return false;
 
+    }
+
+    @Override
+    public boolean createConfirmedPayment(Card cardSender, Card cardDestination, int money) {
+        try (Connection con = DBManager.getInstance().getConnection();
+             PreparedStatement stmt = con.prepareStatement(SQL_CREATE_CONFIRMED_PAYMENT)) {
+            stmt.setInt(1, money);
+            stmt.setLong(2, cardSender.getId());
+            stmt.setLong(3, cardDestination.getId());
+
+            return stmt.executeUpdate() > 0;
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
+        }
+        return false;
     }
 }

@@ -21,6 +21,8 @@ public interface PaymentsDao {
 
     boolean confirmPayment(long id);
 
-    boolean createPayment(Card cardSender, Card cardDestination, int money);
+    boolean createPreparedPayment(Card cardSender, Card cardDestination, int money);
+
+    boolean createConfirmedPayment(Card cardSender, Card cardDestination, int money);
 
 }

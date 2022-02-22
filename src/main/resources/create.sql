@@ -85,8 +85,8 @@ create table payment
     PRIMARY KEY (id)
 );
 
-
 SET timezone = 'Europe/Kiev';
+SET TIME ZONE 'Europe/Kiev';
 
 
 /*create table user_account

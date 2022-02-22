@@ -19,6 +19,7 @@ public class Constants {
 
     public static final String INVALID_CARD_NUMBER = "invalidCardNumber";
     public static final String INVALID_MONEY_AMOUNT = "invalidMoneyAmount";
+    public static final String INVALID_CARD = "invalidCard";
 
 
 }

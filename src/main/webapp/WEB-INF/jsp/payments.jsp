@@ -65,9 +65,11 @@
             <tr>
                 <th>Number</th>
                 <th style="padding-right: 150px">Card from</th>
-                <th style="padding-right: 150px">Card to</th>
+                <th>Balance</th>
                 <th>Money</th>
-                <th>Time</th>
+                <th>Recipient name</th>
+                <th style="padding-right: 150px">Card to</th>
+                <th style="padding-right: 100px">Time</th>
                 <th>Status</th>
                 <th class="text-center">Action</th>
             </tr>
@@ -75,23 +77,36 @@
             <c:if test="${requestScope.payments != null}">
                 <c:forEach var="payment" items="${requestScope.payments }">
                     <tr>
-
                         <td>${payment.id}</td>
                         <td><cardFormat:formatCardNumber
                                 number="${payment.senderCardNumber}"> </cardFormat:formatCardNumber></td>
+                        <td>${payment.senderBalance}</td>
+                        <td>${payment.money}</td>
+                        <td>${payment.destinationFirstName}</td>
                         <td style="width: 2000px"><cardFormat:formatCardNumber
                                 number="${payment.destinationCardNumber}"> </cardFormat:formatCardNumber></td>
-                        <td>${payment.money}</td>
-                        <td>${payment.creationTimestamp}</td>
-                        <td>${payment.status}</td>
+                        <td><cardFormat:dateTimeFormat
+                                dateTime="${payment.creationTimestamp}"> </cardFormat:dateTimeFormat></td>
+                        <td><span class="badge badge-primary">${payment.status}</span></td>
 
+                        <c:if test="${payment.status.equals('PREPARED')}">
+                        <form action="${Path.PAYMENTS_CONFIRM_PATH}" method="post">
+                            <td><input type="submit" class="btn btn-success" value="Confirm"></td>
+                            <input type="hidden" name="paymentId" value="${payment.id}">
+                        </form>
+                        </c:if>
+                        <c:if test="${requestScope.invalidPayment == payment.id}">
+                            <td style="color: red">   <fmt:message key="outOfMoney"></fmt:message> </td>
+                        </c:if>
                     </tr>
+
                 </c:forEach>
             </c:if>
 
         </table>
     </div>
 </div>
+
 <nav aria-label="Page navigation example">
 
     <ul class="pagination">
@@ -119,7 +134,9 @@
                 </c:when>
                 <c:otherwise>
                     <li class="page-item">
-                        <a class="page-link" href="${Path.PAYMENTS_PATH}?page=${num}&records=${rec}&sortingType=${sortType}&sortingOrder=${sortOrder}">${num}</a></li>
+                        <a class="page-link"
+                           href="${Path.PAYMENTS_PATH}?page=${num}&records=${rec}&sortingType=${sortType}&sortingOrder=${sortOrder}">${num}</a>
+                    </li>
                 </c:otherwise>
             </c:choose>
 
@@ -172,6 +189,7 @@
         <input type="submit" value="go">
 
 </form>
+
 
 </body>
 </html>

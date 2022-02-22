@@ -32,6 +32,7 @@ public class PaymentServlet extends HttpServlet {
 
         req.setAttribute("cards", cards);
 
+
         req.getRequestDispatcher(Path.PAYMENT_JSP).forward(req, resp);
     }
 
@@ -39,36 +40,49 @@ public class PaymentServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         PaymentsDao paymentsDao = new PaymentsDaoImpl();
+        CardDao cardDao = new CardDaoImpl();
 
-        String cardSenderNumber = req.getParameter("cardSenderId");
+        long cardSenderId = Long.parseLong(req.getParameter("cardSenderId"));
         String cardDestinationNumber = req.getParameter("cardDestinationNumber").trim();
-        String money = req.getParameter("money");
+        String money = req.getParameter("money").trim();
+
+        if (cardDestinationNumber != null) {
+            cardDestinationNumber = cardDestinationNumber.replaceAll("[^0-9]+", "");
+        }
         System.out.println(cardDestinationNumber);
-        System.out.println(cardDestinationNumber.matches("^[0-9]{16}$"));
-        if (cardDestinationNumber == null || cardDestinationNumber.isEmpty() || !cardDestinationNumber.matches("^[0-9]{16}$")){
+        if (!cardDestinationNumber.matches("^[0-9]{16}$")) {
             req.setAttribute(Constants.INVALID_CARD_NUMBER, Constants.INVALID_CARD_NUMBER);
             doGet(req, resp);
             return;
         }
-        if (money == null || money.isEmpty() || !money.matches("^[0-9]{1,4}$")){
+        if (money == null || money.isEmpty() || !money.matches("^[1-9][0-9]{0,4}$")) {
             req.setAttribute(Constants.INVALID_MONEY_AMOUNT, Constants.INVALID_MONEY_AMOUNT);
             doGet(req, resp);
             return;
         }
 
-     /*   Card cardSender = cardDao.getCardById(cardSenderNumber);
-        Card cardDestination = cardDao.getCardById(cardDestinationNumber);
+        Card cardSender = cardDao.getCardById(cardSenderId);
+        Card cardDestination = cardDao.getCardByNumber(cardDestinationNumber);
 
-        if (cardSender.getMoney() < money) {
-            req.setAttribute(Constants.OUT_OF_MONEY, Constants.OUT_OF_MONEY);
-            req.getRequestDispatcher(Path.PAYMENT_JSP).forward(req, resp);
+        if (cardDestination == null) {
+            req.setAttribute(Constants.INVALID_CARD, Constants.INVALID_CARD);
+            doGet(req, resp);
             return;
         }
 
-        paymentsDao.createPayment(cardSender, cardDestination, money);
-*/
+        int moneyInt = Integer.parseInt(money);
+        if (req.getParameter("prepare") != null) {
+            paymentsDao.createPreparedPayment(cardSender, cardDestination, moneyInt);
+        }
+        if (req.getParameter("send") != null && (cardSender.getMoney() - moneyInt) >= 0) {
+            cardDao.transferMoneyFromCardToCard(cardSender.getId(), cardDestination.getId(), moneyInt);
+            paymentsDao.createConfirmedPayment(cardSender, cardDestination, moneyInt);
+        } else {
+            req.setAttribute(Constants.OUT_OF_MONEY, Constants.OUT_OF_MONEY);
+            doGet(req, resp);
+            return;
+        }
 
-
-            resp.sendRedirect(Path.PAYMENTS_PATH);
+        resp.sendRedirect(Path.PAYMENTS_PATH);
     }
 }
