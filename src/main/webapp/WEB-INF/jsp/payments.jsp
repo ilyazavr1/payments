@@ -1,6 +1,6 @@
 <%@include file="/jspf/tagLibs.jspf" %>
 <%@include file="/jspf/page.jspf" %>
-
+<%@taglib prefix="ufn"  tagdir="/WEB-INF/tags" %>
 
 <html>
 <head>
@@ -67,7 +67,7 @@
                 <th style="padding-right: 150px">Card from</th>
                 <th>Balance</th>
                 <th>Money</th>
-                <th>Recipient name</th>
+                <th style="padding-right: 150px">Recipient name</th>
                 <th style="padding-right: 150px">Card to</th>
                 <th style="padding-right: 100px">Time</th>
                 <th>Status</th>
@@ -82,7 +82,9 @@
                                 number="${payment.senderCardNumber}"> </cardFormat:formatCardNumber></td>
                         <td>${payment.senderBalance}</td>
                         <td>${payment.money}</td>
-                        <td>${payment.destinationFirstName}</td>
+
+                        <td><ufn:fullName firstName="${payment.destinationFirstName}" lastName="${payment.destinationLastName}" surname="${payment.destinationSurname}"></ufn:fullName></td>
+                      <%--  <td>${payment.destinationFirstName}</td>--%>
                         <td style="width: 2000px"><cardFormat:formatCardNumber
                                 number="${payment.destinationCardNumber}"> </cardFormat:formatCardNumber></td>
                         <td><cardFormat:dateTimeFormat

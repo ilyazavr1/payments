@@ -83,7 +83,7 @@
                                         status="${card.blocked}"> </cardFormat:formatActiveBlockedBoolean></p>
                                 <a style="background-color: lightgreen" href="${cardID}"
                                    class="btn btn-outline-secondary">TOP UP</a>
-                                <a style="margin-left: 150px; background-color: lightcoral" href="${cardID}"
+                                <a style="margin-left: 140px; background-color: lightcoral" href="${cardID}"
                                    class="btn btn-outline-secondary">BLOCK</a>
                             </div>
                         </div>
@@ -99,7 +99,7 @@
                                         status="${card.blocked}"> </cardFormat:formatActiveBlockedBoolean></p>
                                 <a style="background-color: lightgreen" onclick="alert('Card is blocked')"
                                    class="btn btn-outline-secondary">TOP UP</a>
-                                <a style="margin-left: 150px; background-color: lightcoral" href="${cardID}"
+                                <a style="margin-left: 140px; background-color: lightcoral" href="${cardID}"
                                    class="btn btn-outline-secondary">BLOCK</a>
                             </div>
                         </div>

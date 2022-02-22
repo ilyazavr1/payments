@@ -71,10 +71,9 @@ public class PaymentServlet extends HttpServlet {
         }
 
         int moneyInt = Integer.parseInt(money);
-        if (req.getParameter("prepare") != null) {
+        if (req.getParameter("prepare") != null && (cardSender.getMoney() - moneyInt) >= 0) {
             paymentsDao.createPreparedPayment(cardSender, cardDestination, moneyInt);
-        }
-        if (req.getParameter("send") != null && (cardSender.getMoney() - moneyInt) >= 0) {
+        } else if (req.getParameter("send") != null && (cardSender.getMoney() - moneyInt) >= 0) {
             cardDao.transferMoneyFromCardToCard(cardSender.getId(), cardDestination.getId(), moneyInt);
             paymentsDao.createConfirmedPayment(cardSender, cardDestination, moneyInt);
         } else {
