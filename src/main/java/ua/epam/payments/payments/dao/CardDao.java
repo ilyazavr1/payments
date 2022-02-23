@@ -1,5 +1,6 @@
 package ua.epam.payments.payments.dao;
 
+import ua.epam.payments.payments.model.dto.CardsUnblockRequestDto;
 import ua.epam.payments.payments.model.entity.Card;
 import ua.epam.payments.payments.model.entity.User;
 
@@ -13,11 +14,13 @@ public interface CardDao {
 
     List<Card> getCardByUser(User user);
 
-    int countCardsByUser(User user);
-
     List<Card> getCardByUserLimit(User user, int limit, int offset);
 
     List<Card> getCardByUserLimitSorted(User user, String query);
+
+    List<CardsUnblockRequestDto> getCardRequestsLimitSorted();
+
+    int countCardsByUser(User user);
 
     boolean createCardWithUser(Card card, User user);
 
@@ -26,6 +29,10 @@ public interface CardDao {
     boolean updateCardWithMoney(Card card, int money);
 
     boolean blockCardById(long id);
+
+    boolean unblockCardById(long id);
+
+    boolean deleteCardRequestByCardId(long id);
 
     boolean updateCardConsiderationById(long id);
 

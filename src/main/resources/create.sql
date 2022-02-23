@@ -71,6 +71,7 @@ create table card_unblock_request
 (
     id          serial                        NOT NULL,
     user_id     bigint REFERENCES "user" (id) NOT NULL,
+    card_id     bigint REFERENCES card (id)   NOT NULL,
     first_name  varchar(50)                   NOT NULL,
     last_name   varchar(50)                   NOT NULL,
     surname     varchar(50)                   NOT NULL,

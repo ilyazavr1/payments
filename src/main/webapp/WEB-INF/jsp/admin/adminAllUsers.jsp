@@ -7,7 +7,7 @@
 </head>
 <body>
 <%@include file="/jspf/navBar.jspf" %>
-<h1>Admin</h1>
+
 
 <div class="container">
 
@@ -30,10 +30,15 @@
             <c:if test="${requestScope.usersList != null}">
 
                 <c:forEach var="user" items="${requestScope.usersList }">
+
+                    <c:url var="userId" value="${Path.ADMIN_USER_CARDS_PATH}">
+                        <c:param name="userId" value="${user.id}"/>
+                    </c:url>
+
                     <c:if test="${user.rolesId ==2}">
                         <tr style="margin-right: 100px">
                             <td>${user.id}</td>
-                            <td>${user.firstName}</td>
+                            <td><a href="${userId}">${user.firstName}</a></td>
                             <td>${user.lastName}</td>
                             <td>${user.surname}</td>
                             <td>${user.email}</td>

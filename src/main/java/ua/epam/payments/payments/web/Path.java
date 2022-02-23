@@ -32,7 +32,9 @@ public class Path {
     public static final String ADMIN_BLOCK_USER_PATH = "/admin/blockUser";
     public static final String ADMIN_UNBLOCK_USER_PATH = "/admin/unblockUser";
 
-    public static final String ADMIN_UNBLOCK_USERS_CARDS_REQUESTS_PATH = "/admin/cards/unblock";
+    public static final String ADMIN_UNBLOCK_USERS_CARDS_REQUESTS_PATH = "/admin/cards/requests";
+    public static final String ADMIN_UNBLOCK_CARD_PATH = "/admin/card/unblock";
+    public static final String ADMIN_USER_CARDS_PATH = "/admin/user/cards";
 
 
     //JSP
@@ -49,6 +51,9 @@ public class Path {
     //admin
     public static final String ADMIN_ALL_USERS_JSP = "/WEB-INF/jsp/admin/adminAllUsers.jsp";
     public static final String ADMIN_BLOCK_USER_JSP = "/WEB-INF/jsp/admin/adminBlockUser.jsp";
+    public static final String ADMIN_UNBLOCK_CARDS_REQUEST_JSP = "/WEB-INF/jsp/admin/adminCardsUnblock.jsp";
+
+    public static final String ADMIN_USER_CARDS_JSP = "/WEB-INF/jsp/admin/adminUser.jsp";
 
 
 

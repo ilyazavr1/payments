@@ -2,6 +2,7 @@ package ua.epam.payments.payments.dao.impl;
 
 import ua.epam.payments.payments.dao.CardDao;
 import ua.epam.payments.payments.db.DBManager;
+import ua.epam.payments.payments.model.dto.CardsUnblockRequestDto;
 import ua.epam.payments.payments.model.entity.Card;
 import ua.epam.payments.payments.model.entity.User;
 import ua.epam.payments.payments.model.mapper.CardMapper;
@@ -20,8 +21,9 @@ public class CardDaoImpl implements CardDao {
     public static final String SQL_UPDATE_CARD_WITH_MONEY = "UPDATE card SET money=money+? WHERE id=?";
     public static final String SQL_BLOCK_CARD = "UPDATE card SET blocked=true WHERE id=?";
 
+    public static final String SQL_UNBLOCK_CARD = "UPDATE card SET blocked=false, under_consideration=false WHERE id=?";
     public static final String SQL_UPDATE_CARD_CONSIDERATION = "UPDATE card SET under_consideration=true WHERE id=?";
-    public static final String SQL_CREATE_CARD_UNBLOCK_REQUEST = "INSERT INTO card_unblock_request VALUES (default, ?, ?, ?, ?, ?, ?, ?);";
+    public static final String SQL_CREATE_CARD_UNBLOCK_REQUEST = "INSERT INTO card_unblock_request VALUES (default, ?, ?, ?, ?, ?, ?, ?, ?);";
 
 
     public static final String SQL_WITHDRAW_MONEY = "UPDATE card SET money=money-? WHERE id=?";
@@ -32,7 +34,9 @@ public class CardDaoImpl implements CardDao {
     public static final String SQL_GET_CARD_BY_USER = "SELECT * FROM card WHERE user_id=?";
     public static final String SQL_COUNT_CARD_BY_USER = "SELECT count(card.id) FROM card WHERE user_id =?;";
     public static final String SQL_GET_CARD_BY_USER_LIMIT = "SELECT * FROM card WHERE user_id=? LIMIT ? OFFSET ?";
-    public static final String SQL_GET_CARD_BY_USER_LIMIT_SORTED = "SELECT * FROM card WHERE user_id=? ORDER BY ? LIMIT ? OFFSET ?";
+    public static final String SQL_GET_CARDS_REQUESTS_SORTED_LIMIT = "select * from card_unblock_request";
+    public static final String SQL_DELETE_CARD_REQUEST = "DELETE FROM card_unblock_request WHERE card_id = ?;";
+    //public static final String SQL_GET_CARD_BY_USER_LIMIT_SORTED = "SELECT * FROM card WHERE user_id=? ORDER BY ? LIMIT ? OFFSET ?";
 
     @Override
     public Card getCardById(long id) {
@@ -83,6 +87,30 @@ public class CardDaoImpl implements CardDao {
     @Override
     public List<Card> getCardByUserLimitSorted(User user, String query) {
         return getCards(user, query);
+    }
+
+    @Override
+    public List<CardsUnblockRequestDto> getCardRequestsLimitSorted() {
+        List<CardsUnblockRequestDto> list = null;
+
+        try (Connection con = DBManager.getInstance().getConnection();
+             PreparedStatement stmt = con.prepareStatement(SQL_GET_CARDS_REQUESTS_SORTED_LIMIT)) {
+
+
+            try (ResultSet rs = stmt.executeQuery()) {
+                list = new ArrayList<>();
+                while (rs.next()) {
+                    CardMapper accountMapper = new CardMapper();
+                    list.add(accountMapper.mapRSToCardRequest(rs));
+
+                }
+            }
+
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
+        }
+
+        return list;
     }
 
     @Override
@@ -231,6 +259,32 @@ public class CardDaoImpl implements CardDao {
     }
 
     @Override
+    public boolean unblockCardById(long id) {
+        try (Connection con = DBManager.getInstance().getConnection();
+             PreparedStatement stmt = con.prepareStatement(SQL_UNBLOCK_CARD)) {
+            stmt.setLong(1, id);
+            return stmt.executeUpdate() > 0;
+
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
+        }
+        return false;
+    }
+
+    @Override
+    public boolean deleteCardRequestByCardId(long id) {
+        try (Connection con = DBManager.getInstance().getConnection();
+             PreparedStatement stmt = con.prepareStatement(SQL_DELETE_CARD_REQUEST)) {
+            stmt.setLong(1, id);
+            return stmt.executeUpdate() > 0;
+
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
+        }
+        return false;
+    }
+
+    @Override
     public boolean updateCardConsiderationById(long id) {
         try (Connection con = DBManager.getInstance().getConnection();
              PreparedStatement stmt = con.prepareStatement(SQL_UPDATE_CARD_CONSIDERATION)) {
@@ -242,18 +296,19 @@ public class CardDaoImpl implements CardDao {
         }
         return false;
     }
-//"INSERT INTO card_unblock_request VALUES (default, ?, ?, ?, ?, ?, ?, ?);";
+
     @Override
     public boolean createCardUnblockRequest(Card card, User user) {
         try (Connection con = DBManager.getInstance().getConnection();
              PreparedStatement stmt = con.prepareStatement(SQL_CREATE_CARD_UNBLOCK_REQUEST)) {
             stmt.setLong(1, user.getId());
-            stmt.setString(2, user.getFirstName());
-            stmt.setString(3, user.getLastName());
-            stmt.setString(4, user.getSurname());
-            stmt.setString(5, card.getNumber());
-            stmt.setInt(6, card.getMoney());
-            stmt.setBoolean(7, card.isBlocked());
+            stmt.setLong(2, card.getId());
+            stmt.setString(3, user.getFirstName());
+            stmt.setString(4, user.getLastName());
+            stmt.setString(5, user.getSurname());
+            stmt.setString(6, card.getNumber());
+            stmt.setInt(7, card.getMoney());
+            stmt.setBoolean(8, card.isBlocked());
 
 
             return stmt.executeUpdate() > 0;

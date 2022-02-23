@@ -1,5 +1,6 @@
 package ua.epam.payments.payments.model.mapper;
 
+import ua.epam.payments.payments.model.dto.CardsUnblockRequestDto;
 import ua.epam.payments.payments.model.entity.Card;
 
 
@@ -21,5 +22,18 @@ public class CardMapper {
                 .build();
     }
 
+    public CardsUnblockRequestDto mapRSToCardRequest(ResultSet rs) throws SQLException {
+        return new CardsUnblockRequestDto.Builder()
+                .withId(rs.getInt(1))
+                .withUserId(rs.getLong(2))
+                .withCardId(rs.getLong(3))
+                .withFirstName(rs.getString(4))
+                .withLastName(rs.getString(5))
+                .withSurname(rs.getString(6))
+                .withCardNumber(rs.getString(7))
+                .withMoney(rs.getInt(8))
+                .withBlocked(rs.getBoolean(9))
+                .build();
+    }
 
 }
