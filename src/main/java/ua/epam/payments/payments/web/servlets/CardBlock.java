@@ -24,13 +24,17 @@ public class CardBlock extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        String pathTrace = req.getHeader("referer");
+
         req.setAttribute("cardId", req.getParameter("id"));
+        req.setAttribute("adminPathToRedirect", pathTrace);
 
         req.getRequestDispatcher(Path.CARD_BLOCK_JSP).forward(req, resp);
     }
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        String adminPathToRedirect = req.getParameter("adminPathToRedirect");
         String cardIdToBlock = req.getParameter("cardId");
         req.setAttribute("cardId", cardIdToBlock);
 
@@ -53,8 +57,14 @@ public class CardBlock extends HttpServlet {
             req.setAttribute(Constants.WRONG_PASSWORD, Constants.WRONG_PASSWORD);
             req.getRequestDispatcher(Path.CARD_BLOCK_JSP).forward(req, resp);
         }
-        System.out.println( cardDao.blockCardById(Long.parseLong(cardIdToBlock)));
-       // cardDao.blockCardById(Long.parseLong(cardIdToBlock));
+
+        cardDao.blockCardById(Long.parseLong(cardIdToBlock));
+
+
+        if (adminPathToRedirect.contains(Path.ADMIN_USER_CARDS_PATH)) {
+            resp.sendRedirect(adminPathToRedirect);
+            return;
+        }
 
         resp.sendRedirect(Path.CARDS_PATH);
     }

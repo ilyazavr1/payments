@@ -35,6 +35,7 @@ public class Path {
     public static final String ADMIN_UNBLOCK_USERS_CARDS_REQUESTS_PATH = "/admin/cards/requests";
     public static final String ADMIN_UNBLOCK_CARD_PATH = "/admin/card/unblock";
     public static final String ADMIN_USER_CARDS_PATH = "/admin/user/cards";
+    public static final String ADMIN_CARD_BLOCK_PATH = "/admin/card/block";
 
 
     //JSP

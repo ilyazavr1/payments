@@ -36,6 +36,8 @@
                     </div>
 
                     <input type="hidden" name="cardId" value="${requestScope.cardId}">
+                    <input type="hidden" name="adminPathToRedirect" value="${requestScope.adminPathToRedirect}">
+
                 </form>
             </article>
         </div> <!-- card.// -->

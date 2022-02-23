@@ -48,7 +48,8 @@
                             <c:choose>
                                 <c:when test="${user.blocked == false}">
                                     <td> <span class="badge badge-success"><cardFormat:formatActiveBlockedBoolean
-                                            status="${user.blocked}"> </cardFormat:formatActiveBlockedBoolean></span></td>
+                                            status="${user.blocked}"> </cardFormat:formatActiveBlockedBoolean></span>
+                                    </td>
                                     <form action="${Path.ADMIN_BLOCK_USER_PATH}" method="post">
                                         <td><input type="submit" class="btn btn-danger btn-xs" value="Block"></td>
                                         <input type="hidden" name="userId" value="${user.id}">
@@ -56,7 +57,8 @@
                                 </c:when>
                                 <c:otherwise>
                                     <td> <span class="badge badge-danger"><cardFormat:formatActiveBlockedBoolean
-                                            status="${user.blocked}"> </cardFormat:formatActiveBlockedBoolean></span></td>
+                                            status="${user.blocked}"> </cardFormat:formatActiveBlockedBoolean></span>
+                                    </td>
                                     <form action="${Path.ADMIN_UNBLOCK_USER_PATH}" method="post">
                                         <td><input type="submit" class="btn btn-success" value="Unblock"></td>
                                         <input type="hidden" name="userId" value="${user.id}">
