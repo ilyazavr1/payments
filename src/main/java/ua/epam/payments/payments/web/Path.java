@@ -34,12 +34,6 @@ public class Path {
 
     public static final String ADMIN_UNBLOCK_USERS_CARDS_REQUESTS_PATH = "/admin/cards/unblock";
 
-    //TODO add to security
-    public static final String ADMIN_ALL_PAYMENTS_REQUESTS_PATH = "/admin/paymentsRequests";
-    public static final String ADMIN_CONFIRM_PAYMENT_PATH = "/admin/paymentsRequests/confirm";
-
-
-    //
 
     //JSP
     public static final String PROFILE_JSP = "/WEB-INF/jsp/profile.jsp";
@@ -51,10 +45,11 @@ public class Path {
     public static final String PAYMENT_JSP = "/WEB-INF/jsp/payment.jsp";
     public static final String PAYMENTS_JSP = "/WEB-INF/jsp/payments.jsp";
     public static final String CARD_BLOCK_JSP = "/WEB-INF/jsp/cardBlock.jsp";
+    
     //admin
     public static final String ADMIN_ALL_USERS_JSP = "/WEB-INF/jsp/admin/adminAllUsers.jsp";
     public static final String ADMIN_BLOCK_USER_JSP = "/WEB-INF/jsp/admin/adminBlockUser.jsp";
-    public static final String ADMIN_ALL_PAYMENTS_REQUESTS_JSP = "/WEB-INF/jsp/admin/paymentsRequests.jsp";
+
 
 
     public static final String TEST = "/jsp/testLog.jsp";

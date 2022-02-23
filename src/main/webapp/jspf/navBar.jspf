@@ -109,9 +109,6 @@
                     <a class="nav-link" href="${Path.ADMIN_ALL_USERS_PATH}">ALl users</a>
                 </li>
 
-                <li class="nav-item">
-                    <a class="nav-link" href="${Path.ADMIN_ALL_PAYMENTS_REQUESTS_PATH}">Payments requests</a>
-                </li>
 
                 <li class="nav-item">
                     <a class="nav-link" href="${Path.ADMIN_UNBLOCK_USERS_CARDS_REQUESTS_PATH}">Cards unblock request</a>
