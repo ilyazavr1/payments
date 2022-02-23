@@ -14,6 +14,7 @@ public class Constants {
 
     public static final String EMPTY_CARD_NAME = "emptyCardName";
     public static final String OUT_OF_MONEY = "outOfMoney";
+    public static final String INVALID_MONEY = "invalidMoney";
 
     public static final String USER_IS_BLOCKED = "userIsBlocked";
     public static final String CARD_SENDER_IS_BLOCKED = "cardSenderIsBlocked";

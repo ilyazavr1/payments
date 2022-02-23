@@ -5,6 +5,7 @@ import ua.epam.payments.payments.web.Path;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
+import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -21,6 +22,14 @@ public class ProfileServlet extends HttpServlet {
             req.getRequestDispatcher(Path.PROFILE_JSP).forward(req, resp);
 
         } else req.getRequestDispatcher(Path.LOGIN_JSP).forward(req, resp);
+
+        Cookie[] cookies = req.getCookies();
+        if(cookies != null){
+            for (Cookie cookie : cookies) {
+                System.out.println(cookie.getName() + "  " + cookie.getValue());
+            }
+        }
+
 
     }
 

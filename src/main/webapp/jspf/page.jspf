@@ -2,8 +2,8 @@
 <%@ page import="ua.epam.payments.payments.web.Path" %>
 
 
-<fmt:setLocale value="${sessionScope.lang}"/>
+<fmt:setLocale value="${requestScope.lang}"/>
 <fmt:setBundle basename="messages"/>
 
 <!DOCTYPE html>
-<html lang="${requestScope.sessionLocale}">
+<html lang="${requestScope.lang}">

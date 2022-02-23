@@ -30,11 +30,14 @@ public class LanguageFilter implements Filter {
         servletRequest.setCharacterEncoding(encoding);*/
 
         HttpServletRequest req = (HttpServletRequest) servletRequest;
-        String language = (String) req.getSession().getAttribute("lang");
+        String language = (String) req.getAttribute("lang");
+
+
 
         if (language != null &&(language.equals(LANG_UK) || language.equals(LANG_EN))) {
-            req.getSession().setAttribute("lang",language);
-        } else req.getSession().setAttribute("lang", LANG_EN);
+            req.setAttribute("lang", language);
+           // req.getSession().setAttribute("lang",language);
+        } else req.setAttribute("lang", LANG_UK);
 
         servletRequest.setCharacterEncoding(encoding);
         filterChain.doFilter(servletRequest, servletResponse);

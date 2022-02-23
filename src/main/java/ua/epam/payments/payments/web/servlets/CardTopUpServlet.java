@@ -5,6 +5,7 @@ import ua.epam.payments.payments.dao.CardDao;
 import ua.epam.payments.payments.dao.impl.CardDaoImpl;
 import ua.epam.payments.payments.model.entity.Card;
 import ua.epam.payments.payments.model.entity.User;
+import ua.epam.payments.payments.web.Constants;
 import ua.epam.payments.payments.web.Path;
 
 import javax.servlet.ServletException;
@@ -24,7 +25,7 @@ public class CardTopUpServlet extends HttpServlet {
         long cardId = Long.parseLong(req.getParameter("id"));
 
         Card card = cardDao.getCardById(cardId);
-        if (card.isBlocked()){
+        if (card.isBlocked()) {
             resp.sendRedirect(Path.CARDS_PATH);
             return;
         }
@@ -38,23 +39,33 @@ public class CardTopUpServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         CardDao cardDao = new CardDaoImpl();
-        int money = Integer.parseInt(req.getParameter("money"));
+        String inoutMoney = req.getParameter("money").trim();
+        int moneyTopUp;
         long cardId = Long.parseLong(req.getParameter("id"));
 
         User user = (User) req.getSession().getAttribute("user");
         Card card = cardDao.getCardById(cardId);
 
-        if (card.isBlocked()){
+        if (card.isBlocked()) {
             resp.sendRedirect(Path.CARDS_PATH);
             return;
         }
 
-        if (money < 0 || user == null || card == null){
-            System.out.println("user or money or card is absent");
-            resp.sendRedirect(Path.CARDS_PATH);
+        if (inoutMoney == null || inoutMoney.isEmpty()) {
+            req.setAttribute(Constants.INVALID_MONEY_AMOUNT, Constants.INVALID_MONEY_AMOUNT);
+            doGet(req, resp);
+            return;
         }
 
-        cardDao.updateCardWithMoney(card, money);
+        moneyTopUp = Integer.parseInt(req.getParameter("money"));
+
+        if (moneyTopUp <= 0 || moneyTopUp == 100000) {
+            req.setAttribute(Constants.INVALID_MONEY_AMOUNT, Constants.INVALID_MONEY_AMOUNT);
+            doGet(req, resp);
+            return;
+        }
+
+        cardDao.updateCardWithMoney(card, moneyTopUp);
 
 
         //TODO top up card

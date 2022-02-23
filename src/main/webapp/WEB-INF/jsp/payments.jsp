@@ -50,7 +50,7 @@
             </select>
         </div>
         <div class="col">
-            <input type="submit" value="Sort">
+            <input class="btn btn-primary" type="submit" value="Sort">
         </div>
     </div>
 </form>

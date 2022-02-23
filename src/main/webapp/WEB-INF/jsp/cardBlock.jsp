@@ -31,7 +31,9 @@
                         <p style="color: red"><fmt:message key="${requestScope.wrongPassword}"> </fmt:message></p>
                     </c:if>
                     <div class="form-group mx-sm-3 mb-2">
-                        <button type="submit" class="btn btn-danger"> Cancel</button>
+                        <a style="background-color: lightcoral" href="${Path.PROFILE_PATH}"
+                           class="btn btn-outline-secondary">Cancel</a>
+                       <%-- <button type="submit" class="btn btn-danger"> Cancel</button>--%>
                         <button style="margin-left: 150px" type="submit" class="btn btn-primary"> Confirm</button>
                     </div>
 

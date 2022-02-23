@@ -23,8 +23,15 @@
     <p>User rolesId: <c:out value="${sessionScope.user.rolesId}"></c:out></p>
     <p>User rolesId: <c:out value="${sessionScope.user.rolesId}"></c:out></p>
 </c:if>
+<h1><c:out value="${requestScope.lang}"></c:out></h1>
 
+<%--<a href="javascript:myFunction()"> asdasdasdasdasd</a>--%>
+<input type="button" onclick="${requestScope.lang=en}">
 <c:if test="${sessionScope.user == null}">
+
+
+
+
 <p>User is null</p>
 </c:if>
 
@@ -117,4 +124,5 @@
 </div>
 
 </body>
+
 </html>
