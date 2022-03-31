@@ -23,13 +23,6 @@ public class ProfileServlet extends HttpServlet {
 
         } else req.getRequestDispatcher(Path.LOGIN_JSP).forward(req, resp);
 
-        Cookie[] cookies = req.getCookies();
-        if(cookies != null){
-            for (Cookie cookie : cookies) {
-                System.out.println(cookie.getName() + "  " + cookie.getValue());
-            }
-        }
-
 
     }
 

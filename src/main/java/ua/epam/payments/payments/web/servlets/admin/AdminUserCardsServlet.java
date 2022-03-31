@@ -17,7 +17,7 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.List;
 
-@WebServlet(name = "AdminUserServlet", value = Path.ADMIN_USER_CARDS_PATH)
+@WebServlet(name = "AdminUserCardsServlet", value = Path.ADMIN_USER_CARDS_PATH)
 public class AdminUserCardsServlet extends HttpServlet {
 
     @Override

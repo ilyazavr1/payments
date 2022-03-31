@@ -1,8 +1,18 @@
 package ua.epam.payments.payments.model.entity;
 
 public enum Role {
-    ADMINISTRATOR, CLIENT;
+    ADMINISTRATOR(1), CLIENT(2);
 
+
+    Role(long i) {
+
+    }
+
+    boolean isClient(String role) {
+
+
+        return false;
+    }
 
 
 

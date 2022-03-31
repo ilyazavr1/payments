@@ -32,6 +32,14 @@ public class AccessFilter implements Filter {
             servletRequest.getRequestDispatcher(Path.REGISTRATION_PATH).forward(servletRequest, servletResponse);
             return;
         }
+
+        if (user != null && user.getBlocked()) {
+            req.getSession().invalidate();
+            servletRequest.setAttribute(Constants.USER_IS_BLOCKED, Constants.USER_IS_BLOCKED);
+            servletRequest.getRequestDispatcher(Path.LOGIN_PATH).forward(servletRequest, servletResponse);
+            return;
+        }
+
         if (ADMIN_PATHS.contains(req.getServletPath())) {
             if (user == null) {
                 res.sendRedirect(Path.LOGIN_PATH);
@@ -55,12 +63,7 @@ public class AccessFilter implements Filter {
             }
 
         }
-        if (user != null && user.getBlocked()) {
-            req.getSession().invalidate();
-            servletRequest.setAttribute(Constants.USER_IS_BLOCKED, Constants.USER_IS_BLOCKED);
-            servletRequest.getRequestDispatcher(Path.LOGIN_PATH).forward(servletRequest, servletResponse);
-            return;
-        }
+
 
         filterChain.doFilter(servletRequest, servletResponse);
     }

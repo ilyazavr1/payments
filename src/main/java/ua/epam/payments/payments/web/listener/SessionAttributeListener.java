@@ -13,7 +13,7 @@ public class SessionAttributeListener implements HttpSessionAttributeListener {
     @Override
     public void attributeAdded(HttpSessionBindingEvent event) {
         System.out.println("ATR ADDED");
-        System.out.println( event.getSession().getAttribute("lang"));
+
     }
 
     @Override

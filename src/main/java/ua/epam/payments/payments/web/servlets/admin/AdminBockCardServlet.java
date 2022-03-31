@@ -1,11 +1,8 @@
-package ua.epam.payments.payments.web.servlets;
+package ua.epam.payments.payments.web.servlets.admin;
 
 import org.apache.commons.codec.DecoderException;
 import ua.epam.payments.payments.dao.CardDao;
-import ua.epam.payments.payments.dao.UserDao;
 import ua.epam.payments.payments.dao.impl.CardDaoImpl;
-import ua.epam.payments.payments.dao.impl.UserDaoImpl;
-import ua.epam.payments.payments.model.entity.Role;
 import ua.epam.payments.payments.model.entity.User;
 import ua.epam.payments.payments.services.PasswordEncryption;
 import ua.epam.payments.payments.services.validation.UserValidation;
@@ -21,48 +18,47 @@ import java.io.IOException;
 import java.security.NoSuchAlgorithmException;
 import java.security.spec.InvalidKeySpecException;
 
+@WebServlet(name = "AdminBockCardServlet", value = Path.ADMIN_CARD_BLOCK_PATH)
+public class AdminBockCardServlet extends HttpServlet {
 
-@WebServlet(name = "CardBlock", value = Path.CARD_BLOCK_PATH)
-public class CardBlock extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         req.setAttribute("cardId", req.getParameter("id"));
-        req.getRequestDispatcher(Path.CARD_BLOCK_JSP).forward(req, resp);
+        req.getRequestDispatcher(Path.ADMIN_BLOCK_USER_CARD_JSP).forward(req, resp);
     }
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-
         String cardIdToBlock = req.getParameter("cardId");
         req.setAttribute("cardId", cardIdToBlock);
 
         CardDao cardDao = new CardDaoImpl();
-        UserDao userDao = new UserDaoImpl();
 
+        System.out.println(cardIdToBlock);
         User user = (User) req.getSession().getAttribute("user");
         String password = req.getParameter("password").trim();
-
+        System.out.println(user.getFirstName());
+        System.out.println(password);
         if (password == null || password.isEmpty() || !UserValidation.validatePassword(password)) {
             req.setAttribute(Constants.INVALID_PASSWORD, Constants.INVALID_PASSWORD);
-            req.getRequestDispatcher(Path.CARD_BLOCK_JSP).forward(req, resp);
+            req.getRequestDispatcher(Path.ADMIN_BLOCK_USER_CARD_JSP).forward(req, resp);
         }
 
         try {
             if (!PasswordEncryption.isPasswordCorrect(password, user.getPassword())) {
                 req.setAttribute(Constants.WRONG_PASSWORD, Constants.WRONG_PASSWORD);
-                req.getRequestDispatcher(Path.CARD_BLOCK_JSP).forward(req, resp);
+                req.getRequestDispatcher(Path.ADMIN_BLOCK_USER_CARD_JSP).forward(req, resp);
             }
         } catch (DecoderException | NoSuchAlgorithmException | InvalidKeySpecException e) {
             req.setAttribute(Constants.WRONG_PASSWORD, Constants.WRONG_PASSWORD);
-            req.getRequestDispatcher(Path.CARD_BLOCK_JSP).forward(req, resp);
+            req.getRequestDispatcher(Path.ADMIN_BLOCK_USER_CARD_JSP).forward(req, resp);
         }
 
         cardDao.blockCardById(Long.parseLong(cardIdToBlock));
 
 
-
-
-        resp.sendRedirect(Path.CARDS_PATH);
+        resp.sendRedirect(Path.ADMIN_ALL_USERS_PATH);
     }
+
 }

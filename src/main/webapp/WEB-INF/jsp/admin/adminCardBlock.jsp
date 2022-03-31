@@ -1,14 +1,14 @@
 <%@include file="/jspf/tagLibs.jspf" %>
 <%@include file="/jspf/page.jspf" %>
+<%@taglib prefix="ufn" tagdir="/WEB-INF/tags" %>
 
 <html>
 <head>
     <%@include file="/jspf/bootstrap.jspf" %>
-    <title>Block card</title>
+    <title>Block user card</title>
 </head>
 <body>
 <%@include file="/jspf/navBar.jspf" %>
-
 <div class="container">
 
 
@@ -18,7 +18,7 @@
             <article class="card-body">
 
                 <h4 class="card-title mb-4 mt-1">Confirm</h4>
-                <form action="${Path.CARD_BLOCK_PATH}" method="post">
+                <form action="${Path.ADMIN_CARD_BLOCK_PATH}" method="post">
                     <div class="form-group">
                         <label>Your password</label>
                         <input name="password" class="form-control" placeholder="<fmt:message key="password"/> "
@@ -50,6 +50,8 @@
     </div> <!-- row.// -->
 
 </div>
+
+
 
 </body>
 </html>

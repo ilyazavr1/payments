@@ -7,6 +7,7 @@
     <title>Sign up</title>
 </head>
 <body>
+<%@include file="/jspf/navBar.jspf" %>
 
 <div style="width:400px; margin-top:10%; margin-left: 40%" class="card bg-light">
     <article class="card-body mx-auto" style="max-width: 400px;">
@@ -42,7 +43,7 @@
 
             </div> <!-- form-group// -->
             <c:if test="${requestScope.surnameNotValid != null}">
-                <p style="color: red"><fmt:message key="surnameNotValid"> </fmt:message></p>
+                <p style="color: red"><fmt:message key="exception.surnameNotValid"> </fmt:message></p>
             </c:if>
             <div class="form-group input-group">
                 <div class="input-group-prepend">

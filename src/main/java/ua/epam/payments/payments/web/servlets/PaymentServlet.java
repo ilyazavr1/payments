@@ -49,7 +49,7 @@ public class PaymentServlet extends HttpServlet {
         if (cardDestinationNumber != null) {
             cardDestinationNumber = cardDestinationNumber.replaceAll("[^0-9]+", "");
         }
-        System.out.println(cardDestinationNumber);
+
         if (!cardDestinationNumber.matches("^[0-9]{16}$")) {
             req.setAttribute(Constants.INVALID_CARD_NUMBER, Constants.INVALID_CARD_NUMBER);
             doGet(req, resp);

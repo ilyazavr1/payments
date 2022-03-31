@@ -44,6 +44,8 @@ public class LoginServlet extends HttpServlet {
         String password = req.getParameter("password").trim();
 
         if (email == null || email.isEmpty() || !UserValidation.validateEmail(email)) {
+            System.out.println(email);
+            System.out.println(Constants.INVALID_EMAIL);
             req.setAttribute(Constants.INVALID_EMAIL, Constants.INVALID_EMAIL);
             req.getRequestDispatcher(Path.LOGIN_JSP).forward(req, resp);
         }

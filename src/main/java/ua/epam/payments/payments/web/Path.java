@@ -5,13 +5,23 @@ import java.util.List;
 
 public class Path {
 
-    public static final List<String> ADMIN_PATHS = Arrays.asList(Path.ADMIN_ALL_USERS_PATH, Path.ADMIN_BLOCK_USER_PATH, Path.ADMIN_UNBLOCK_USER_PATH);
+    public static final List<String> ADMIN_PATHS = Arrays.asList(
+            Path.ADMIN_ALL_USERS_PATH,
+            Path.ADMIN_BLOCK_USER_PATH,
+            Path.ADMIN_UNBLOCK_USER_PATH,
+            Path.ADMIN_UNBLOCK_USERS_CARDS_REQUESTS_PATH,
+            Path.ADMIN_UNBLOCK_CARD_PATH,
+            Path.ADMIN_USER_CARDS_PATH
+    );
     public static final List<String> CLIENT_PATHS = Arrays.asList(
             Path.CARDS_PATH,
             Path.CARD_TOP_UP_PATH,
             Path.CARD_CREATE_PATH,
             Path.PAYMENT_PATH,
-            Path.PAYMENTS_PATH
+            Path.PAYMENTS_PATH,
+            Path.PAYMENTS_CONFIRM_PATH,
+            Path.CARD_BLOCK_PATH,
+            Path.CARD_UNBLOCK_REQUEST_PATH
     );
 
     //SERVLETS PATHS
@@ -53,8 +63,9 @@ public class Path {
     public static final String ADMIN_ALL_USERS_JSP = "/WEB-INF/jsp/admin/adminAllUsers.jsp";
     public static final String ADMIN_BLOCK_USER_JSP = "/WEB-INF/jsp/admin/adminBlockUser.jsp";
     public static final String ADMIN_UNBLOCK_CARDS_REQUEST_JSP = "/WEB-INF/jsp/admin/adminCardsUnblock.jsp";
+    public static final String ADMIN_BLOCK_USER_CARD_JSP = "/WEB-INF/jsp/admin/adminCardBlock.jsp";
 
-    public static final String ADMIN_USER_CARDS_JSP = "/WEB-INF/jsp/admin/adminUser.jsp";
+    public static final String ADMIN_USER_CARDS_JSP = "/WEB-INF/jsp/admin/adminUserCards.jsp";
 
 
 

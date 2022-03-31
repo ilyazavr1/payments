@@ -35,6 +35,10 @@ public class CreateCardServlet extends HttpServlet {
             return;
         }
 
+        System.out.println(cardName);
+        System.out.println(req.getCharacterEncoding());
+        System.out.println(resp.getCharacterEncoding());
+
 
         CardDao cardDao = new CardDaoImpl();
 

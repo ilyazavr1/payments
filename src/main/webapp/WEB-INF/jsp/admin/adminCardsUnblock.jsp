@@ -37,7 +37,6 @@
                         <td>${card.firstName}</td>
                         <td>${card.lastName}</td>
                         <td>${card.surname}</td>
-                        <td>${card.cardId}</td>
                         <td>${card.cardNumber}</td>
                         <td>${card.money}</td>
 

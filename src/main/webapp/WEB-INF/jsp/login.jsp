@@ -11,13 +11,10 @@
     <title>Login</title>
 </head>
 <body>
+<%@include file="/jspf/navBar.jspf" %>
 
 <div class="container">
-
-    <hr>
-
     <div class="row">
-
         <div style="width:400px; margin-top:30%; margin-left: 30%" class="card">
             <article class="card-body">
                 <a href="${Path.REGISTRATION_PATH}" class="float-right btn btn-outline-primary">Sign up</a>
@@ -42,7 +39,7 @@
                         <input name="password" class="form-control" placeholder="<fmt:message key="password"/>"
                                type="password">
                             <c:if test="${requestScope.passwordNotValid != null}">
-                                <p style="color: red"><fmt:message key="passwordNotValid"></fmt:message></p>
+                                <p style="color: red"><fmt:message key="passwordNotValid"> </fmt:message></p>
                             </c:if>
                             <c:if test="${requestScope.wrongPassword != null}">
                                 <p style="color: red"><fmt:message key="wrongPassword"> </fmt:message></p>

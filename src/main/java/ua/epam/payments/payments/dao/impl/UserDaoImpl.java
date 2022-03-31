@@ -2,6 +2,7 @@ package ua.epam.payments.payments.dao.impl;
 
 import ua.epam.payments.payments.dao.UserDao;
 import ua.epam.payments.payments.db.DBManager;
+import ua.epam.payments.payments.model.entity.Role;
 import ua.epam.payments.payments.model.entity.User;
 import ua.epam.payments.payments.model.mapper.UserMapper;
 
@@ -16,6 +17,8 @@ public class UserDaoImpl implements UserDao {
     public static final String SQL_CREATE_USER = "INSERT INTO \"user\" values (default, ?, ?, ?, ?, ?, ?, ?)";
     public static final String SQL_BLOCK_USER_BY_ID = "UPDATE \"user\" SET blocked=true WHERE id =?";
     public static final String SQL_UNBLOCK_USER_BY_ID = "UPDATE \"user\" SET blocked=false WHERE id =?";
+
+    public static final String SQL_GET_USER_ROLE_BY_ROLE_ID = "SELECT name FROM role WHERE id=?";
 
     public static final String USER_ID = "id";
 
@@ -60,6 +63,26 @@ public class UserDaoImpl implements UserDao {
         }
 
         return user;
+    }
+
+    @Override
+    public String getUserRoleByRoleId(User user) {
+        String role = null;
+        try (Connection con = DBManager.getInstance().getConnection();
+             PreparedStatement stmt = con.prepareStatement(SQL_GET_USER_ROLE_BY_ROLE_ID)) {
+            stmt.setLong(1, user.getRolesId());
+
+            try (ResultSet rs = stmt.executeQuery()) {
+                while (rs.next()) {
+                 role = rs.getString(1);
+                }
+            }
+
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
+        }
+
+        return role;
     }
 
     @Override

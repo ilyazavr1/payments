@@ -76,7 +76,7 @@ public class RegistrationServlet extends HttpServlet {
             req.getRequestDispatcher(Path.REGISTRATION_JSP).forward(req, resp);
             return;
         }
-        System.out.println("proshlo");
+
         User user = null;
         try {
             user = new User.Builder()
