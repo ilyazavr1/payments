@@ -24,22 +24,30 @@ public class AdminBockCardServlet extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        req.setAttribute("cardId", req.getParameter("id"));
+        req.setAttribute("cardId", req.getSession().getAttribute("cardId"));
+
         req.getRequestDispatcher(Path.ADMIN_BLOCK_USER_CARD_JSP).forward(req, resp);
     }
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+
         String cardIdToBlock = req.getParameter("cardId");
         req.setAttribute("cardId", cardIdToBlock);
+        req.getSession().setAttribute("cardId", req.getParameter("cardId"));
 
+        if (req.getParameter("password") == null){
+            resp.sendRedirect(Path.ADMIN_CARD_BLOCK_PATH);
+            return;
+        }
         CardDao cardDao = new CardDaoImpl();
 
-        System.out.println(cardIdToBlock);
+
+
+
         User user = (User) req.getSession().getAttribute("user");
         String password = req.getParameter("password").trim();
-        System.out.println(user.getFirstName());
-        System.out.println(password);
+
         if (password == null || password.isEmpty() || !UserValidation.validatePassword(password)) {
             req.setAttribute(Constants.INVALID_PASSWORD, Constants.INVALID_PASSWORD);
             req.getRequestDispatcher(Path.ADMIN_BLOCK_USER_CARD_JSP).forward(req, resp);

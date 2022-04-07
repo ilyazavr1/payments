@@ -14,6 +14,9 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.util.Arrays;
+import java.util.Enumeration;
+import java.util.Map;
 
 @WebServlet(name = "CardTopUpServlet", value = Path.CARD_TOP_UP_PATH)
 public class CardTopUpServlet extends HttpServlet {
@@ -22,53 +25,26 @@ public class CardTopUpServlet extends HttpServlet {
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         CardDao cardDao = new CardDaoImpl();
 
-        long cardId = Long.parseLong(req.getParameter("id"));
+        String str = String.valueOf(req.getSession().getAttribute("cardId"));
+        Card card = cardDao.getCardById(Long.parseLong(str));
 
-        Card card = cardDao.getCardById(cardId);
-        if (card.isBlocked()) {
-            resp.sendRedirect(Path.CARDS_PATH);
-            return;
+        if (req.getSession().getAttribute(Constants.INVALID_MONEY_AMOUNT) != null) {
+            req.getSession().removeAttribute(Constants.INVALID_MONEY_AMOUNT);
+            req.setAttribute(Constants.INVALID_MONEY_AMOUNT,Constants.INVALID_MONEY_AMOUNT);
         }
+
         req.setAttribute("card", card);
 
-
         req.getRequestDispatcher(Path.CARD_TOP_UP_JSP).forward(req, resp);
-
     }
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        CardDao cardDao = new CardDaoImpl();
-        String inoutMoney = req.getParameter("money").trim();
-        int moneyTopUp;
-        long cardId = Long.parseLong(req.getParameter("id"));
-
-        User user = (User) req.getSession().getAttribute("user");
-        Card card = cardDao.getCardById(cardId);
-
-        if (card.isBlocked()) {
-            resp.sendRedirect(Path.CARDS_PATH);
-            return;
-        }
-
-        if (inoutMoney == null || inoutMoney.isEmpty()) {
-            req.setAttribute(Constants.INVALID_MONEY_AMOUNT, Constants.INVALID_MONEY_AMOUNT);
-            doGet(req, resp);
-            return;
-        }
-
-        moneyTopUp = Integer.parseInt(req.getParameter("money"));
-
-        if (moneyTopUp <= 0 || moneyTopUp == 100000) {
-            req.setAttribute(Constants.INVALID_MONEY_AMOUNT, Constants.INVALID_MONEY_AMOUNT);
-            doGet(req, resp);
-            return;
-        }
-
-        cardDao.updateCardWithMoney(card, moneyTopUp);
+        if (req.getParameter("cardId") == null) {
+            req.getSession().setAttribute("cardId", req.getSession().getAttribute("cardId"));
+        } else req.getSession().setAttribute("cardId", req.getParameter("cardId"));
 
 
-        //TODO top up card
-        resp.sendRedirect(Path.CARDS_PATH);
+        resp.sendRedirect(Path.CARD_TOP_UP_PATH);
     }
 }

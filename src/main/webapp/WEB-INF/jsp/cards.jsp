@@ -20,44 +20,44 @@
     <input type="hidden" value="${requestScope.records}" name="records">
     <div style="width: 30%" class="row">
         <div class="col">
-            <label for="typeSort">Sort by:</label>
+            <label for="typeSort"><fmt:message key="sortBy"/>:</label>
             <select name="sortingType" class="form-control" id="typeSort">
                 <c:choose>
                     <c:when test="${requestScope.sortingType.equals('number')}">
-                        <option selected value="number">Number</option>
-                        <option value="name">Name</option>
-                        <option value="money">Money</option>
+                        <option selected value="number"><fmt:message key="number"/></option>
+                        <option value="name"><fmt:message key="name"/></option>
+                        <option value="money"><fmt:message key="money"/></option>
                     </c:when>
                     <c:when test="${requestScope.sortingType.equals('name')}">
-                        <option value="number">Number</option>
-                        <option selected value="name">Name</option>
-                        <option value="money">Money</option>
+                        <option value="number"><fmt:message key="number"/></option>
+                        <option selected value="name"><fmt:message key="name"/></option>
+                        <option value="money"><fmt:message key="money"/></option>
                     </c:when>
                     <c:otherwise>
-                        <option value="number">Number</option>
-                        <option value="name">Name</option>
-                        <option selected value="money">Money</option>
+                        <option value="number"><fmt:message key="number"/></option>
+                        <option value="name"><fmt:message key="name"/></option>
+                        <option selected value="money"><fmt:message key="money"/></option>
                     </c:otherwise>
                 </c:choose>
             </select>
         </div>
         <div class="col">
-            <label for="orderSort">Sorting order:</label>
+            <label for="orderSort"><fmt:message key="sortingOrder"/>:</label>
             <select name="sortingOrder" class="form-control" id="orderSort">
                 <c:choose>
                     <c:when test="${requestScope.sortingOrder.equals('asc')}">
-                        <option selected value="asc">Ascending</option>
-                        <option value="desc">Descending</option>
+                        <option selected value="asc"><fmt:message key="ascending"/></option>
+                        <option value="desc"><fmt:message key="descending"/></option>
                     </c:when>
                     <c:otherwise>
-                        <option value="asc">Ascending</option>
-                        <option selected value="desc">Descending</option>
+                        <option value="asc"><fmt:message key="ascending"/></option>
+                        <option selected value="desc"><fmt:message key="descending"/></option>
                     </c:otherwise>
                 </c:choose>
             </select>
         </div>
         <div class="col">
-            <input class="btn btn-primary" type="submit" value="Sort">
+            <input class="btn btn-primary" type="submit" value="<fmt:message key="sort"/>">
         </div>
     </div>
 </form>
@@ -85,10 +85,22 @@
                                 <p class="card-text"><c:out value="${card.money}"> </c:out></p>
                                 <p class="card-text"><cardFormat:formatActiveBlockedBoolean
                                         status="${card.blocked}"> </cardFormat:formatActiveBlockedBoolean></p>
-                                <a style="background-color: lightgreen" href="${cardID}"
-                                   class="btn btn-outline-secondary">TOP UP</a>
-                                <a style="margin-left: 140px; background-color: lightcoral" href="${cardBlockID}"
-                                   class="btn btn-outline-secondary">BLOCK</a>
+                                <div>
+                                    <form style="float: left; width: 40%" action="${Path.CARD_TOP_UP_PATH}" method="post">
+                                        <input type="hidden" name="cardId" value="${card.id}">
+                                        <input type="hidden" name="test" value="test">
+                                        <input style="background-color: lightgreen" type="submit"
+                                               class="btn btn-outline-secondary" value="<fmt:message key="topUp"/>">
+                                    </form>
+
+                                    <form style="float: right; width: 60%" action="${Path.CARD_BLOCK_PATH}" method="post">
+                                        <input type="hidden" name="cardId" value="${card.id}">
+                                        <input style="margin-left: 70px; background-color: lightcoral" type="submit"
+                                               class="btn btn-outline-secondary" value="<fmt:message key="block"/>">
+                                    </form>
+                                </div>
+
+
                             </div>
                         </div>
                     </div>
@@ -121,7 +133,7 @@
                                 <p class="card-text"><c:out value="${card.money}"> </c:out></p>
                                 <p class="card-text"><cardFormat:formatActiveBlockedBoolean
                                         status="${card.blocked}"> </cardFormat:formatActiveBlockedBoolean></p>
-                               <p>Under consideration</p>
+                                <p>Under consideration</p>
 
                             </div>
                         </div>

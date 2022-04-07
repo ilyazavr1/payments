@@ -55,7 +55,7 @@ public class PaymentServlet extends HttpServlet {
             doGet(req, resp);
             return;
         }
-        if (money == null || money.isEmpty() || !money.matches("^[1-9][0-9]{0,4}$")) {
+        if (money == null || money.isEmpty() || !money.matches("^[1-9][0-9]{0,4}$") ) {
             req.setAttribute(Constants.INVALID_MONEY_AMOUNT, Constants.INVALID_MONEY_AMOUNT);
             doGet(req, resp);
             return;
@@ -88,6 +88,14 @@ public class PaymentServlet extends HttpServlet {
         }
 
         int moneyInt = Integer.parseInt(money);
+
+        if (moneyInt <= 0 || moneyInt > 10000  ) {
+            req.setAttribute(Constants.INVALID_MONEY_AMOUNT, Constants.INVALID_MONEY_AMOUNT);
+            doGet(req, resp);
+            return;
+        }
+
+
         if (req.getParameter("prepare") != null && (cardSender.getMoney() - moneyInt) >= 0) {
             paymentsDao.createPreparedPayment(cardSender, cardDestination, moneyInt);
         } else if (req.getParameter("send") != null && (cardSender.getMoney() - moneyInt) >= 0) {

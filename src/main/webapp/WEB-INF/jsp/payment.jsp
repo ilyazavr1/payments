@@ -18,17 +18,16 @@
     <!-- form card cc payment -->
     <div class="card card-outline-secondary">
         <div class="card-body">
-            <h3 class="text-center">Credit Card Payment</h3>
+            <h3 class="text-center"><fmt:message key="makePayment"/> </h3>
             <hr>
 
             <form class="form" role="form" action="${Path.PAYMENT_PATH}" method="post">
                 <div class="form-group">
-                    <label for="cardSender">My cards</label>
-                   <%-- <input type="text" class="form-control" id="cc_name" pattern="\w+ \w+.*" title="First and last name" required="required">--%>
+                    <label for="cardSender"><fmt:message key="myCards"/></label>
                     <select name="cardSenderId" id="cardSender" class="form-control" name="cardSenderId">
                         <c:forEach items="${requestScope.cards}" var="card">
                             <c:set var="cardSender" value="${card.blocked}"> </c:set>
-                            <option value="${card.id}"><cardFormat:formatCardNumber number="${card.number}"/> [name: ${card.name}  balance: ${card.money}]</option>
+                            <option value="${card.id}"><cardFormat:formatCardNumber number="${card.number}"/> [<fmt:message key="name"/>: ${card.name}  <fmt:message key="balance"/>: ${card.money}]</option>
                         </c:forEach>
                     </select>
                     <c:if test="${requestScope.cardSenderIsBlocked != null}">
@@ -39,7 +38,7 @@
                     </c:if>
                 </div>
                 <div class="form-group">
-                    <label>Destination card number</label>
+                    <label><fmt:message key="recipientCard"/></label>
                     <input name="cardDestinationNumber" type="text" class="form-control" >
                 </div>
                 <c:if test="${requestScope.cardsAreSame != null}">
@@ -55,7 +54,7 @@
                     <p style="color: red"><fmt:message key="${requestScope.invalidCardNumber}"></fmt:message></p>
                 </c:if>
                 <div class="row">
-                    <label class="col-md-12">Amount</label>
+                    <label class="col-md-12"><fmt:message key="amount"/></label>
                 </div>
                 <div class="form-inline">
                     <div class="input-group">
@@ -70,13 +69,10 @@
                 <hr>
                 <div class="form-group row">
                     <div class="col-md-6">
-                        <button type="reset" class="btn btn-default btn-lg btn-block">Cancel</button>
+                        <button name="prepare" type="submit" class="btn btn-warning btn-lg btn-block"><fmt:message key="prepare"/></button>
                     </div>
                     <div class="col-md-6">
-                        <button name="prepare" type="submit" class="btn btn-warning btn-lg btn-block">Prepare</button>
-                    </div>
-                    <div class="col-md-6">
-                        <button name="send" type="submit" class="btn btn-success btn-lg btn-block">Send</button>
+                        <button name="send" type="submit" class="btn btn-success btn-lg btn-block"><fmt:message key="send"/></button>
                     </div>
                 </div>
             </form>

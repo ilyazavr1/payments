@@ -27,15 +27,20 @@ public class CardBlock extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        req.setAttribute("cardId", req.getParameter("id"));
+        req.setAttribute("cardId", req.getSession().getAttribute("cardId"));
         req.getRequestDispatcher(Path.CARD_BLOCK_JSP).forward(req, resp);
     }
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-
         String cardIdToBlock = req.getParameter("cardId");
         req.setAttribute("cardId", cardIdToBlock);
+        req.getSession().setAttribute("cardId", req.getParameter("cardId"));
+
+        if (req.getParameter("password") == null) {
+            resp.sendRedirect(Path.CARD_BLOCK_PATH);
+            return;
+        }
 
         CardDao cardDao = new CardDaoImpl();
         UserDao userDao = new UserDaoImpl();
@@ -59,8 +64,6 @@ public class CardBlock extends HttpServlet {
         }
 
         cardDao.blockCardById(Long.parseLong(cardIdToBlock));
-
-
 
 
         resp.sendRedirect(Path.CARDS_PATH);

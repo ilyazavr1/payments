@@ -13,12 +13,12 @@
 
 <div style="padding-left: 50px" class="panel-body">
     <div style="padding-left: 600px">
-        <table>
+        <table style="margin-left: 200px">
             <thead>
             <tr>
-                <th style="padding-right: 150px">Full name:</th>
-                <th style="padding-right: 100px">Email</th>
-                <th>Status</th>
+                <th style="padding-right: 150px"><fmt:message key="fullName"/>:</th>
+                <th style="padding-right: 100px"><fmt:message key="email"/></th>
+                <th><fmt:message key="status"/></th>
             </tr>
 
             </thead>
@@ -37,17 +37,17 @@
 
 
         <div class="row col-md-6 col-md-offset-2 custyle">
-            <table class="table table-striped custab">
+            <table style="margin-left: 150px" class="table table-striped custab">
                 <thead>
 
                 <tr>
                     <th>ID</th>
-                    <th>Card name</th>
-                    <th style="padding-right: 150px">Card number</th>
-                    <th style="padding-right: 50px">Balance</th>
-                    <th>Status</th>
+                    <th><fmt:message key="cardName"/></th>
+                    <th style="padding-right: 150px"><fmt:message key="number"/></th>
+                    <th style="padding-right: 100px"><fmt:message key="balance"/></th>
+                    <th><fmt:message key="status"/></th>
 
-                    <th class="text-center">Action</th>
+                    <th class="text-center"><fmt:message key="cardAction"/></th>
                 </tr>
                 </thead>
                 <c:if test="${requestScope.cards != null}">
@@ -70,16 +70,21 @@
                                     <td> <span class="badge badge-success"><cardFormat:formatActiveBlockedBoolean
                                             status="${card.blocked}"> </cardFormat:formatActiveBlockedBoolean></span>
                                     </td>
-                                    <td><a style="background-color: lightcoral"
-                                           href="${cardBlockID}"
-                                           class="btn btn-outline-secondary">Block</a></td>
+
+                                    <form action="${Path.ADMIN_CARD_BLOCK_PATH}" method="post">
+                                        <td><input style="background-color: lightcoral" type="submit"
+                                                   class="btn btn-outline-secondary"
+                                                   value="<fmt:message key="block"/>"></td>
+                                        <input type="hidden" name="cardId" value="${card.id}">
+                                    </form>
                                 </c:when>
                                 <c:otherwise>
                                     <td> <span class="badge badge-danger"><cardFormat:formatActiveBlockedBoolean
                                             status="${card.blocked}"> </cardFormat:formatActiveBlockedBoolean></span>
                                     </td>
                                     <form action="${Path.ADMIN_UNBLOCK_CARD_PATH}" method="post">
-                                        <td><input type="submit" class="btn btn-success" value="Unblock"></td>
+                                        <td><input type="submit" class="btn btn-success"
+                                                   value="<fmt:message key="unblock"/>"></td>
                                         <input type="hidden" name="cardId" value="${card.id}">
                                     </form>
                                 </c:otherwise>

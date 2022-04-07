@@ -12,20 +12,20 @@
 
 
     <div class="row col-md-6 col-md-offset-2 custyle">
-        <table class="table table-striped custab">
+        <table style="margin-left: 100px" class="table table-striped custab">
             <thead>
             <%--  <a href="#" class="btn btn-primary btn-xs pull-right"><b>+</b> Add new categories</a>--%>
 
             <tr>
-                <th>Id</th>
-                <th>User id</th>
-                <th>First name</th>
-                <th>Last name</th>
-                <th>Surname</th>
-                <th>Card number</th>
-                <th>Money</th>
-                <th>Blocked</th>
-                <th class="text-center">Action</th>
+                <th>#</th>
+                <th>ID</th>
+                <th><fmt:message key="firstName"/></th>
+                <th><fmt:message key="lastName"/></th>
+                <th><fmt:message key="surname"/></th>
+                <th><fmt:message key="number"/></th>
+                <th><fmt:message key="money"/></th>
+                <th><fmt:message key="status"/></th>
+                <th class="text-center"><fmt:message key="cardAction"/></th>
             </tr>
             </thead>
             <c:if test="${requestScope.listCards != null}">
@@ -45,7 +45,7 @@
                         <td> <span class="badge badge-danger"><cardFormat:formatActiveBlockedBoolean
                                 status="${card.blocked}"> </cardFormat:formatActiveBlockedBoolean></span></td>
                         <form action="${Path.ADMIN_UNBLOCK_CARD_PATH}" method="post">
-                            <td><input type="submit" class="btn btn-success" value="Unblock"></td>
+                            <td><input type="submit" class="btn btn-success" value="<fmt:message key="unblock"/>"></td>
                             <input type="hidden" name="cardId" value="${card.cardId}">
                         </form>
 

@@ -29,19 +29,13 @@ public class CreateCardServlet extends HttpServlet {
 
         String cardName = req.getParameter("cardName").trim();
 
-        if (cardName.isEmpty() || cardName == null) {
-            req.setAttribute(Constants.EMPTY_CARD_NAME, Constants.EMPTY_CARD_NAME);
+        if (cardName.length() > 30 || cardName.isEmpty() || cardName == null) {
+            req.setAttribute(Constants.INVALID_CARD_NAME, Constants.INVALID_CARD_NAME);
             req.getRequestDispatcher(Path.CARD_CREATE_JSP).forward(req, resp);
             return;
         }
 
-        System.out.println(cardName);
-        System.out.println(req.getCharacterEncoding());
-        System.out.println(resp.getCharacterEncoding());
-
-
         CardDao cardDao = new CardDaoImpl();
-
 
         String cardNumber = CardGeneration.generateCardNumber();
         Card newCard = new Card.Builder().withName(cardName).withNumber(cardNumber).build();

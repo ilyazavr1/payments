@@ -16,10 +16,7 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.List;
 
-@WebServlet(name = "CardsServlet", value = Path.CARDS_PATH, initParams = {
-        @WebInitParam(name = "records", value = "9"),
-        @WebInitParam(name = "page", value = "1")
-})
+@WebServlet(name = "CardsServlet", value = Path.CARDS_PATH)
 public class CardsServlet extends HttpServlet {
 
 
@@ -70,17 +67,12 @@ public class CardsServlet extends HttpServlet {
         req.setAttribute("loopPagination", 5);
 
         req.getRequestDispatcher(Path.CARDS_JSP).forward(req, resp);
-
-
     }
 
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-
-
         resp.sendRedirect(Path.CARDS_PATH + "?page" + req.getParameter("page") + "&records=" + req.getParameter("re"));
-
     }
 }
 

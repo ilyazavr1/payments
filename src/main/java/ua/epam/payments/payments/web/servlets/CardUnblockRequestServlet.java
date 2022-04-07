@@ -22,18 +22,14 @@ public class CardUnblockRequestServlet extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        System.out.println(req.getParameter("id"));
-        System.out.println("unblock");
-        long cardId = Long.parseLong(req.getParameter("id"));
 
         CardDao cardDao = new CardDaoImpl();
         UserDao userDao = new UserDaoImpl();
 
-        Card card = cardDao.getCardById(cardId);
+        Card card = cardDao.getCardById(Long.parseLong(req.getParameter("id")));
         User user = userDao.getUserById(card.getUserId());
 
-        System.out.println(card);
-        System.out.println(user);
+
         cardDao.updateCardConsiderationById(card.getId());
         cardDao.createCardUnblockRequest(card, user);
 

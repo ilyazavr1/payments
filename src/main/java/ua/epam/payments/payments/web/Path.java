@@ -11,6 +11,7 @@ public class Path {
             Path.ADMIN_UNBLOCK_USER_PATH,
             Path.ADMIN_UNBLOCK_USERS_CARDS_REQUESTS_PATH,
             Path.ADMIN_UNBLOCK_CARD_PATH,
+            Path.ADMIN_CARD_BLOCK_PATH,
             Path.ADMIN_USER_CARDS_PATH
     );
     public static final List<String> CLIENT_PATHS = Arrays.asList(
@@ -21,7 +22,8 @@ public class Path {
             Path.PAYMENTS_PATH,
             Path.PAYMENTS_CONFIRM_PATH,
             Path.CARD_BLOCK_PATH,
-            Path.CARD_UNBLOCK_REQUEST_PATH
+            Path.CARD_UNBLOCK_REQUEST_PATH,
+            Path.CARD_CONFIRM_TOP_UP_PATH
     );
 
     //SERVLETS PATHS
@@ -37,6 +39,7 @@ public class Path {
     public static final String PAYMENTS_CONFIRM_PATH = "/confirmPayment";
     public static final String CARD_BLOCK_PATH = "/card/block";
     public static final String CARD_UNBLOCK_REQUEST_PATH = "/card/unblockRequest";
+    public static final String CARD_CONFIRM_TOP_UP_PATH = "/card/confirmTopUp";
     //admin
     public static final String ADMIN_ALL_USERS_PATH = "/admin/allUsers";
     public static final String ADMIN_BLOCK_USER_PATH = "/admin/blockUser";
@@ -44,8 +47,8 @@ public class Path {
 
     public static final String ADMIN_UNBLOCK_USERS_CARDS_REQUESTS_PATH = "/admin/cards/requests";
     public static final String ADMIN_UNBLOCK_CARD_PATH = "/admin/card/unblock";
-    public static final String ADMIN_USER_CARDS_PATH = "/admin/user/cards";
     public static final String ADMIN_CARD_BLOCK_PATH = "/admin/card/block";
+    public static final String ADMIN_USER_CARDS_PATH = "/admin/user/cards";
 
 
     //JSP

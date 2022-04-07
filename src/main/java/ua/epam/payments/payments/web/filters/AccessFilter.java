@@ -47,7 +47,7 @@ public class AccessFilter implements Filter {
             }
 
             if (user.getRolesId() == 2) {
-                res.sendRedirect(Path.PROFILE_PATH);
+                res.sendRedirect(Path.ADMIN_ALL_USERS_PATH);
                 return;
             }
 
@@ -58,7 +58,7 @@ public class AccessFilter implements Filter {
                 return;
             }
             if (user.getRolesId() == 1) {
-                res.sendRedirect(Path.PROFILE_PATH);
+                res.sendRedirect(Path.CARDS_PATH);
                 return;
             }
 

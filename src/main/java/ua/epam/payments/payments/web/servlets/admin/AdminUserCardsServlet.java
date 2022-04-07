@@ -22,7 +22,9 @@ public class AdminUserCardsServlet extends HttpServlet {
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        super.doPost(req, resp);
+        System.out.println(req.getParameter("userId"));
+        req.getSession().setAttribute("userId",req.getParameter("userId"));
+        resp.sendRedirect(Path.ADMIN_USER_CARDS_PATH);
     }
 
     @Override
@@ -30,7 +32,8 @@ public class AdminUserCardsServlet extends HttpServlet {
         UserDao userDao = new UserDaoImpl();
         CardDao cardDao = new CardDaoImpl();
 
-        long userId = Long.parseLong(req.getParameter("userId"));
+      //  long userId = Long.parseLong(req.getParameter("userId"));
+        long userId = Long.parseLong((String) req.getSession().getAttribute("userId"));
 
         User user = userDao.getUserById(userId);
         List<Card> cards = cardDao.getCardByUser(user);

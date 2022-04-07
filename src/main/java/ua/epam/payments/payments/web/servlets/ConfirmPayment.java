@@ -21,10 +21,7 @@ import java.io.IOException;
 @WebServlet(name = "ConfirmPayment", value = Path.PAYMENTS_CONFIRM_PATH)
 public class ConfirmPayment extends HttpServlet {
 
-    @Override
-    protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 
-    }
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
@@ -49,7 +46,6 @@ public class ConfirmPayment extends HttpServlet {
             return;
         }
 
-        System.out.println(payment);
 
 
         resp.sendRedirect(Path.PAYMENTS_PATH);

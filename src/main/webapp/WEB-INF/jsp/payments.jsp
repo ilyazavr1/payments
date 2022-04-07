@@ -1,7 +1,7 @@
 <%@include file="/jspf/tagLibs.jspf" %>
 <%@include file="/jspf/page.jspf" %>
-<%@taglib prefix="ufn"  tagdir="/WEB-INF/tags" %>
-
+<%@taglib prefix="ufn" tagdir="/WEB-INF/tags" %>
+<%@ page import="ua.epam.payments.payments.model.entity.Payment" %>
 <html>
 <head>
     <title>My payments</title>
@@ -20,37 +20,37 @@
     <input type="hidden" value="${requestScope.records}" name="records">
     <div style="width: 30%" class="row">
         <div class="col">
-            <label for="typeSort">Sort by:</label>
+            <label for="typeSort"><fmt:message key="sortBy"/>:</label>
             <select name="sortingType" class="form-control" id="typeSort">
                 <c:choose>
                     <c:when test="${requestScope.sortingType.equals('creation_timestamp')}">
-                        <option selected value="creation_timestamp">Date</option>
-                        <option value="payment.id">Number</option>
+                        <option selected value="creation_timestamp"><fmt:message key="date"/></option>
+                        <option value="payment.id"><fmt:message key="number"/></option>
                     </c:when>
                     <c:otherwise>
-                        <option value="creation_timestamp">Date</option>
-                        <option selected value="payment.id">Number</option>
+                        <option value="creation_timestamp"><fmt:message key="date"/></option>
+                        <option selected value="payment.id"><fmt:message key="number"/></option>
                     </c:otherwise>
                 </c:choose>
             </select>
         </div>
         <div class="col">
-            <label for="orderSort">Sorting order:</label>
+            <label for="orderSort"><fmt:message key="sortingOrder"/>:</label>
             <select name="sortingOrder" class="form-control" id="orderSort">
                 <c:choose>
                     <c:when test="${requestScope.sortingOrder.equals('asc')}">
-                        <option selected value="asc">Ascending</option>
-                        <option value="desc">Descending</option>
+                        <option selected value="asc"><fmt:message key="ascending"/></option>
+                        <option value="desc"><fmt:message key="descending"/></option>
                     </c:when>
                     <c:otherwise>
-                        <option value="asc">Ascending</option>
-                        <option selected value="desc">Descending</option>
+                        <option value="asc"><fmt:message key="ascending"/></option>
+                        <option selected value="desc"><fmt:message key="descending"/></option>
                     </c:otherwise>
                 </c:choose>
             </select>
         </div>
         <div class="col">
-            <input class="btn btn-primary" type="submit" value="Sort">
+            <input class="btn btn-primary" type="submit" value="<fmt:message key="sort"/>">
         </div>
     </div>
 </form>
@@ -63,16 +63,16 @@
 
 
             <tr>
-                <th>Number</th>
-                <th style="padding-right: 150px">Card from</th>
-                <th>Balance before</th>
-                <th>Payment</th>
-                <th>Balance after</th>
-                <th style="padding-right: 150px">Recipient name</th>
-                <th style="padding-right: 150px">Card to</th>
-                <th style="padding-right: 100px">Time</th>
-                <th>Status</th>
-                <th class="text-center">Action</th>
+                <th><fmt:message key="number"/></th>
+                <th style="padding-right: 150px"><fmt:message key="senderCard"/></th>
+                <th><fmt:message key="balanceBefore"/></th>
+                <th><fmt:message key="paymentSum"/></th>
+                <th><fmt:message key="balanceAfter"/></th>
+                <th style="padding-right: 150px"><fmt:message key="recipientName"/></th>
+                <th style="padding-right: 150px"><fmt:message key="recipientCard"/></th>
+                <th style="padding-right: 150px"><fmt:message key="date"/></th>
+                <th><fmt:message key="status"/></th>
+                <th class="text-center"><fmt:message key="cardAction"/></th>
             </tr>
             </thead>
             <c:if test="${requestScope.payments != null}">
@@ -84,23 +84,29 @@
                         <td>${payment.senderBalance}</td>
                         <td>${payment.money}</td>
                         <td>${payment.senderBalance - payment.money}</td>
-
-                        <td><ufn:fullName firstName="${payment.destinationFirstName}" lastName="${payment.destinationLastName}" surname="${payment.destinationSurname}"></ufn:fullName></td>
-                      <%--  <td>${payment.destinationFirstName}</td>--%>
+                        <td><ufn:fullName firstName="${payment.destinationFirstName}"
+                                          lastName="${payment.destinationLastName}"
+                                          surname="${payment.destinationSurname}"> </ufn:fullName></td>
                         <td style="width: 2000px"><cardFormat:formatCardNumber
                                 number="${payment.destinationCardNumber}"> </cardFormat:formatCardNumber></td>
                         <td><cardFormat:dateTimeFormat
                                 dateTime="${payment.creationTimestamp}"> </cardFormat:dateTimeFormat></td>
-                        <td><span class="badge badge-primary">${payment.status}</span></td>
 
-                        <c:if test="${payment.status.equals('PREPARED')}">
-                        <form action="${Path.PAYMENTS_CONFIRM_PATH}" method="post">
-                            <td><input type="submit" class="btn btn-success" value="Confirm"></td>
-                            <input type="hidden" name="paymentId" value="${payment.id}">
-                        </form>
-                        </c:if>
+
+                        <c:choose>
+                            <c:when test="${payment.status.equals('PREPARED')}">
+                                <td><span class="badge badge-primary"><fmt:message key="statusPrepared"/></span></td>
+                                <form action="${Path.PAYMENTS_CONFIRM_PATH}" method="post">
+                                    <td><input type="submit" class="btn btn-success" value="<fmt:message key="confirm"/>"></td>
+                                    <input type="hidden" name="paymentId" value="${payment.id}">
+                                </form>
+                            </c:when>
+                            <c:otherwise>
+                                <td><span class="badge badge-primary"><fmt:message key="statusSent"/></span></td>
+                            </c:otherwise>
+                        </c:choose>
                         <c:if test="${requestScope.invalidPayment == payment.id}">
-                            <td style="color: red">   <fmt:message key="outOfMoney"></fmt:message> </td>
+                            <td style="color: red"><fmt:message key="outOfMoney"> </fmt:message></td>
                         </c:if>
                     </tr>
 

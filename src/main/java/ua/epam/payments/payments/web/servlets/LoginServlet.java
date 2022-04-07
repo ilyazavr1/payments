@@ -3,6 +3,7 @@ package ua.epam.payments.payments.web.servlets;
 import org.apache.commons.codec.DecoderException;
 import ua.epam.payments.payments.dao.UserDao;
 import ua.epam.payments.payments.dao.impl.UserDaoImpl;
+import ua.epam.payments.payments.model.entity.Role;
 import ua.epam.payments.payments.model.entity.User;
 import ua.epam.payments.payments.services.PasswordEncryption;
 import ua.epam.payments.payments.services.validation.UserValidation;
@@ -36,7 +37,7 @@ public class LoginServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         if (req.getSession().getAttribute("user") != null) {
-           resp.sendRedirect(Path.PROFILE_PATH);
+            resp.sendRedirect(Path.PROFILE_PATH);
             return;
         }
 
@@ -75,7 +76,8 @@ public class LoginServlet extends HttpServlet {
         HttpSession session = req.getSession();
         session.setAttribute("user", user);
 
-
-        resp.sendRedirect(Path.PROFILE_PATH);
+        if (userDao.getUserRoleByRoleId(user).equals(Role.CLIENT.name())) {
+            resp.sendRedirect(Path.CARDS_PATH);
+        } else  resp.sendRedirect(Path.ADMIN_ALL_USERS_PATH);
     }
 }

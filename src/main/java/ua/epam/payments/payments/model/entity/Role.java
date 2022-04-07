@@ -8,11 +8,6 @@ public enum Role {
 
     }
 
-    boolean isClient(String role) {
-
-
-        return false;
-    }
 
 
 

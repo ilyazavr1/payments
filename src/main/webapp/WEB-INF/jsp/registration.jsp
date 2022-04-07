@@ -11,8 +11,8 @@
 
 <div style="width:400px; margin-top:10%; margin-left: 40%" class="card bg-light">
     <article class="card-body mx-auto" style="max-width: 400px;">
-        <h4 class="card-title mt-3 text-center"><fmt:message key="creatAccount"/></h4>
-        <p class="text-center">Get started with your free account</p>
+        <h4 class="card-title mt-3 text-center"><fmt:message key="createAccount"/></h4>
+
 
         <form action="${Path.REGISTRATION_PATH}" method="post">
             <div class="form-group input-group">
@@ -68,10 +68,10 @@
             </c:if>
 
             <div class="form-group">
-                <button type="submit" class="btn btn-primary btn-block"> Create Account</button>
+                <button type="submit" class="btn btn-primary btn-block"> <fmt:message key="createAccount"/></button>
             </div> <!-- form-group// -->
 
-            <p class="text-center">Have an account? <a href="${Path.LOGIN_PATH}">Sign In</a></p>
+            <p class="text-center"><fmt:message key="haveAccount"/> <a href="${Path.LOGIN_PATH}"><fmt:message key="signIn"/></a></p>
         </form>
     </article>
 </div> <!-- card.// -->

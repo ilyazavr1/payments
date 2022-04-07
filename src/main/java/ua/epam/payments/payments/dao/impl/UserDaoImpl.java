@@ -13,7 +13,7 @@ import java.util.List;
 public class UserDaoImpl implements UserDao {
     public static final String SQL_GET_USER_BY_ID = "SELECT * FROM \"user\" WHERE id=?";
     public static final String SQL_GET_USER_BY_EMAIL = "SELECT * FROM \"user\" WHERE email=?";
-    public static final String SQL_GET_ALL_USERS = "SELECT * FROM \"user\"";
+    public static final String SQL_GET_ALL_USERS = "SELECT * FROM \"user\" ORDER BY id";
     public static final String SQL_CREATE_USER = "INSERT INTO \"user\" values (default, ?, ?, ?, ?, ?, ?, ?)";
     public static final String SQL_BLOCK_USER_BY_ID = "UPDATE \"user\" SET blocked=true WHERE id =?";
     public static final String SQL_UNBLOCK_USER_BY_ID = "UPDATE \"user\" SET blocked=false WHERE id =?";
