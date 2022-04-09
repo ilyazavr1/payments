@@ -4,8 +4,8 @@ import org.apache.commons.codec.DecoderException;
 import ua.epam.payments.payments.dao.CardDao;
 import ua.epam.payments.payments.dao.impl.CardDaoImpl;
 import ua.epam.payments.payments.model.entity.User;
-import ua.epam.payments.payments.services.PasswordEncryption;
-import ua.epam.payments.payments.services.validation.UserValidation;
+import ua.epam.payments.payments.util.PasswordEncryption;
+import ua.epam.payments.payments.util.UserService;
 import ua.epam.payments.payments.web.Constants;
 import ua.epam.payments.payments.web.Path;
 
@@ -44,17 +44,18 @@ public class AdminBockCardServlet extends HttpServlet {
 
 
 
-
+        UserService userService = new UserService();
         User user = (User) req.getSession().getAttribute("user");
         String password = req.getParameter("password").trim();
+        PasswordEncryption passwordEncryption = new PasswordEncryption();
 
-        if (password == null || password.isEmpty() || !UserValidation.validatePassword(password)) {
+        if ( password.isEmpty() || !userService.validatePassword(password)) {
             req.setAttribute(Constants.INVALID_PASSWORD, Constants.INVALID_PASSWORD);
             req.getRequestDispatcher(Path.ADMIN_BLOCK_USER_CARD_JSP).forward(req, resp);
         }
 
         try {
-            if (!PasswordEncryption.isPasswordCorrect(password, user.getPassword())) {
+            if (!passwordEncryption.isPasswordCorrect(password, user.getPassword())) {
                 req.setAttribute(Constants.WRONG_PASSWORD, Constants.WRONG_PASSWORD);
                 req.getRequestDispatcher(Path.ADMIN_BLOCK_USER_CARD_JSP).forward(req, resp);
             }

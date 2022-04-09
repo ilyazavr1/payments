@@ -5,10 +5,9 @@ import ua.epam.payments.payments.dao.CardDao;
 import ua.epam.payments.payments.dao.UserDao;
 import ua.epam.payments.payments.dao.impl.CardDaoImpl;
 import ua.epam.payments.payments.dao.impl.UserDaoImpl;
-import ua.epam.payments.payments.model.entity.Role;
 import ua.epam.payments.payments.model.entity.User;
-import ua.epam.payments.payments.services.PasswordEncryption;
-import ua.epam.payments.payments.services.validation.UserValidation;
+import ua.epam.payments.payments.util.PasswordEncryption;
+import ua.epam.payments.payments.util.UserService;
 import ua.epam.payments.payments.web.Constants;
 import ua.epam.payments.payments.web.Path;
 
@@ -41,20 +40,21 @@ public class CardBlock extends HttpServlet {
             resp.sendRedirect(Path.CARD_BLOCK_PATH);
             return;
         }
-
+        PasswordEncryption passwordEncryption = new PasswordEncryption();
+        UserService userService = new UserService();
         CardDao cardDao = new CardDaoImpl();
         UserDao userDao = new UserDaoImpl();
 
         User user = (User) req.getSession().getAttribute("user");
         String password = req.getParameter("password").trim();
 
-        if (password == null || password.isEmpty() || !UserValidation.validatePassword(password)) {
+        if ( password.isEmpty() || !userService.validatePassword(password)) {
             req.setAttribute(Constants.INVALID_PASSWORD, Constants.INVALID_PASSWORD);
             req.getRequestDispatcher(Path.CARD_BLOCK_JSP).forward(req, resp);
         }
 
         try {
-            if (!PasswordEncryption.isPasswordCorrect(password, user.getPassword())) {
+            if (!passwordEncryption.isPasswordCorrect(password, user.getPassword())) {
                 req.setAttribute(Constants.WRONG_PASSWORD, Constants.WRONG_PASSWORD);
                 req.getRequestDispatcher(Path.CARD_BLOCK_JSP).forward(req, resp);
             }

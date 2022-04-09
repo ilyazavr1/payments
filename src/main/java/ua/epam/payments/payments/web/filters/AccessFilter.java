@@ -1,5 +1,6 @@
 package ua.epam.payments.payments.web.filters;
 
+import ua.epam.payments.payments.model.entity.Role;
 import ua.epam.payments.payments.model.entity.User;
 import ua.epam.payments.payments.web.Constants;
 import ua.epam.payments.payments.web.Path;
@@ -24,16 +25,17 @@ public class AccessFilter implements Filter {
         HttpServletRequest req = (HttpServletRequest) servletRequest;
         HttpServletResponse res = (HttpServletResponse) servletResponse;
         User user = (User) req.getSession().getAttribute("user");
-        if (user == null && req.getServletPath().equals(Path.LOGIN_PATH)) {
+        if (user == null) {
+            if (req.getServletPath().equals(Path.LOGIN_PATH) || req.getServletPath().equals(Path.REGISTRATION_PATH)) {
+                servletRequest.getRequestDispatcher(req.getServletPath()).forward(servletRequest, servletResponse);
+                return;
+            }
             servletRequest.getRequestDispatcher(Path.LOGIN_PATH).forward(servletRequest, servletResponse);
             return;
         }
-        if (user == null && req.getServletPath().equals(Path.REGISTRATION_PATH)) {
-            servletRequest.getRequestDispatcher(Path.REGISTRATION_PATH).forward(servletRequest, servletResponse);
-            return;
-        }
 
-        if (user != null && user.getBlocked()) {
+
+        if (user.getBlocked()) {
             req.getSession().invalidate();
             servletRequest.setAttribute(Constants.USER_IS_BLOCKED, Constants.USER_IS_BLOCKED);
             servletRequest.getRequestDispatcher(Path.LOGIN_PATH).forward(servletRequest, servletResponse);
@@ -41,33 +43,19 @@ public class AccessFilter implements Filter {
         }
 
         if (ADMIN_PATHS.contains(req.getServletPath())) {
-            if (user == null) {
-                res.sendRedirect(Path.LOGIN_PATH);
-                return;
-            }
-
-            if (user.getRolesId() == 2) {
-                res.sendRedirect(Path.ADMIN_ALL_USERS_PATH);
-                return;
-            }
-
-        }
-        if (CLIENT_PATHS.contains(req.getServletPath())) {
-            if (user == null) {
-                res.sendRedirect(Path.LOGIN_PATH);
-                return;
-            }
-            if (user.getRolesId() == 1) {
+            if (req.getSession().getAttribute("userRole").equals(Role.CLIENT.name())) {
                 res.sendRedirect(Path.CARDS_PATH);
                 return;
             }
-
+        }
+        if (CLIENT_PATHS.contains(req.getServletPath())) {
+            if (req.getSession().getAttribute("userRole").equals(Role.ADMINISTRATOR.name())) {
+                res.sendRedirect(Path.ADMIN_ALL_USERS_PATH);
+                return;
+            }
         }
 
 
         filterChain.doFilter(servletRequest, servletResponse);
     }
 }
-// servletRequest.getRequestDispatcher(Path.PROFILE_PATH).forward(servletRequest,servletResponse);
-//servletRequest.getRequestDispatcher(Path.LOGIN_PATH).forward(servletRequest,servletResponse);
-//  res.sendRedirect(Path.LOGIN_PATH);

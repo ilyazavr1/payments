@@ -46,7 +46,7 @@ public class PaymentServlet extends HttpServlet {
         String cardDestinationNumber = req.getParameter("cardDestinationNumber").trim();
         String money = req.getParameter("money").trim();
 
-        if (cardDestinationNumber != null) {
+        if (!cardDestinationNumber.isEmpty()) {
             cardDestinationNumber = cardDestinationNumber.replaceAll("[^0-9]+", "");
         }
 
@@ -55,14 +55,22 @@ public class PaymentServlet extends HttpServlet {
             doGet(req, resp);
             return;
         }
-        if (money == null || money.isEmpty() || !money.matches("^[1-9][0-9]{0,4}$") ) {
+
+        Card cardSender = cardDao.getCardById(cardSenderId);
+        Card cardDestination = cardDao.getCardByNumber(cardDestinationNumber);
+
+        if (cardDestination == null) {
+            req.setAttribute(Constants.INVALID_CARD_NUMBER, Constants.INVALID_CARD_NUMBER);
+            doGet(req, resp);
+            return;
+        }
+
+        if ( money.isEmpty() || !money.replaceFirst("^0*", "").matches("^[0-9]{0,4}$") ) {
             req.setAttribute(Constants.INVALID_MONEY_AMOUNT, Constants.INVALID_MONEY_AMOUNT);
             doGet(req, resp);
             return;
         }
 
-        Card cardSender = cardDao.getCardById(cardSenderId);
-        Card cardDestination = cardDao.getCardByNumber(cardDestinationNumber);
 
         if (cardSender.isBlocked()){
             req.setAttribute(Constants.CARD_SENDER_IS_BLOCKED, Constants.CARD_SENDER_IS_BLOCKED);
@@ -81,11 +89,6 @@ public class PaymentServlet extends HttpServlet {
             return;
         }
 
-        if (cardDestination == null) {
-            req.setAttribute(Constants.INVALID_CARD, Constants.INVALID_CARD);
-            doGet(req, resp);
-            return;
-        }
 
         int moneyInt = Integer.parseInt(money);
 

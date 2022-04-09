@@ -26,6 +26,9 @@
                             <c:if test="${requestScope.invalidCardName != null}">
                                 <p style="color: red"><fmt:message key="invalidCardName"/></p>
                             </c:if>
+                            <c:if test="${requestScope.failedToCreateCard != null}">
+                                <p style="color: red"><fmt:message key="failedToCreateCard"/></p>
+                            </c:if>
                         </div>
 
                         <div class="form-group mx-sm-3 mb-2">

@@ -10,7 +10,7 @@ public class Constants {
     public static final String INVALID_EMAIL = "emailNotValid";
     public static final String INVALID_FIRST_NAME = "firstNameNotValid";
     public static final String INVALID_LAST_NAME = "lastNameNotValid";
-    public static final String INVALID_SURNAME = "exception.surnameNotValid";
+    public static final String INVALID_SURNAME = "surnameNotValid";
 
     public static final String INVALID_CARD_NAME = "invalidCardName";
     public static final String OUT_OF_MONEY = "outOfMoney";
@@ -23,7 +23,8 @@ public class Constants {
 
     public static final String INVALID_CARD_NUMBER = "invalidCardNumber";
     public static final String INVALID_MONEY_AMOUNT = "invalidMoneyAmount";
-    public static final String INVALID_CARD = "invalidCard";
+    public static final String FAILED_TO_CREATE_CARD = "failedToCreateCard";
+
 
 
 }

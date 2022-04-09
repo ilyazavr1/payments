@@ -4,7 +4,7 @@ import ua.epam.payments.payments.dao.PaymentsDao;
 import ua.epam.payments.payments.dao.impl.PaymentsDaoImpl;
 import ua.epam.payments.payments.model.dto.FullPaymentDto;
 import ua.epam.payments.payments.model.entity.User;
-import ua.epam.payments.payments.services.sorting.PaymentService;
+import ua.epam.payments.payments.util.sorting.PaymentService;
 import ua.epam.payments.payments.web.Path;
 
 import javax.servlet.ServletException;

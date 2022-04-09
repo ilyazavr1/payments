@@ -1,4 +1,4 @@
-package ua.epam.payments.payments.services.sorting;
+package ua.epam.payments.payments.util.sorting;
 
 import ua.epam.payments.payments.dao.CardDao;
 import ua.epam.payments.payments.model.entity.Card;
@@ -48,10 +48,3 @@ public class CardsService {
     }
 }
 
-  /*   Comparator<Card> comparatorNumber = Comparator.comparing(Card::getNumber);
-        Comparator<Card> comparatorNumberReversed = Comparator.comparing(Card::getNumber, Comparator.reverseOrder());
-        Comparator<Card> comparatorName = Comparator.comparing(Card::getName);
-        Comparator<Card> comparatorNameReversed = Comparator.comparing(Card::getName, Comparator.reverseOrder());
-        Comparator<Card> comparatorMoney = Comparator.comparing(Card::getMoney);
-        Comparator<Card> comparatorMoneyReversed = Comparator.comparing(Card::getMoney, Comparator.reverseOrder());
-*/

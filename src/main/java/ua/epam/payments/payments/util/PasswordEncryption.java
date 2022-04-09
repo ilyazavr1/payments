@@ -1,4 +1,4 @@
-package ua.epam.payments.payments.services;
+package ua.epam.payments.payments.util;
 
 
 import org.apache.commons.codec.DecoderException;
@@ -16,25 +16,25 @@ public class PasswordEncryption {
     private static final int SALT_SIZE = 16;
 
 
-    public static String encrypt(String password) throws NoSuchAlgorithmException, InvalidKeySpecException {
+    public  String encrypt(String password) throws NoSuchAlgorithmException, InvalidKeySpecException {
         byte[] salt =getSalt();
         return Hex.encodeHexString(hashPassword(password, salt))  + Hex.encodeHexString(salt);
     }
 
-    private static byte[] hashPassword(String password, byte[] salt) throws NoSuchAlgorithmException, InvalidKeySpecException {
+    private  byte[] hashPassword(String password, byte[] salt) throws NoSuchAlgorithmException, InvalidKeySpecException {
         PBEKeySpec  spec = new PBEKeySpec(password.toCharArray(), salt, ITERATIONS, KEY_LENGTH);
         SecretKeyFactory factory = SecretKeyFactory.getInstance("PBKDF2WithHmacSHA1");
         return factory.generateSecret(spec).getEncoded();
     }
 
-    private static byte[] getSalt() {
+    private  byte[] getSalt() {
         SecureRandom random = new SecureRandom();
         byte[] salt = new byte[SALT_SIZE];
         random.nextBytes(salt);
         return salt;
     }
 
-    public static boolean isPasswordCorrect(String inputPassword, String hashedPassword) throws DecoderException, NoSuchAlgorithmException, InvalidKeySpecException {
+    public  boolean isPasswordCorrect(String inputPassword, String hashedPassword) throws DecoderException, NoSuchAlgorithmException, InvalidKeySpecException {
         String storedHexPassword = hashedPassword.substring(0, (KEY_LENGTH / 8) * 2);
         byte[] salt = Hex.decodeHex(hashedPassword.substring(KEY_LENGTH / 8 * 2).toCharArray());
         String hashedPassToCheck = Hex.encodeHexString(hashPassword(inputPassword, salt));

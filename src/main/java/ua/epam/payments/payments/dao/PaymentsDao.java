@@ -15,7 +15,7 @@ public interface PaymentsDao {
 
     List<FullPaymentDto> getFullPaymentsByUser(User user);
 
-   List<FullPaymentDto> getFullPaymentsByUserLimitSorted(User user, String query) ;
+    List<FullPaymentDto> getFullPaymentsByUserLimitSorted(User user, String query);
 
     List<FullPaymentDto> getFullPayments();
 
