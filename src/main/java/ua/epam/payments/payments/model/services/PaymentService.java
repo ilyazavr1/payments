@@ -48,7 +48,7 @@ public class PaymentService {
 
 
     public boolean createPreparedPayment(Card cardSender, Card cardDestination, String money) throws InvalidMoneyException, OutOfMoneyException {
-        if (money.isEmpty() || !money.replaceFirst("^0*", "").matches("^[0-9]{0,4}$"))
+        if (money.isEmpty() || !money.replaceFirst("^0*", "").matches("^[0-9]{0,5}$"))
             throw new InvalidMoneyException();
         int moneyInt = Integer.parseInt(money);
         if (moneyInt <= 0 || moneyInt > 10000) throw new InvalidMoneyException();
@@ -75,15 +75,14 @@ public class PaymentService {
         return paymentDao.updatePreparedPaymentMoney(paymentList);
     }
 
-    public boolean createConfirmedPayment(Card cardSender, Card cardDestination, int money) {
-        return paymentDao.createConfirmedPayment(cardSender, cardDestination, money);
-    }
+
 
     public boolean makePayment(Card cardSender, Card cardDestination, String money) throws InvalidMoneyException, OutOfMoneyException {
-        if (money.isEmpty() || !money.replaceFirst("^0*", "").matches("^[0-9]{0,4}$"))
+        if (money.isEmpty() || !money.replaceFirst("^0*", "").matches("^[0-9]{0,5}$")) {
             throw new InvalidMoneyException();
+        }
         int moneyInt = Integer.parseInt(money);
-        if (moneyInt <= 0 || moneyInt > 10000) throw new InvalidMoneyException();
+        if (moneyInt < 0 || moneyInt > 10000) throw new InvalidMoneyException();
         if ((cardSender.getMoney() - moneyInt) < 0) throw new OutOfMoneyException();
 
 
@@ -91,11 +90,7 @@ public class PaymentService {
                 && paymentDao.createConfirmedPayment(cardSender, cardDestination, moneyInt);
     }
 
-    public boolean confirmAndMakePayment(Card cardSender, Card cardDestination) {
 
-
-        return false;
-    }
 
     public List<FullPaymentDto> sort(long id, String type, String order, int limit, int offset) {
 

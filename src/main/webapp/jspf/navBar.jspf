@@ -1,6 +1,6 @@
 <%@include file="/jspf/tagLibs.jspf" %>
 <%@include file="/jspf/page.jspf" %>
-
+<%@ page import="ua.epam.payments.payments.model.entity.Role" %>
 
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -11,7 +11,8 @@
 
 
 <c:choose>
-    <c:when test="${sessionScope.user.rolesId ==2}">
+   <%-- <c:when test="${sessionScope.user.rolesId ==2}">--%>
+    <c:when test="${sessionScope.userRole == Role.CLIENT.name()}">
         <nav class="navbar navbar-expand-sm bg-dark navbar-dark">
 
             <a class="navbar-brand" href="${Path.CARDS_PATH}">Payments</a>
@@ -63,7 +64,7 @@
         <br>
 
     </c:when>
-    <c:when test="${sessionScope.user.rolesId ==1}">
+    <c:when test="${sessionScope.userRole == Role.ADMINISTRATOR.name()}">
 
         <nav class="navbar navbar-expand-sm bg-dark navbar-dark">
 

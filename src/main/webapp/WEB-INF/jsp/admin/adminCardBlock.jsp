@@ -32,7 +32,7 @@
                         <p style="color: red"><fmt:message key="${requestScope.wrongPassword}"> </fmt:message></p>
                     </c:if>
                     <div class="form-group mx-sm-3 mb-2">
-                        <a style="background-color: lightcoral" href="${Path.PROFILE_PATH}"
+                        <a style="background-color: lightcoral" href="${Path.ADMIN_USER_CARDS_PATH}"
                            class="btn btn-outline-secondary"><fmt:message key="cancel"/></a>
                         <button style="margin-left: 150px" type="submit" class="btn btn-primary"><fmt:message key="confirm"/></button>
                     </div>

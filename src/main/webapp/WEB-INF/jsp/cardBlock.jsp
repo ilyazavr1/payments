@@ -26,16 +26,16 @@
 
                     </div>
                     <c:if test="${requestScope.passwordNotValid != null}">
-                        <p style="color: red"><fmt:message key="${requestScope.passwordNotValid}"> </fmt:message></p>
+                        <p style="color: red"><fmt:message key="${requestScope.passwordNotValid}"/> </p>
                     </c:if>
                     <c:if test="${requestScope.wrongPassword != null}">
-                        <p style="color: red"><fmt:message key="${requestScope.wrongPassword}"> </fmt:message></p>
+                        <p style="color: red"><fmt:message key="${requestScope.wrongPassword}"/></p>
                     </c:if>
                     <div class="form-group mx-sm-3 mb-2">
-                        <a style="background-color: lightcoral" href="${Path.PROFILE_PATH}"
-                           class="btn btn-outline-secondary">Cancel</a>
+                        <a style="background-color: lightcoral" href="${Path.CARDS_PATH}"
+                           class="btn btn-outline-secondary"><fmt:message key="cancel"/></a>
                         <%-- <button type="submit" class="btn btn-danger"> Cancel</button>--%>
-                        <button style="margin-left: 150px" type="submit" class="btn btn-primary"> Confirm</button>
+                        <button style="margin-left: 150px" type="submit" class="btn btn-primary"> <fmt:message key="confirm"/></button>
                     </div>
 
 
