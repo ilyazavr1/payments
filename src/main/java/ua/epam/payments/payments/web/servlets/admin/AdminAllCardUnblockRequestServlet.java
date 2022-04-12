@@ -1,8 +1,8 @@
 package ua.epam.payments.payments.web.servlets.admin;
 
 
-import ua.epam.payments.payments.dao.CardDao;
-import ua.epam.payments.payments.dao.impl.CardDaoImpl;
+import ua.epam.payments.payments.model.dao.CardDao;
+import ua.epam.payments.payments.model.dao.impl.CardDaoImpl;
 import ua.epam.payments.payments.model.dto.CardsUnblockRequestDto;
 import ua.epam.payments.payments.web.Path;
 
@@ -23,7 +23,7 @@ public class AdminAllCardUnblockRequestServlet extends HttpServlet {
         CardDao cardDao = new CardDaoImpl();
         List<CardsUnblockRequestDto> listCards = new ArrayList<>();
 
-        listCards = cardDao.getCardRequestsLimitSorted();
+        listCards = cardDao.getCardRequests();
 
         req.setAttribute("listCards", listCards);
 

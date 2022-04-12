@@ -2,11 +2,10 @@ package ua.epam.payments.payments.web.servlets;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import ua.epam.payments.payments.dao.CardDao;
-import ua.epam.payments.payments.dao.impl.CardDaoImpl;
+import ua.epam.payments.payments.model.dao.impl.CardDaoImpl;
 import ua.epam.payments.payments.model.entity.Card;
 import ua.epam.payments.payments.model.entity.User;
-import ua.epam.payments.payments.util.sorting.CardsService;
+import ua.epam.payments.payments.model.services.CardService;
 import ua.epam.payments.payments.web.Path;
 
 import javax.servlet.ServletException;
@@ -24,8 +23,8 @@ public class CardsServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         logger.debug("CardsServlet started");
-        CardsService cardsSorting = new CardsService();
-        CardDao cardDao = new CardDaoImpl();
+        CardService cardService = new CardService(new CardDaoImpl());
+
         User user = (User) req.getSession().getAttribute("user");
 
         int limit;
@@ -62,7 +61,7 @@ public class CardsServlet extends HttpServlet {
         } else offset = 1;
 
 
-        List<Card> cards = cardsSorting.sort(cardDao, user, sortingType, sortingOrder, limit, (limit * (offset - 1)));
+        List<Card> cards = cardService.sort( user.getId(), sortingType, sortingOrder, limit, (limit * (offset - 1)));
 
 
         req.setAttribute("cards", cards);

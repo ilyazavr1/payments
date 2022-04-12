@@ -25,6 +25,10 @@
                         <c:if test="${requestScope.userIsBlocked != null}">
                            <p><fmt:message key="userIsBlocked"/> </p>
                         </c:if>
+                        <c:if test="${requestScope.authenticationFailed != null}">
+                           <p><fmt:message key="authenticationFailed"/> </p>
+                        </c:if>
+
                         <label><fmt:message key="email"/></label>
                         <input name="email" class="form-control" placeholder="<fmt:message key="email"/> " type="text">
                         <c:if test="${requestScope.emailNotValid != null}">

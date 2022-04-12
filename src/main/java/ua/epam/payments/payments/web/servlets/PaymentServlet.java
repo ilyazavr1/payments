@@ -1,12 +1,19 @@
 package ua.epam.payments.payments.web.servlets;
 
 
-import ua.epam.payments.payments.dao.CardDao;
-import ua.epam.payments.payments.dao.PaymentsDao;
-import ua.epam.payments.payments.dao.impl.CardDaoImpl;
-import ua.epam.payments.payments.dao.impl.PaymentsDaoImpl;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+import ua.epam.payments.payments.model.dao.CardDao;
+import ua.epam.payments.payments.model.dao.impl.CardDaoImpl;
+import ua.epam.payments.payments.model.dao.impl.PaymentsDaoImpl;
 import ua.epam.payments.payments.model.entity.Card;
 import ua.epam.payments.payments.model.entity.User;
+import ua.epam.payments.payments.model.exception.InvalidCardNumberException;
+import ua.epam.payments.payments.model.exception.InvalidMoneyException;
+import ua.epam.payments.payments.model.exception.OutOfMoneyException;
+import ua.epam.payments.payments.model.services.CardService;
+import ua.epam.payments.payments.model.services.PaymentService;
+import ua.epam.payments.payments.model.util.validation.CardValidation;
 import ua.epam.payments.payments.web.Constants;
 import ua.epam.payments.payments.web.Path;
 
@@ -20,15 +27,17 @@ import java.util.List;
 
 @WebServlet(name = "PaymentServlet", value = Path.PAYMENT_PATH)
 public class PaymentServlet extends HttpServlet {
+    private static final Logger logger = LogManager.getLogger(CardBlock.class);
+
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        CardService cardService = new CardService(new CardDaoImpl());
 
-        CardDao cardDao = new CardDaoImpl();
 
         User user = (User) req.getSession().getAttribute("user");
 
-        List<Card> cards = cardDao.getCardByUser(user);
+        List<Card> cards = cardService.getCardByUserId(user.getId());
 
         req.setAttribute("cards", cards);
 
@@ -39,76 +48,58 @@ public class PaymentServlet extends HttpServlet {
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        PaymentsDao paymentsDao = new PaymentsDaoImpl();
-        CardDao cardDao = new CardDaoImpl();
+        logger.debug("PaymentServlet tarted");
+
+        CardService cardService = new CardService(new CardDaoImpl());
+        PaymentService paymentService = new PaymentService(new PaymentsDaoImpl(), new CardDaoImpl());
+        CardValidation cardValidation = new CardValidation();
 
         long cardSenderId = Long.parseLong(req.getParameter("cardSenderId"));
         String cardDestinationNumber = req.getParameter("cardDestinationNumber").trim();
         String money = req.getParameter("money").trim();
 
-        if (!cardDestinationNumber.isEmpty()) {
-            cardDestinationNumber = cardDestinationNumber.replaceAll("[^0-9]+", "");
-        }
 
-        if (!cardDestinationNumber.matches("^[0-9]{16}$")) {
+        if (!cardValidation.isCardNumberValid(cardDestinationNumber)) {
             req.setAttribute(Constants.INVALID_CARD_NUMBER, Constants.INVALID_CARD_NUMBER);
             doGet(req, resp);
             return;
         }
 
-        Card cardSender = cardDao.getCardById(cardSenderId);
-        Card cardDestination = cardDao.getCardByNumber(cardDestinationNumber);
+        Card cardSender = cardService.getCardById(cardSenderId);
+        Card cardDestination = cardService.getCardByNumber(cardDestinationNumber.replaceAll("[^0-9]+", "").trim());
 
-        if (cardDestination == null) {
+
+        try {
+            if (!cardValidation.isCardsValid(cardSender, cardDestination)) {
+                cardValidation.getErrors().forEach(err -> req.setAttribute(err, err));
+                doGet(req, resp);
+                return;
+            }
+
+
+            if (req.getParameter("prepare") != null) {
+                paymentService.createPreparedPayment(cardSender, cardDestination, money);
+                logger.info("Payment prepared");
+            } else if (req.getParameter("send") != null) {
+                paymentService.makePayment(cardSender, cardDestination, money);
+                logger.info("Payment has been made");
+            }
+
+        } catch (InvalidCardNumberException e) {
             req.setAttribute(Constants.INVALID_CARD_NUMBER, Constants.INVALID_CARD_NUMBER);
             doGet(req, resp);
             return;
-        }
-
-        if ( money.isEmpty() || !money.replaceFirst("^0*", "").matches("^[0-9]{0,4}$") ) {
+        } catch (InvalidMoneyException e) {
             req.setAttribute(Constants.INVALID_MONEY_AMOUNT, Constants.INVALID_MONEY_AMOUNT);
             doGet(req, resp);
             return;
-        }
-
-
-        if (cardSender.isBlocked()){
-            req.setAttribute(Constants.CARD_SENDER_IS_BLOCKED, Constants.CARD_SENDER_IS_BLOCKED);
-            doGet(req, resp);
-            return;
-        }
-        if (cardDestination.isBlocked()){
-            req.setAttribute(Constants.CARD_DESTINATION_IS_BLOCKED, Constants.CARD_DESTINATION_IS_BLOCKED);
-            doGet(req, resp);
-            return;
-        }
-
-        if (cardSender.getId() == cardDestination.getId()){
-            req.setAttribute(Constants.CARDS_ARE_SAME, Constants.CARDS_ARE_SAME);
-            doGet(req, resp);
-            return;
-        }
-
-
-        int moneyInt = Integer.parseInt(money);
-
-        if (moneyInt <= 0 || moneyInt > 10000  ) {
-            req.setAttribute(Constants.INVALID_MONEY_AMOUNT, Constants.INVALID_MONEY_AMOUNT);
-            doGet(req, resp);
-            return;
-        }
-
-
-        if (req.getParameter("prepare") != null && (cardSender.getMoney() - moneyInt) >= 0) {
-            paymentsDao.createPreparedPayment(cardSender, cardDestination, moneyInt);
-        } else if (req.getParameter("send") != null && (cardSender.getMoney() - moneyInt) >= 0) {
-            cardDao.transferMoneyFromCardToCard(cardSender.getId(), cardDestination.getId(), moneyInt);
-            paymentsDao.createConfirmedPayment(cardSender, cardDestination, moneyInt);
-        } else {
+        } catch (OutOfMoneyException e) {
+            System.out.println("out ");
             req.setAttribute(Constants.OUT_OF_MONEY, Constants.OUT_OF_MONEY);
             doGet(req, resp);
             return;
         }
+
 
         resp.sendRedirect(Path.PAYMENTS_PATH);
     }

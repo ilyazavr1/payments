@@ -1,7 +1,6 @@
-package ua.epam.payments.payments.dao;
+package ua.epam.payments.payments.model.dao;
 
 
-import ua.epam.payments.payments.model.entity.Role;
 import ua.epam.payments.payments.model.entity.User;
 
 import java.util.List;
@@ -15,7 +14,7 @@ public interface UserDao {
 
     User getUserByEmail(String email);
 
-    String getUserRoleByRoleId(User user);
+    String getUserRoleByUser(User user);
 
     List<User> getAllUsers();
 

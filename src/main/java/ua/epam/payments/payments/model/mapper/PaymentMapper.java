@@ -10,9 +10,10 @@ import java.sql.SQLException;
 public class PaymentMapper {
 
     public Payment mapRSToPayment(ResultSet rs) throws SQLException {
+
         return new Payment.Builder()
                 .withId(rs.getInt(1))
-                .withBalance(2)
+                .withBalance(rs.getInt(2))
                 .withMoney(rs.getInt(3))
                 .withPaymentStatusId(rs.getInt(4))
                 .withCreationTimestamp(rs.getTimestamp(5))

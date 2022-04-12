@@ -1,13 +1,13 @@
 package ua.epam.payments.payments.web.servlets;
 
 import org.apache.commons.codec.DecoderException;
-import ua.epam.payments.payments.dao.CardDao;
-import ua.epam.payments.payments.dao.UserDao;
-import ua.epam.payments.payments.dao.impl.CardDaoImpl;
-import ua.epam.payments.payments.dao.impl.UserDaoImpl;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+import ua.epam.payments.payments.model.dao.impl.CardDaoImpl;
 import ua.epam.payments.payments.model.entity.User;
-import ua.epam.payments.payments.util.PasswordEncryption;
-import ua.epam.payments.payments.util.UserService;
+import ua.epam.payments.payments.model.services.CardService;
+import ua.epam.payments.payments.model.util.PasswordEncryption;
+import ua.epam.payments.payments.model.util.validation.UserValidator;
 import ua.epam.payments.payments.web.Constants;
 import ua.epam.payments.payments.web.Path;
 
@@ -23,15 +23,20 @@ import java.security.spec.InvalidKeySpecException;
 
 @WebServlet(name = "CardBlock", value = Path.CARD_BLOCK_PATH)
 public class CardBlock extends HttpServlet {
+    private static final Logger logger = LogManager.getLogger(CardBlock.class);
+
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        logger.debug("CardBlock started");
         req.setAttribute("cardId", req.getSession().getAttribute("cardId"));
         req.getRequestDispatcher(Path.CARD_BLOCK_JSP).forward(req, resp);
     }
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        logger.debug("CardBlock started");
+
         String cardIdToBlock = req.getParameter("cardId");
         req.setAttribute("cardId", cardIdToBlock);
         req.getSession().setAttribute("cardId", req.getParameter("cardId"));
@@ -40,15 +45,14 @@ public class CardBlock extends HttpServlet {
             resp.sendRedirect(Path.CARD_BLOCK_PATH);
             return;
         }
-        PasswordEncryption passwordEncryption = new PasswordEncryption();
-        UserService userService = new UserService();
-        CardDao cardDao = new CardDaoImpl();
-        UserDao userDao = new UserDaoImpl();
 
+        PasswordEncryption passwordEncryption = new PasswordEncryption();
+        UserValidator userService = new UserValidator();
+        CardService cardService = new CardService(new CardDaoImpl());
         User user = (User) req.getSession().getAttribute("user");
         String password = req.getParameter("password").trim();
 
-        if ( password.isEmpty() || !userService.validatePassword(password)) {
+        if (!userService.validatePassword(password)) {
             req.setAttribute(Constants.INVALID_PASSWORD, Constants.INVALID_PASSWORD);
             req.getRequestDispatcher(Path.CARD_BLOCK_JSP).forward(req, resp);
         }
@@ -57,14 +61,15 @@ public class CardBlock extends HttpServlet {
             if (!passwordEncryption.isPasswordCorrect(password, user.getPassword())) {
                 req.setAttribute(Constants.WRONG_PASSWORD, Constants.WRONG_PASSWORD);
                 req.getRequestDispatcher(Path.CARD_BLOCK_JSP).forward(req, resp);
+                return;
             }
         } catch (DecoderException | NoSuchAlgorithmException | InvalidKeySpecException e) {
             req.setAttribute(Constants.WRONG_PASSWORD, Constants.WRONG_PASSWORD);
             req.getRequestDispatcher(Path.CARD_BLOCK_JSP).forward(req, resp);
         }
 
-        cardDao.blockCardById(Long.parseLong(cardIdToBlock));
-
+        cardService.blockCardById(Long.parseLong(cardIdToBlock));
+        if (cardService.blockCardById(Long.parseLong(cardIdToBlock))) logger.info("Card with id:\"{}\" is blocked", cardIdToBlock);
 
         resp.sendRedirect(Path.CARDS_PATH);
     }

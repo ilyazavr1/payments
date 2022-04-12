@@ -82,8 +82,8 @@ public class Payment {
             return this;
         }
 
-        public Payment.Builder withPaymentStatusId(int paymentStatusId){
-            newPayment.paymentStatusId = paymentStatusId;
+        public Payment.Builder withBalance(int balance){
+            newPayment.balance = balance;
             return this;
         }
 
@@ -91,8 +91,8 @@ public class Payment {
             newPayment.money = money;
             return this;
         }
-        public Payment.Builder withBalance(int balance){
-            newPayment.balance = balance;
+        public Payment.Builder withPaymentStatusId(int paymentStatusId){
+            newPayment.paymentStatusId = paymentStatusId;
             return this;
         }
 
@@ -125,6 +125,7 @@ public class Payment {
     public String toString() {
         return "Payment{" +
                 "id=" + id +
+                ", balance=" + balance +
                 ", money=" + money +
                 ", paymentStatusId=" + paymentStatusId +
                 ", creationTimestamp=" + creationTimestamp +
@@ -132,8 +133,6 @@ public class Payment {
                 ", cardDestinationId=" + cardDestinationId +
                 '}';
     }
-
-
 
     public enum Status{
         PREPARED, SENT;

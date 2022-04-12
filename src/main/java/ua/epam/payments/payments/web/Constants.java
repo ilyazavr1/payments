@@ -3,6 +3,8 @@ package ua.epam.payments.payments.web;
 public class Constants {
     public static final String WRONG_PASSWORD = "wrongPassword";
     public static final String WRONG_EMAIL = "wrongEmail";
+    public static final String AUTHENTICATION_FAILED = "authenticationFailed";
+
 
     public static final String EMAIL_EXISTS = "mailExists";
 
@@ -22,6 +24,8 @@ public class Constants {
     public static final String CARDS_ARE_SAME = "cardsAreSame";
 
     public static final String INVALID_CARD_NUMBER = "invalidCardNumber";
+   // public static final String INVALID_DESTINATION_CARD_NUMBER = "invalidDestinationCardNumber";
+ //   public static final String INVALID_SENDER_CARD_NUMBER = "invalidSenderCardNumber";
     public static final String INVALID_MONEY_AMOUNT = "invalidMoneyAmount";
     public static final String FAILED_TO_CREATE_CARD = "failedToCreateCard";
 

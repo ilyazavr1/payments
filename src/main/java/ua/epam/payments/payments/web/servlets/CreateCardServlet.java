@@ -2,11 +2,13 @@ package ua.epam.payments.payments.web.servlets;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import ua.epam.payments.payments.dao.CardDao;
-import ua.epam.payments.payments.dao.impl.CardDaoImpl;
+import ua.epam.payments.payments.model.dao.CardDao;
+import ua.epam.payments.payments.model.dao.impl.CardDaoImpl;
 import ua.epam.payments.payments.model.entity.Card;
 import ua.epam.payments.payments.model.entity.User;
-import ua.epam.payments.payments.util.CardGeneration;
+import ua.epam.payments.payments.model.exception.CardExistException;
+import ua.epam.payments.payments.model.services.CardService;
+import ua.epam.payments.payments.model.util.CardGeneration;
 import ua.epam.payments.payments.web.Constants;
 import ua.epam.payments.payments.web.Path;
 
@@ -37,32 +39,23 @@ public class CreateCardServlet extends HttpServlet {
             req.getRequestDispatcher(Path.CARD_CREATE_JSP).forward(req, resp);
             return;
         }
-
-        CardDao cardDao = new CardDaoImpl();
+        CardService cardService = new CardService(new CardDaoImpl());
 
         String cardNumber = CardGeneration.generateCardNumber();
+        Card newCard = new Card.Builder().withName(cardName).withNumber(cardNumber).build();
+        User user = (User) req.getSession().getAttribute("user");
 
-        if (cardDao.isExistCard(cardNumber)){
+        try {
+            cardService.createCardWithUser(newCard, user);
+            logger.info("Card with number {} created and added to user {}", newCard.getNumber(), user.getEmail());
+        } catch (CardExistException e) {
             logger.info("Failed to create card");
             req.setAttribute(Constants.FAILED_TO_CREATE_CARD, Constants.FAILED_TO_CREATE_CARD);
             req.getRequestDispatcher(Path.CARD_CREATE_JSP).forward(req, resp);
             return;
         }
 
-        Card newCard = new Card.Builder().withName(cardName).withNumber(cardNumber).build();
 
-        logger.info("Card created");
-
-        User user = (User) req.getSession().getAttribute("user");
-
-
-        if (!cardDao.createCardWithUser(newCard, user)){
-            logger.info("Failed to add card to user");
-            req.setAttribute(Constants.FAILED_TO_CREATE_CARD, Constants.FAILED_TO_CREATE_CARD);
-            req.getRequestDispatcher(Path.CARD_CREATE_JSP).forward(req, resp);
-            return;
-        }
-        logger.info("The card is added to the user");
         resp.sendRedirect(Path.CARDS_PATH);
     }
 }

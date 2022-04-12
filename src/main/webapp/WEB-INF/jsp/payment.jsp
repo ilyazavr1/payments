@@ -34,7 +34,7 @@
                         <p style="color: red"><fmt:message key="${requestScope.cardSenderIsBlocked}"> </fmt:message></p>
                     </c:if>
                     <c:if test="${requestScope.outOfMoney != null}">
-                        <p style="color: red"><fmt:message key="${requestScope.outOfMoney}"></fmt:message></p>
+                        <p style="color: red"><fmt:message key="${requestScope.outOfMoney}"> </fmt:message></p>
                     </c:if>
                 </div>
                 <div class="form-group">

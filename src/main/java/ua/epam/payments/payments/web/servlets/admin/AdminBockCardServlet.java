@@ -1,11 +1,11 @@
 package ua.epam.payments.payments.web.servlets.admin;
 
 import org.apache.commons.codec.DecoderException;
-import ua.epam.payments.payments.dao.CardDao;
-import ua.epam.payments.payments.dao.impl.CardDaoImpl;
+import ua.epam.payments.payments.model.dao.CardDao;
+import ua.epam.payments.payments.model.dao.impl.CardDaoImpl;
 import ua.epam.payments.payments.model.entity.User;
-import ua.epam.payments.payments.util.PasswordEncryption;
-import ua.epam.payments.payments.util.UserService;
+import ua.epam.payments.payments.model.util.PasswordEncryption;
+import ua.epam.payments.payments.model.util.validation.UserValidator;
 import ua.epam.payments.payments.web.Constants;
 import ua.epam.payments.payments.web.Path;
 
@@ -44,7 +44,7 @@ public class AdminBockCardServlet extends HttpServlet {
 
 
 
-        UserService userService = new UserService();
+        UserValidator userService = new UserValidator();
         User user = (User) req.getSession().getAttribute("user");
         String password = req.getParameter("password").trim();
         PasswordEncryption passwordEncryption = new PasswordEncryption();

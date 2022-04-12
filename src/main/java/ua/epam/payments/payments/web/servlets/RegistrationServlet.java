@@ -2,11 +2,11 @@ package ua.epam.payments.payments.web.servlets;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import ua.epam.payments.payments.dao.UserDao;
-import ua.epam.payments.payments.dao.impl.UserDaoImpl;
+import ua.epam.payments.payments.model.dao.impl.UserDaoImpl;
 import ua.epam.payments.payments.model.entity.User;
-import ua.epam.payments.payments.util.PasswordEncryption;
-import ua.epam.payments.payments.util.UserService;
+import ua.epam.payments.payments.model.exception.RegisteredEmailException;
+import ua.epam.payments.payments.model.services.UserService;
+import ua.epam.payments.payments.model.util.validation.UserValidator;
 import ua.epam.payments.payments.web.Constants;
 import ua.epam.payments.payments.web.Path;
 
@@ -17,8 +17,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
-import java.security.NoSuchAlgorithmException;
-import java.security.spec.InvalidKeySpecException;
 
 @WebServlet(name = "RegistrationServlet", value = Path.REGISTRATION_PATH)
 public class RegistrationServlet extends HttpServlet {
@@ -43,7 +41,7 @@ public class RegistrationServlet extends HttpServlet {
             return;
         }
 
-        UserService userService = new UserService();
+        UserValidator userValidator = new UserValidator();
 
         String firstName = req.getParameter("firstName").trim();
         String lastName = req.getParameter("lastName").trim();
@@ -52,62 +50,30 @@ public class RegistrationServlet extends HttpServlet {
         String password = req.getParameter("password").trim();
 
 
-        if (firstName.isEmpty() || !userService.validateName(firstName)) {
-            req.setAttribute(Constants.INVALID_FIRST_NAME, Constants.INVALID_FIRST_NAME);
+        if (!userValidator.isUserInputValid(firstName, lastName, surname, email, password)) {
+            userValidator.getErrors().forEach(err -> req.setAttribute(err, err));
             req.getRequestDispatcher(Path.REGISTRATION_JSP).forward(req, resp);
+            return;
         }
 
-        if (lastName.isEmpty() || !userService.validateName(lastName)) {
-            req.setAttribute(Constants.INVALID_LAST_NAME, Constants.INVALID_LAST_NAME);
-            req.getRequestDispatcher(Path.REGISTRATION_JSP).forward(req, resp);
-        }
 
-        if (surname.isEmpty() || !userService.validateName(surname)) {
-            req.setAttribute(Constants.INVALID_SURNAME, Constants.INVALID_SURNAME);
-            req.getRequestDispatcher(Path.REGISTRATION_JSP).forward(req, resp);
-        }
-
-        if (email.isEmpty() || !userService.validateEmail(email)) {
-            req.setAttribute(Constants.INVALID_EMAIL, Constants.INVALID_EMAIL);
-            req.getRequestDispatcher(Path.REGISTRATION_JSP).forward(req, resp);
-        }
-        if (password.isEmpty() || !userService.validatePassword(password)) {
-            req.setAttribute(Constants.INVALID_PASSWORD, Constants.INVALID_PASSWORD);
-            req.getRequestDispatcher(Path.REGISTRATION_JSP).forward(req, resp);
-        }
-        UserDao userDao = new UserDaoImpl();
-
-        if (userDao.getUserByEmail(email) != null) {
+        UserService userService = new UserService(new UserDaoImpl());
+        User user;
+        try {
+            if (userService.registerUser(firstName, lastName, surname, email, password)) {
+                user = userService.getUserByEmail(email);
+                HttpSession session = req.getSession();
+                session.setAttribute("user", user);
+                session.setAttribute("userRole", userService.getUserRoleByUser(user));
+            }
+            logger.info("User registered {}", email);
+        } catch (RegisteredEmailException e) {
+            logger.info("User failed to register");
             req.setAttribute(Constants.EMAIL_EXISTS, Constants.EMAIL_EXISTS);
             req.getRequestDispatcher(Path.REGISTRATION_JSP).forward(req, resp);
             return;
         }
 
-        User user = null;
-        PasswordEncryption passwordEncryption = new PasswordEncryption();
-        try {
-            user = new User.Builder()
-                    .withFirstName(firstName)
-                    .withLastName(lastName)
-                    .withSurname(surname)
-                    .withEmail(email)
-                    .withPassword(passwordEncryption.encrypt(password))
-                    .build();
-        } catch (NoSuchAlgorithmException | InvalidKeySpecException e) {
-
-            //TODO in registration exception
-            e.printStackTrace();
-        }
-
-
-        userDao.createUser(user);
-
-        user = userDao.getUserByEmail(email);
-
-
-        HttpSession session = req.getSession();
-        session.setAttribute("user", user);
-        session.setAttribute("userRole", userDao.getUserRoleByRoleId(user));
 
         resp.sendRedirect(Path.PROFILE_PATH);
     }

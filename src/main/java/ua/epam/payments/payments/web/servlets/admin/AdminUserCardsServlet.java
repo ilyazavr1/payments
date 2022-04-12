@@ -1,10 +1,10 @@
 package ua.epam.payments.payments.web.servlets.admin;
 
 
-import ua.epam.payments.payments.dao.CardDao;
-import ua.epam.payments.payments.dao.UserDao;
-import ua.epam.payments.payments.dao.impl.CardDaoImpl;
-import ua.epam.payments.payments.dao.impl.UserDaoImpl;
+import ua.epam.payments.payments.model.dao.CardDao;
+import ua.epam.payments.payments.model.dao.UserDao;
+import ua.epam.payments.payments.model.dao.impl.CardDaoImpl;
+import ua.epam.payments.payments.model.dao.impl.UserDaoImpl;
 import ua.epam.payments.payments.model.entity.Card;
 import ua.epam.payments.payments.model.entity.User;
 import ua.epam.payments.payments.web.Path;
@@ -36,7 +36,7 @@ public class AdminUserCardsServlet extends HttpServlet {
         long userId = Long.parseLong((String) req.getSession().getAttribute("userId"));
 
         User user = userDao.getUserById(userId);
-        List<Card> cards = cardDao.getCardByUser(user);
+        List<Card> cards = cardDao.getCardByUserId(user.getId());
 
 
         req.setAttribute("user", user);

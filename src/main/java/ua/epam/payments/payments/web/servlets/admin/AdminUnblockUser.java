@@ -1,7 +1,7 @@
 package ua.epam.payments.payments.web.servlets.admin;
 
-import ua.epam.payments.payments.dao.UserDao;
-import ua.epam.payments.payments.dao.impl.UserDaoImpl;
+import ua.epam.payments.payments.model.dao.UserDao;
+import ua.epam.payments.payments.model.dao.impl.UserDaoImpl;
 import ua.epam.payments.payments.web.Path;
 
 import javax.servlet.ServletException;

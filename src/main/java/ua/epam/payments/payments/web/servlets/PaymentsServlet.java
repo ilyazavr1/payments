@@ -1,10 +1,13 @@
 package ua.epam.payments.payments.web.servlets;
 
-import ua.epam.payments.payments.dao.PaymentsDao;
-import ua.epam.payments.payments.dao.impl.PaymentsDaoImpl;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+import ua.epam.payments.payments.model.dao.PaymentDao;
+import ua.epam.payments.payments.model.dao.impl.CardDaoImpl;
+import ua.epam.payments.payments.model.dao.impl.PaymentsDaoImpl;
 import ua.epam.payments.payments.model.dto.FullPaymentDto;
 import ua.epam.payments.payments.model.entity.User;
-import ua.epam.payments.payments.util.sorting.PaymentService;
+import ua.epam.payments.payments.model.services.PaymentService;
 import ua.epam.payments.payments.web.Path;
 
 import javax.servlet.ServletException;
@@ -18,13 +21,14 @@ import java.util.*;
 
 @WebServlet(name = "PaymentsServlet", value = Path.PAYMENTS_PATH)
 public class PaymentsServlet extends HttpServlet {
-
+    private static final Logger logger = LogManager.getLogger(CardBlock.class);
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        PaymentsDao paymentsDao = new PaymentsDaoImpl();
+        logger.debug("PaymentsServlet tarted");
+
         User user = (User) req.getSession().getAttribute("user");
-        PaymentService paymentService = new PaymentService();
+        PaymentService paymentService = new PaymentService(new PaymentsDaoImpl(), new CardDaoImpl());
 
         req.setAttribute("invalidPayment", req.getParameter("invalidPayment"));
         int limit;
@@ -38,7 +42,7 @@ public class PaymentsServlet extends HttpServlet {
             sortingType = "creation_timestamp";
         } else req.setAttribute("sortingType", sortingType);
         if (sortingOrder == null || sortingOrder.isEmpty()) {
-            sortingOrder = "asc";
+            sortingOrder = "desc";
         } else req.setAttribute("sortingOrder", sortingOrder);
         if (records == null || records.isEmpty()) {
             req.setAttribute("records", 9);
@@ -55,11 +59,16 @@ public class PaymentsServlet extends HttpServlet {
         } else offset = 1;
 
 
+        paymentService.updatePreparedPayments(user);
+        List<FullPaymentDto> paymentList = paymentService.sort(user, sortingType, sortingOrder, limit, (limit * (offset - 1)));
 
+        if (paymentList.isEmpty()){
+            logger.info("User {} do not have any payments", user.getEmail());
+            req.getRequestDispatcher(Path.PAYMENTS_JSP).forward(req, resp);
+            return;
+        }
 
-
-        List<FullPaymentDto> paymentList = paymentService.sort(paymentsDao, user, sortingType, sortingOrder, limit,(limit * (offset - 1)));
-
+        logger.info("Payments sorted");
 
         req.setAttribute("payments", paymentList);
 

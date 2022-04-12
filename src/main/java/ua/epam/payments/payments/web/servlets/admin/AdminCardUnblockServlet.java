@@ -1,8 +1,8 @@
 package ua.epam.payments.payments.web.servlets.admin;
 
 
-import ua.epam.payments.payments.dao.CardDao;
-import ua.epam.payments.payments.dao.impl.CardDaoImpl;
+import ua.epam.payments.payments.model.dao.CardDao;
+import ua.epam.payments.payments.model.dao.impl.CardDaoImpl;
 import ua.epam.payments.payments.model.entity.Card;
 import ua.epam.payments.payments.web.Path;
 

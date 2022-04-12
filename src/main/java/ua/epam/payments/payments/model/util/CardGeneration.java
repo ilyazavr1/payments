@@ -1,4 +1,4 @@
-package ua.epam.payments.payments.util;
+package ua.epam.payments.payments.model.util;
 
 
 import java.util.concurrent.ThreadLocalRandom;
