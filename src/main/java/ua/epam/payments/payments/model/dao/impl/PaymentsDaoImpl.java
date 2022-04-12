@@ -66,18 +66,19 @@ public class PaymentsDaoImpl implements PaymentDao {
             }
 
         } catch (SQLException throwables) {
-            throwables.printStackTrace();
+            logger.error("{}, when trying to get Payment by Id = {}", throwables.getMessage(), id);
+            throw new RuntimeException(throwables);
         }
 
         return payment;
     }
 
     @Override
-    public List<Payment> getPaymentsByUser(User user) {
+    public List<Payment> getPaymentsByUserId(long id) {
         List<Payment> paymentList = null;
         try (Connection con = DBManager.getInstance().getConnection();
              PreparedStatement stmt = con.prepareStatement(SQL_GET_PAYMENTS_BY_USER)) {
-            stmt.setLong(1, user.getId());
+            stmt.setLong(1, id);
 
             try (ResultSet rs = stmt.executeQuery()) {
                 paymentList = new ArrayList<>();
@@ -89,7 +90,8 @@ public class PaymentsDaoImpl implements PaymentDao {
             }
 
         } catch (SQLException throwables) {
-            throwables.printStackTrace();
+           logger.error("{}, when trying to get Payment list by User Id = {}", throwables.getMessage(), id);
+            throw new RuntimeException(throwables);
         }
 
         return paymentList;
@@ -119,11 +121,11 @@ public class PaymentsDaoImpl implements PaymentDao {
     }*/
 
     @Override
-    public List<FullPaymentDto> getFullPaymentsByUserLimitSorted(User user, String query) {
+    public List<FullPaymentDto> getFullPaymentsByUserLimitSorted(long id, String query) {
         List<FullPaymentDto> paymentList = null;
         try (Connection con = DBManager.getInstance().getConnection();
              PreparedStatement stmt = con.prepareStatement(query)) {
-            stmt.setLong(1, user.getId());
+            stmt.setLong(1, id);
 
             try (ResultSet rs = stmt.executeQuery()) {
                 paymentList = new ArrayList<>();
@@ -135,7 +137,8 @@ public class PaymentsDaoImpl implements PaymentDao {
             }
 
         } catch (SQLException throwables) {
-            throwables.printStackTrace();
+            logger.error("{}, when trying to get FullPaymentDto list by User Id = {} with query = [{}]", throwables.getMessage(), id, query);
+            throw new RuntimeException(throwables);
         }
 
         return paymentList;
@@ -156,7 +159,7 @@ public class PaymentsDaoImpl implements PaymentDao {
                 stmt.executeUpdate();
             }
 
-            return  true;
+            return true;
         } catch (SQLException throwables) {
             throwables.printStackTrace();
         }
@@ -191,12 +194,13 @@ public class PaymentsDaoImpl implements PaymentDao {
     public boolean confirmPayment(long id) {
         try (Connection con = DBManager.getInstance().getConnection();
              PreparedStatement stmt = con.prepareStatement(SQL_CONFIRM_PAYMENT_BY_ID)) {
+            System.out.println(id);
             stmt.setLong(1, id);
             return stmt.executeUpdate() > 0;
         } catch (SQLException throwables) {
-            throwables.printStackTrace();
+            logger.error("{}, when trying to confirm Payment Id = {}", throwables.getMessage(), id);
+            throw new RuntimeException(throwables);
         }
-        return false;
     }
 
     @Override
@@ -210,9 +214,11 @@ public class PaymentsDaoImpl implements PaymentDao {
 
             return stmt.executeUpdate() > 0;
         } catch (SQLException throwables) {
-            throwables.printStackTrace();
+            logger.error("{}, when trying to create PreparedPayment cardSender Id = {},cardDestination Id = {}, money = {}",
+                    throwables.getMessage(), cardSender.getId(), cardDestination.getId(), money);
+            throw new RuntimeException(throwables);
         }
-        return false;
+
 
     }
 
@@ -227,8 +233,10 @@ public class PaymentsDaoImpl implements PaymentDao {
 
             return stmt.executeUpdate() > 0;
         } catch (SQLException throwables) {
-            throwables.printStackTrace();
+            logger.error("{}, when trying to create ConfirmedPayment cardSender Id = {},cardDestination Id = {}, money = {}",
+                    throwables.getMessage(), cardSender.getId(), cardDestination.getId(), money);
+            throw new RuntimeException(throwables);
         }
-        return false;
+
     }
 }

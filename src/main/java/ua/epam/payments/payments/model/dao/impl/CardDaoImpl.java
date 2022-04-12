@@ -44,7 +44,7 @@ public class CardDaoImpl implements CardDao {
 
     @Override
     public Card getCardById(long id) {
-        Card account = null;
+        Card card = null;
         try (Connection con = DBManager.getInstance().getConnection();
              PreparedStatement stmt = con.prepareStatement(SQL_GET_CARD_BY_ID)) {
             stmt.setLong(1, id);
@@ -52,7 +52,7 @@ public class CardDaoImpl implements CardDao {
             try (ResultSet rs = stmt.executeQuery()) {
                 while (rs.next()) {
                     CardMapper accountMapper = new CardMapper();
-                    account = accountMapper.mapRSToCard(rs);
+                    card = accountMapper.mapRSToCard(rs);
                 }
             }
 
@@ -61,7 +61,7 @@ public class CardDaoImpl implements CardDao {
             throw new RuntimeException(throwables);
         }
 
-        return account;
+        return card;
     }
 
 /*    @Override
@@ -125,14 +125,14 @@ public class CardDaoImpl implements CardDao {
     }
 
     private List<Card> getCards(long id, String query) {
-        List<Card> accountsList = null;
+        List<Card> accountsList = new ArrayList<>();
 
         try (Connection con = DBManager.getInstance().getConnection();
              PreparedStatement stmt = con.prepareStatement(query)) {
             stmt.setLong(1, id);
 
             try (ResultSet rs = stmt.executeQuery()) {
-                accountsList = new ArrayList<>();
+
                 while (rs.next()) {
                     CardMapper accountMapper = new CardMapper();
                     accountsList.add(accountMapper.mapRSToCard(rs));
@@ -153,25 +153,7 @@ public class CardDaoImpl implements CardDao {
     }
 
 
-    @Override
-    public int countCardsByUser(User user) {
-        int countCards = 0;
-        try (Connection con = DBManager.getInstance().getConnection();
-             PreparedStatement stmt = con.prepareStatement(SQL_COUNT_CARD_BY_USER)) {
-            stmt.setLong(1, user.getId());
 
-            try (ResultSet rs = stmt.executeQuery()) {
-                while (rs.next()) {
-                    countCards = rs.getInt(1);
-                }
-            }
-
-        } catch (SQLException throwables) {
-            throwables.printStackTrace();
-        }
-
-        return countCards;
-    }
 
     @Override
     public Card getCardByNumber(String number) {
@@ -188,7 +170,7 @@ public class CardDaoImpl implements CardDao {
             }
 
         } catch (SQLException throwables) {
-            logger.error("{}, when trying to get Card by Number", throwables.getMessage());
+            logger.error("{}, when trying to get Card by Number = {}", throwables.getMessage(), number);
             throw new RuntimeException(throwables);
         }
 
@@ -205,7 +187,7 @@ public class CardDaoImpl implements CardDao {
 
             return stmt.executeUpdate() > 0;
         } catch (SQLException throwables) {
-            logger.error("{}, when trying to create card", throwables.getMessage());
+            logger.error("{}, when trying to create card with Number = {}, User = {}", throwables.getMessage(), card.getNumber(), user.getEmail());
             throw new RuntimeException(throwables);
         }
     }
@@ -221,25 +203,11 @@ public class CardDaoImpl implements CardDao {
                 return rs.getBoolean(1);
             }
         } catch (SQLException throwables) {
-            logger.error("{}, when trying to check card existence", throwables.getMessage());
+            logger.error("{}, when trying to check card existence with Number = {}", throwables.getMessage(), number);
             throw new RuntimeException(throwables);
         }
     }
 
-    @Override
-    public boolean addCardToUser(Card card, User user) {
-        try (Connection con = DBManager.getInstance().getConnection();
-             PreparedStatement stmt = con.prepareStatement(SQL_ADD_CARD_TO_USER)) {
-            stmt.setLong(1, user.getId());
-            stmt.setLong(2, card.getId());
-
-            return stmt.executeUpdate() > 0;
-
-        } catch (SQLException throwables) {
-            throwables.printStackTrace();
-        }
-        return false;
-    }
 
     @Override
     public boolean updateCardWithMoney(Card card, int money) {
@@ -324,7 +292,7 @@ public class CardDaoImpl implements CardDao {
 
             return stmt.executeUpdate() > 0;
         } catch (SQLException throwables) {
-            logger.error("{}, when trying create request to unblock card", throwables.getMessage());
+            logger.error("{}, when trying create request to unblock card id = {}, user email = {}", throwables.getMessage(), card.getId(),user.getEmail());
             throw new RuntimeException(throwables);
         }
 
@@ -351,12 +319,16 @@ public class CardDaoImpl implements CardDao {
                 result2 = stmtTopUp.executeUpdate() > 0;
 
             }
-            con.commit();
-            con.setAutoCommit(true);
 
             if (result1 && result2) {
-                return true;
+                con.commit();
+                con.setAutoCommit(true);
+            }else {
+                con.rollback();
+                con.setAutoCommit(true);
+                return false;
             }
+
         } catch (SQLException throwables) {
             try {
                 if (con != null) {
@@ -364,7 +336,12 @@ public class CardDaoImpl implements CardDao {
                     con.setAutoCommit(true);
                 }
             } catch (SQLException exception) {
-                logger.error("{}, when trying to transfer money between cards", throwables.getMessage());
+                logger.error("{}, when trying to transfer money between cards" +
+                        " sender id = {} and destination id = {}, money to transfer = {}",
+                        throwables.getMessage(),
+                        cardSenderId,
+                        cardDestinationId,money
+                );
                 throw new RuntimeException(throwables);
             }
         } finally {
@@ -373,12 +350,55 @@ public class CardDaoImpl implements CardDao {
                     con.close();
                 }
             } catch (SQLException throwables) {
-                logger.error("{}, when trying to transfer money between cards", throwables.getMessage());
+                logger.error("{}, when trying to transfer money between cards" +
+                                " sender id = {} and destination id = {}, money to transfer = {}",
+                        throwables.getMessage(),
+                        cardSenderId,
+                        cardDestinationId,money
+                );
                 throw new RuntimeException(throwables);
             }
         }
-        return false;
+        return true;
     }
 
 
 }
+
+
+
+
+/*    @Override
+    public boolean addCardToUser(Card card, User user) {
+        try (Connection con = DBManager.getInstance().getConnection();
+             PreparedStatement stmt = con.prepareStatement(SQL_ADD_CARD_TO_USER)) {
+            stmt.setLong(1, user.getId());
+            stmt.setLong(2, card.getId());
+
+            return stmt.executeUpdate() > 0;
+
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
+        }
+        return false;
+
+            @Override
+    public int countCardsByUser(User user) {
+        int countCards = 0;
+        try (Connection con = DBManager.getInstance().getConnection();
+             PreparedStatement stmt = con.prepareStatement(SQL_COUNT_CARD_BY_USER)) {
+            stmt.setLong(1, user.getId());
+
+            try (ResultSet rs = stmt.executeQuery()) {
+                while (rs.next()) {
+                    countCards = rs.getInt(1);
+                }
+            }
+
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
+        }
+
+        return countCards;
+    }
+    }*/

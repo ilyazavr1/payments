@@ -11,9 +11,9 @@ import java.util.List;
 public interface PaymentDao {
     Payment getPaymentById(long id);
 
-    List<Payment> getPaymentsByUser(User user);
+    List<Payment> getPaymentsByUserId(long id);
 
-    List<FullPaymentDto> getFullPaymentsByUserLimitSorted(User user, String query);
+    List<FullPaymentDto> getFullPaymentsByUserLimitSorted(long id, String query);
 
     boolean updatePreparedPaymentMoney(List<Payment> paymentList);
 

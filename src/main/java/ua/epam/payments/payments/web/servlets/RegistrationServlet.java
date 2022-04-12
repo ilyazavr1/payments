@@ -64,7 +64,7 @@ public class RegistrationServlet extends HttpServlet {
                 user = userService.getUserByEmail(email);
                 HttpSession session = req.getSession();
                 session.setAttribute("user", user);
-                session.setAttribute("userRole", userService.getUserRoleByUser(user));
+                session.setAttribute("userRole", userService.getUserRoleByUserRoleId(user.getRolesId()));
             }
             logger.info("User registered {}", email);
         } catch (RegisteredEmailException e) {

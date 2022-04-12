@@ -39,7 +39,8 @@ public class UserDaoImpl implements UserDao {
             }
 
         } catch (SQLException throwables) {
-            throwables.printStackTrace();
+            logger.error("{}, when trying to get User by Id = {}", throwables.getMessage(), id);
+            throw new RuntimeException(throwables);
         }
 
         return user;
@@ -60,18 +61,19 @@ public class UserDaoImpl implements UserDao {
             }
 
         } catch (SQLException throwables) {
-            throwables.printStackTrace();
+            logger.error("{}, when trying to get User by email = {}", throwables.getMessage(), email);
+            throw new RuntimeException(throwables);
         }
 
         return user;
     }
 
     @Override
-    public String getUserRoleByUser(User user) {
+    public String getUserRoleByUserRoleId(long roleId) {
         String role = null;
         try (Connection con = DBManager.getInstance().getConnection();
              PreparedStatement stmt = con.prepareStatement(SQL_GET_USER_ROLE_BY_ROLE_ID)) {
-            stmt.setLong(1, user.getRolesId());
+            stmt.setLong(1, roleId);
 
             try (ResultSet rs = stmt.executeQuery()) {
                 while (rs.next()) {
@@ -80,7 +82,8 @@ public class UserDaoImpl implements UserDao {
             }
 
         } catch (SQLException throwables) {
-            throwables.printStackTrace();
+            logger.error("{}, when trying to get UserRole by roleId = {}", throwables.getMessage(), roleId);
+            throw new RuntimeException(throwables);
         }
 
         return role;
@@ -101,7 +104,8 @@ public class UserDaoImpl implements UserDao {
             }
 
         } catch (SQLException throwables) {
-            throwables.printStackTrace();
+            logger.error("{}, when trying to get User list", throwables.getMessage());
+            throw new RuntimeException(throwables);
         }
 
         return userList;
@@ -116,9 +120,10 @@ public class UserDaoImpl implements UserDao {
             return stmt.executeUpdate() > 0;
 
         } catch (SQLException throwables) {
-            throwables.printStackTrace();
+            logger.error("{}, when trying to block User by Id = {}", throwables.getMessage(), id);
+            throw new RuntimeException(throwables);
         }
-        return false;
+
     }
 
     @Override
@@ -130,9 +135,9 @@ public class UserDaoImpl implements UserDao {
             return stmt.executeUpdate() > 0;
 
         } catch (SQLException throwables) {
-            throwables.printStackTrace();
+            logger.error("{}, when trying to unblock User by Id = {}", throwables.getMessage(), id);
+            throw new RuntimeException(throwables);
         }
-        return false;
     }
 
     //user data: 1 - first_name, 2 - last_name, 3 - surname, 4 - email, 5 - password, 6 - blocked, 7 - role_id
@@ -151,9 +156,10 @@ public class UserDaoImpl implements UserDao {
             return stmt.executeUpdate() > 0;
 
         } catch (SQLException throwables) {
-            throwables.printStackTrace();
+            logger.error("{}, when trying to create User = {}", throwables.getMessage(), user);
+            throw new RuntimeException(throwables);
         }
-        return false;
+
     }
 
 

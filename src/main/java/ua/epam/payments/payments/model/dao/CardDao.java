@@ -20,11 +20,11 @@ public interface CardDao {
 
     List<CardsUnblockRequestDto> getCardRequests();
 
-    int countCardsByUser(User user);
+    //int countCardsByUser(User user);
 
     boolean createCardWithUser(Card card, User user);
 
-    boolean addCardToUser(Card card, User user);
+    //boolean addCardToUser(Card card, User user);
 
     boolean updateCardWithMoney(Card card, int money);
 

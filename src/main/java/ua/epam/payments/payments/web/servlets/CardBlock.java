@@ -47,6 +47,7 @@ public class CardBlock extends HttpServlet {
         }
 
         PasswordEncryption passwordEncryption = new PasswordEncryption();
+
         UserValidator userService = new UserValidator();
         CardService cardService = new CardService(new CardDaoImpl());
         User user = (User) req.getSession().getAttribute("user");
@@ -57,19 +58,15 @@ public class CardBlock extends HttpServlet {
             req.getRequestDispatcher(Path.CARD_BLOCK_JSP).forward(req, resp);
         }
 
-        try {
-            if (!passwordEncryption.isPasswordCorrect(password, user.getPassword())) {
-                req.setAttribute(Constants.WRONG_PASSWORD, Constants.WRONG_PASSWORD);
-                req.getRequestDispatcher(Path.CARD_BLOCK_JSP).forward(req, resp);
-                return;
-            }
-        } catch (DecoderException | NoSuchAlgorithmException | InvalidKeySpecException e) {
+
+        if (!passwordEncryption.isPasswordCorrect(password, user.getPassword())) {
             req.setAttribute(Constants.WRONG_PASSWORD, Constants.WRONG_PASSWORD);
             req.getRequestDispatcher(Path.CARD_BLOCK_JSP).forward(req, resp);
+            return;
         }
 
-        cardService.blockCardById(Long.parseLong(cardIdToBlock));
-        if (cardService.blockCardById(Long.parseLong(cardIdToBlock))) logger.info("Card with id:\"{}\" is blocked", cardIdToBlock);
+        if (cardService.blockCardById(Long.parseLong(cardIdToBlock)))
+            logger.info("Card with id:\"{}\" is blocked", cardIdToBlock);
 
         resp.sendRedirect(Path.CARDS_PATH);
     }

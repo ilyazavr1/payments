@@ -2,7 +2,6 @@ package ua.epam.payments.payments.web.servlets;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import ua.epam.payments.payments.model.dao.PaymentDao;
 import ua.epam.payments.payments.model.dao.impl.CardDaoImpl;
 import ua.epam.payments.payments.model.dao.impl.PaymentsDaoImpl;
 import ua.epam.payments.payments.model.dto.FullPaymentDto;
@@ -59,8 +58,10 @@ public class PaymentsServlet extends HttpServlet {
         } else offset = 1;
 
 
-        paymentService.updatePreparedPayments(user);
-        List<FullPaymentDto> paymentList = paymentService.sort(user, sortingType, sortingOrder, limit, (limit * (offset - 1)));
+
+
+        paymentService.updatePreparedPaymentsByUserId(user.getId());
+        List<FullPaymentDto> paymentList = paymentService.sort(user.getId(), sortingType, sortingOrder, limit, (limit * (offset - 1)));
 
         if (paymentList.isEmpty()){
             logger.info("User {} do not have any payments", user.getEmail());

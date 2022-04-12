@@ -5,7 +5,6 @@ import ua.epam.payments.payments.model.dao.PaymentDao;
 import ua.epam.payments.payments.model.dto.FullPaymentDto;
 import ua.epam.payments.payments.model.entity.Card;
 import ua.epam.payments.payments.model.entity.Payment;
-import ua.epam.payments.payments.model.entity.User;
 import ua.epam.payments.payments.model.exception.CardBlockedException;
 import ua.epam.payments.payments.model.exception.InvalidMoneyException;
 import ua.epam.payments.payments.model.exception.OutOfMoneyException;
@@ -20,18 +19,14 @@ public class PaymentService {
     private static final String CREATION_TIMESTAMP = "creation_timestamp";
     private static final String NUMBER = "payment.id";
 
-    private PaymentDao paymentDao;
-    private CardDao cardDao;
+    private final PaymentDao paymentDao;
+    private final CardDao cardDao;
 
     public PaymentService(PaymentDao paymentDao, CardDao cardDao) {
         this.paymentDao = paymentDao;
         this.cardDao = cardDao;
     }
 
-    public PaymentService(PaymentDao paymentDao) {
-        this.paymentDao = paymentDao;
-
-    }
 
     public Payment getPaymentById(long id) {
         return paymentDao.getPaymentById(id);
@@ -46,10 +41,11 @@ public class PaymentService {
         if ((payment.getBalance() - payment.getMoney()) < 0) throw new OutOfMoneyException();
         if (cardSender.isBlocked() || cardDestination.isBlocked()) throw new CardBlockedException();
 
-
-        return cardDao.transferMoneyFromCardToCard(cardSender.getId(), cardDestination.getId(), payment.getMoney()) &&
-                paymentDao.confirmPayment(payment.getId());
+        if (cardDao.transferMoneyFromCardToCard(cardSender.getId(), cardDestination.getId(), payment.getMoney())) {
+            return paymentDao.confirmPayment(payment.getId());
+        } else return false;
     }
+
 
     public boolean createPreparedPayment(Card cardSender, Card cardDestination, String money) throws InvalidMoneyException, OutOfMoneyException {
         if (money.isEmpty() || !money.replaceFirst("^0*", "").matches("^[0-9]{0,4}$"))
@@ -61,21 +57,20 @@ public class PaymentService {
         return paymentDao.createPreparedPayment(cardSender, cardDestination, moneyInt);
     }
 
-    public boolean updatePreparedPayments(User user) {
-        List<Payment> paymentList = paymentDao.getPaymentsByUser(user);
-        Map<Long, Card> longCardMap = cardDao.getCardByUserId(user.getId()).stream().collect(Collectors.toMap(Card::getId, Function.identity()));
+    public boolean updatePreparedPaymentsByUserId(long id) {
+        List<Payment> paymentList = paymentDao.getPaymentsByUserId(id);
+        Map<Long, Card> longCardMap = cardDao.getCardByUserId(id).stream().collect(Collectors.toMap(Card::getId, Function.identity()));
         if (longCardMap.isEmpty()) return false;
 
         paymentList = paymentList.stream()
                 .filter(payment -> payment.getPaymentStatusId() == 1)
                 .collect(Collectors.toList());
-        System.out.println(paymentList);
+
 
         if (paymentList.isEmpty()) return false;
 
         paymentList.forEach(payment -> payment.setBalance(longCardMap.get(payment.getCardSenderId()).getMoney()));
 
-        System.out.println(paymentList);
 
         return paymentDao.updatePreparedPaymentMoney(paymentList);
     }
@@ -102,7 +97,7 @@ public class PaymentService {
         return false;
     }
 
-    public List<FullPaymentDto> sort(User user, String type, String order, int limit, int offset) {
+    public List<FullPaymentDto> sort(long id, String type, String order, int limit, int offset) {
 
         String query = "SELECT payment.id,\n" +
                 "       (SELECT card.number as sender_card_number FROM card WHERE card.id = payment.card_sender_id),\n" +
@@ -121,20 +116,20 @@ public class PaymentService {
 
             if (order.equalsIgnoreCase("ASC")) {
                 query = String.format(query, CREATION_TIMESTAMP, "ASC", limit, offset);
-                return paymentDao.getFullPaymentsByUserLimitSorted(user, query);
+                return paymentDao.getFullPaymentsByUserLimitSorted(id, query);
             } else if (order.equalsIgnoreCase("DESC")) {
                 query = String.format(query, CREATION_TIMESTAMP, "DESC", limit, offset);
-                return paymentDao.getFullPaymentsByUserLimitSorted(user, query);
+                return paymentDao.getFullPaymentsByUserLimitSorted(id, query);
             }
         }
         if (type.equalsIgnoreCase(NUMBER)) {
 
             if (order.equalsIgnoreCase("ASC")) {
                 query = String.format(query, NUMBER, "ASC", limit, offset);
-                return paymentDao.getFullPaymentsByUserLimitSorted(user, query);
+                return paymentDao.getFullPaymentsByUserLimitSorted(id, query);
             } else if (order.equalsIgnoreCase("DESC")) {
                 query = String.format(query, NUMBER, "DESC", limit, offset);
-                return paymentDao.getFullPaymentsByUserLimitSorted(user, query);
+                return paymentDao.getFullPaymentsByUserLimitSorted(id, query);
             }
         }
 

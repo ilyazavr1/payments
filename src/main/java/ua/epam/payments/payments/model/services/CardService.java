@@ -34,12 +34,12 @@ public class CardService {
         return cardDao.getCardByUserId(id);
     }
 
-    public List<CardsUnblockRequestDto> getCardRequestsLimitSorted() {
+    public List<CardsUnblockRequestDto> getCardRequestsToUnblock() {
         return cardDao.getCardRequests();
     }
 
     public boolean createCardWithUser(Card card, User user) throws CardExistException {
-        if (cardDao.isExistCard(card.getNumber())) throw new CardExistException();
+        if (cardDao.isExistCard(card.getNumber()) || user == null) throw new CardExistException();
 
         return cardDao.createCardWithUser(card, user);
     }
@@ -64,6 +64,17 @@ public class CardService {
     }
 
     public boolean unblockCardById(long id) {
+        Card card = cardDao.getCardById(id);
+        if (card == null) return false;
+
+        if (!card.isUnderConsideration()) {
+            cardDao.unblockCardById(id);
+        } else {
+            cardDao.unblockCardById(id);
+            cardDao.deleteCardRequestByCardId(id);
+        }
+
+
         return cardDao.unblockCardById(id);
     }
 

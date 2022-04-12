@@ -60,7 +60,7 @@ public class LoginServlet extends HttpServlet {
             user = userService.authenticateUser(email, password);
             HttpSession session = req.getSession();
             session.setAttribute("user", user);
-            session.setAttribute("userRole", userService.getUserRoleByUser(user));
+            session.setAttribute("userRole", userService.getUserRoleByUserRoleId(user.getRolesId()));
 
             logger.info("User {} is authenticated", user.getEmail());
         } catch (AuthenticationException e) {
@@ -71,7 +71,7 @@ public class LoginServlet extends HttpServlet {
         }
 
 
-        if (userService.getUserRoleByUser(user).equals(Role.CLIENT.name())) {
+        if (userService.getUserRoleByUserRoleId(user.getRolesId()).equals(Role.CLIENT.name())) {
             resp.sendRedirect(Path.CARDS_PATH);
         } else resp.sendRedirect(Path.ADMIN_ALL_USERS_PATH);
     }
