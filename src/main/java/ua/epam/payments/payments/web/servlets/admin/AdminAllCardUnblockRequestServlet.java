@@ -4,10 +4,9 @@ package ua.epam.payments.payments.web.servlets.admin;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import ua.epam.payments.payments.model.dao.impl.CardDaoImpl;
-import ua.epam.payments.payments.model.dto.CardsUnblockRequestDto;
+import ua.epam.payments.payments.model.entity.dto.CardsUnblockRequestDto;
 import ua.epam.payments.payments.model.services.CardService;
 import ua.epam.payments.payments.web.Path;
-import ua.epam.payments.payments.web.servlets.LoginServlet;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;

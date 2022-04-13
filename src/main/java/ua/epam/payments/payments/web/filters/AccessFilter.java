@@ -33,14 +33,14 @@ public class AccessFilter implements Filter {
             servletRequest.getRequestDispatcher(Path.LOGIN_PATH).forward(servletRequest, servletResponse);
             return;
         }
-
+/*
 
         if (user.getBlocked()) {
             req.getSession().invalidate();
             servletRequest.setAttribute(Constants.USER_IS_BLOCKED, Constants.USER_IS_BLOCKED);
             servletRequest.getRequestDispatcher(Path.LOGIN_PATH).forward(servletRequest, servletResponse);
             return;
-        }
+        }*/
 
         if (ADMIN_PATHS.contains(req.getServletPath())) {
             if (req.getSession().getAttribute("userRole").equals(Role.CLIENT.name())) {

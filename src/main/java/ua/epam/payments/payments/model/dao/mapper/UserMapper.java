@@ -1,4 +1,4 @@
-package ua.epam.payments.payments.model.mapper;
+package ua.epam.payments.payments.model.dao.mapper;
 
 import ua.epam.payments.payments.model.entity.User;
 

@@ -4,7 +4,7 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import ua.epam.payments.payments.model.dao.impl.CardDaoImpl;
 import ua.epam.payments.payments.model.dao.impl.PaymentsDaoImpl;
-import ua.epam.payments.payments.model.dto.FullPaymentDto;
+import ua.epam.payments.payments.model.entity.dto.FullPaymentDto;
 import ua.epam.payments.payments.model.entity.User;
 import ua.epam.payments.payments.model.services.PaymentService;
 import ua.epam.payments.payments.web.Path;

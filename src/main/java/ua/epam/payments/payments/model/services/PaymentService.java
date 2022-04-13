@@ -2,7 +2,7 @@ package ua.epam.payments.payments.model.services;
 
 import ua.epam.payments.payments.model.dao.CardDao;
 import ua.epam.payments.payments.model.dao.PaymentDao;
-import ua.epam.payments.payments.model.dto.FullPaymentDto;
+import ua.epam.payments.payments.model.entity.dto.FullPaymentDto;
 import ua.epam.payments.payments.model.entity.Card;
 import ua.epam.payments.payments.model.entity.Payment;
 import ua.epam.payments.payments.model.exception.CardBlockedException;

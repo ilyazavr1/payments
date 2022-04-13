@@ -5,7 +5,7 @@ import org.apache.logging.log4j.Logger;
 import ua.epam.payments.payments.model.dao.UserDao;
 import ua.epam.payments.payments.db.DBManager;
 import ua.epam.payments.payments.model.entity.User;
-import ua.epam.payments.payments.model.mapper.UserMapper;
+import ua.epam.payments.payments.model.dao.mapper.UserMapper;
 
 import java.sql.*;
 import java.util.ArrayList;

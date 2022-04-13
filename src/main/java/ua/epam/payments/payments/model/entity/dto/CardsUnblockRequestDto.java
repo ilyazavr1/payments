@@ -1,4 +1,4 @@
-package ua.epam.payments.payments.model.dto;
+package ua.epam.payments.payments.model.entity.dto;
 
 public class CardsUnblockRequestDto {
     private long id;

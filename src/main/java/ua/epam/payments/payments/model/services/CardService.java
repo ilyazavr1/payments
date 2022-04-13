@@ -1,7 +1,7 @@
 package ua.epam.payments.payments.model.services;
 
 import ua.epam.payments.payments.model.dao.CardDao;
-import ua.epam.payments.payments.model.dto.CardsUnblockRequestDto;
+import ua.epam.payments.payments.model.entity.dto.CardsUnblockRequestDto;
 import ua.epam.payments.payments.model.entity.Card;
 import ua.epam.payments.payments.model.entity.User;
 import ua.epam.payments.payments.model.exception.CardExistException;

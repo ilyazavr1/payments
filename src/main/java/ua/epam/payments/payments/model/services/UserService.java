@@ -7,6 +7,7 @@ import ua.epam.payments.payments.model.dao.UserDao;
 import ua.epam.payments.payments.model.entity.User;
 import ua.epam.payments.payments.model.exception.AuthenticationException;
 import ua.epam.payments.payments.model.exception.RegisteredEmailException;
+import ua.epam.payments.payments.model.exception.UserIsBlockedException;
 import ua.epam.payments.payments.model.util.PasswordEncryption;
 import ua.epam.payments.payments.web.servlets.CardBlock;
 
@@ -67,13 +68,15 @@ public class UserService {
         return userDao.createUser(user);
     }
 
-    public User authenticateUser(String email, String password) throws AuthenticationException {
+    public User authenticateUser(String email, String password) throws AuthenticationException, UserIsBlockedException {
         User user = userDao.getUserByEmail(email);
         PasswordEncryption passwordEncryption = new PasswordEncryption();
 
 
         if (user == null || !passwordEncryption.isPasswordCorrect(password, user.getPassword()))
             throw new AuthenticationException();
+
+        if(user.getBlocked())  throw new UserIsBlockedException();
 
 
         return user;

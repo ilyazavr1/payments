@@ -1,6 +1,6 @@
-package ua.epam.payments.payments.model.mapper;
+package ua.epam.payments.payments.model.dao.mapper;
 
-import ua.epam.payments.payments.model.dto.CardsUnblockRequestDto;
+import ua.epam.payments.payments.model.entity.dto.CardsUnblockRequestDto;
 import ua.epam.payments.payments.model.entity.Card;
 
 

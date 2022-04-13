@@ -6,6 +6,7 @@ import ua.epam.payments.payments.model.dao.impl.UserDaoImpl;
 import ua.epam.payments.payments.model.entity.Role;
 import ua.epam.payments.payments.model.entity.User;
 import ua.epam.payments.payments.model.exception.AuthenticationException;
+import ua.epam.payments.payments.model.exception.UserIsBlockedException;
 import ua.epam.payments.payments.model.services.UserService;
 import ua.epam.payments.payments.model.util.validation.UserValidator;
 import ua.epam.payments.payments.web.Constants;
@@ -66,6 +67,11 @@ public class LoginServlet extends HttpServlet {
         } catch (AuthenticationException e) {
             logger.info("User {} does not exist", email);
             req.setAttribute(Constants.AUTHENTICATION_FAILED, Constants.AUTHENTICATION_FAILED);
+            req.getRequestDispatcher(Path.LOGIN_JSP).forward(req, resp);
+            return;
+        } catch (UserIsBlockedException e) {
+            logger.info("User {} is blocked", email);
+            req.setAttribute(Constants.USER_IS_BLOCKED, Constants.USER_IS_BLOCKED);
             req.getRequestDispatcher(Path.LOGIN_JSP).forward(req, resp);
             return;
         }

@@ -1,7 +1,7 @@
-package ua.epam.payments.payments.model.mapper;
+package ua.epam.payments.payments.model.dao.mapper;
 
 
-import ua.epam.payments.payments.model.dto.FullPaymentDto;
+import ua.epam.payments.payments.model.entity.dto.FullPaymentDto;
 import ua.epam.payments.payments.model.entity.Payment;
 
 import java.sql.ResultSet;

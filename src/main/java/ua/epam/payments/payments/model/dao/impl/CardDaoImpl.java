@@ -4,10 +4,10 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import ua.epam.payments.payments.model.dao.CardDao;
 import ua.epam.payments.payments.db.DBManager;
-import ua.epam.payments.payments.model.dto.CardsUnblockRequestDto;
+import ua.epam.payments.payments.model.entity.dto.CardsUnblockRequestDto;
 import ua.epam.payments.payments.model.entity.Card;
 import ua.epam.payments.payments.model.entity.User;
-import ua.epam.payments.payments.model.mapper.CardMapper;
+import ua.epam.payments.payments.model.dao.mapper.CardMapper;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;

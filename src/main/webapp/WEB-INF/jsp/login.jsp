@@ -23,10 +23,10 @@
                 <form action="${Path.LOGIN_PATH}" method="post">
                     <div class="form-group">
                         <c:if test="${requestScope.userIsBlocked != null}">
-                           <p><fmt:message key="userIsBlocked"/> </p>
+                           <p style="color: red"><fmt:message key="userIsBlocked"/> </p>
                         </c:if>
                         <c:if test="${requestScope.authenticationFailed != null}">
-                           <p><fmt:message key="authenticationFailed"/> </p>
+                           <p style="color: red"><fmt:message key="authenticationFailed"/> </p>
                         </c:if>
 
                         <label><fmt:message key="email"/></label>
