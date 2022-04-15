@@ -56,6 +56,7 @@ public class CardBlock extends HttpServlet {
         if (!userService.validatePassword(password)) {
             req.setAttribute(Constants.INVALID_PASSWORD, Constants.INVALID_PASSWORD);
             req.getRequestDispatcher(Path.CARD_BLOCK_JSP).forward(req, resp);
+            return;
         }
 
 

@@ -48,6 +48,7 @@ public class UserService {
     }
 
     public boolean registerUser(String firstName, String lastName, String surname, String email, String password) throws RegisteredEmailException {
+
         if (userDao.getUserByEmail(email) != null) throw new RegisteredEmailException();
         PasswordEncryption passwordEncryption = new PasswordEncryption();
         User user = null;
@@ -71,7 +72,6 @@ public class UserService {
     public User authenticateUser(String email, String password) throws AuthenticationException, UserIsBlockedException {
         User user = userDao.getUserByEmail(email);
         PasswordEncryption passwordEncryption = new PasswordEncryption();
-
 
         if (user == null || !passwordEncryption.isPasswordCorrect(password, user.getPassword()))
             throw new AuthenticationException();

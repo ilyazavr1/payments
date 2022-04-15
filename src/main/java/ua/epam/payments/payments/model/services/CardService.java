@@ -26,7 +26,6 @@ public class CardService {
     }
 
     public Card getCardByNumber(String number) {
-
         return cardDao.getCardByNumber(number);
     }
 
@@ -49,7 +48,7 @@ public class CardService {
     }
 
     public boolean topUpCard(Card card, String money) throws CardTopUpException {
-        if (money.isEmpty() || money.length() > 10) throw new CardTopUpException();
+        if (money.isEmpty() ||!money.replaceFirst("^0*", "").matches("^[0-9]{0,5}$")) throw new CardTopUpException();
 
         int moneyInt = Integer.parseInt(money);
 
@@ -65,6 +64,7 @@ public class CardService {
 
     public boolean unblockCardById(long id) {
         Card card = cardDao.getCardById(id);
+
         if (card == null) return false;
 
         if (!card.isUnderConsideration()) {
