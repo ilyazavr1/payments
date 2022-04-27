@@ -61,11 +61,14 @@ public class CardsServlet extends HttpServlet {
         } else offset = 1;
 
 
-        List<Card> cards = cardService.sort( user.getId(), sortingType, sortingOrder, limit, (limit * (offset - 1)));
+        List<Card> cards = cardService.sort(user.getId(), sortingType, sortingOrder, limit, (limit * (offset - 1)));
 
+
+
+       // int counter = (int) Math.ceil((double) cardService.countCardsByUser(user) / limit);
 
         req.setAttribute("cards", cards);
-        req.setAttribute("loopPagination", 5);
+        req.setAttribute("loopPagination", (int) Math.ceil((double) cardService.countCardsByUser(user) / limit));
 
         req.getRequestDispatcher(Path.CARDS_JSP).forward(req, resp);
     }

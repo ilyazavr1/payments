@@ -1,6 +1,6 @@
 package ua.epam.payments.payments.web.servlets;
 
-import org.apache.commons.codec.DecoderException;
+
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import ua.epam.payments.payments.model.dao.impl.CardDaoImpl;
@@ -17,8 +17,6 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.security.NoSuchAlgorithmException;
-import java.security.spec.InvalidKeySpecException;
 
 
 @WebServlet(name = "CardBlock", value = Path.CARD_BLOCK_PATH)

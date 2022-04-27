@@ -4,6 +4,7 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import ua.epam.payments.payments.model.dao.PaymentDao;
 import ua.epam.payments.payments.db.DBManager;
+import ua.epam.payments.payments.model.entity.User;
 import ua.epam.payments.payments.model.entity.dto.FullPaymentDto;
 import ua.epam.payments.payments.model.entity.Card;
 import ua.epam.payments.payments.model.entity.Payment;
@@ -23,6 +24,7 @@ public class PaymentsDaoImpl implements PaymentDao {
     public static final String SQL_GET_PAYMENTS_BY_USER = "SELECT * FROM payment WHERE card_sender_id IN (SELECT card.id FROM card WHERE user_id =?);";
 
     public static final String SQL_UPDATE_PREPARED_PAYMENTS_MONEY = "UPDATE payment SET balance=? WHERE id=?";
+    public static final String SQL_COUNT_PAYMENTS_BY_USER = "SELECT  count(payment.id)  FROM payment LEFT JOIN card c on c.id = payment.card_destination_id where c.user_id =?";
 
     public static final String SQL_CONFIRM_PAYMENT_BY_ID = "UPDATE payment SET creation_timestamp = default, payment_status_id=2 WHERE id =?";
 
@@ -52,6 +54,26 @@ public class PaymentsDaoImpl implements PaymentDao {
     }
 
     @Override
+    public int countPaymentsByUser(User user) {
+        int counter = 0;
+        try (Connection con = DBManager.getInstance().getConnection();
+             PreparedStatement stmt = con.prepareStatement(SQL_COUNT_PAYMENTS_BY_USER)) {
+            stmt.setLong(1, user.getId());
+
+            try (ResultSet rs = stmt.executeQuery()) {
+                while (rs.next()) {
+                    counter = rs.getInt(1);
+                }
+            }
+
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
+        }
+
+        return counter;
+    }
+
+    @Override
     public List<Payment> getPaymentsByUserId(long id) {
         List<Payment> paymentList = null;
         try (Connection con = DBManager.getInstance().getConnection();
@@ -68,7 +90,7 @@ public class PaymentsDaoImpl implements PaymentDao {
             }
 
         } catch (SQLException throwables) {
-           logger.error("{}, when trying to get Payment list by User Id = {}", throwables.getMessage(), id);
+            logger.error("{}, when trying to get Payment list by User Id = {}", throwables.getMessage(), id);
             throw new RuntimeException(throwables);
         }
 

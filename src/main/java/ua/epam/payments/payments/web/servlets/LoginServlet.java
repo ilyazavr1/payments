@@ -22,7 +22,7 @@ import java.io.IOException;
 
 @WebServlet(name = "LoginServlet", value = Path.LOGIN_PATH)
 public class LoginServlet extends HttpServlet {
-    private static final Logger logger = LogManager.getLogger(LoginServlet.class);
+    private final static Logger logger = LogManager.getLogger(LoginServlet.class);
 
 
     //  vlad@gmail.com

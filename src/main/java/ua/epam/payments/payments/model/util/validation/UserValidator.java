@@ -8,11 +8,11 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class UserValidator {
-    public static final Pattern EMAIL_ADDRESS_REGEX = Pattern.compile("^[A-Z0-9._%+-]+@[A-Z0-9.-]+\\.[A-Z]{2,6}$", Pattern.CASE_INSENSITIVE);
-    public static final Pattern NAME_REGEX = Pattern.compile("^(\\p{L}){1}( |[\\p{L}]){1,50}$");
+    public static final Pattern EMAIL_ADDRESS_REGEX = Pattern.compile("^[-\\w.]+@([A-z0-9][-A-z0-9]+\\.)+[A-z]{2,4}$", Pattern.CASE_INSENSITIVE);
+    public static final Pattern NAME_REGEX = Pattern.compile("^(\\p{L}){1}( |[\\p{L}]){2,50}$");
     public static final Pattern PASSWORD_REGEX = Pattern.compile("^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)[a-zA-Z\\d]{8,}$");
 
-    List<String> errors = new ArrayList<>();
+    private List<String> errors = new ArrayList<>();
 
     public boolean isUserInputValid(String firstName, String lastName, String surname, String email, String password) {
         validateFirstName(firstName);

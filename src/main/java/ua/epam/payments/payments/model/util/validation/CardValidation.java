@@ -10,14 +10,11 @@ import java.util.List;
 
 public class CardValidation {
 
-    List<String> errors = new ArrayList<>();
+   private List<String> errors = new ArrayList<>();
 
-
-    public CardValidation() {
-
-    }
 
     public boolean isCardsValid(Card cardSender, Card cardDestination) throws InvalidCardNumberException {
+        if (cardSender == null) throw new InvalidCardNumberException();
         if (cardDestination == null) throw new InvalidCardNumberException();
 
         if (cardSender.isBlocked()) errors.add(Constants.CARD_SENDER_IS_BLOCKED);

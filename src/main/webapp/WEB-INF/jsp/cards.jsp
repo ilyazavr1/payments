@@ -86,14 +86,16 @@
                                 <p class="card-text"><cardFormat:formatActiveBlockedBoolean
                                         status="${card.blocked}"> </cardFormat:formatActiveBlockedBoolean></p>
                                 <div>
-                                    <form style="float: left; width: 40%" action="${Path.CARD_TOP_UP_PATH}" method="post">
+                                    <form style="float: left; width: 40%" action="${Path.CARD_TOP_UP_PATH}"
+                                          method="post">
                                         <input type="hidden" name="cardId" value="${card.id}">
                                         <input type="hidden" name="test" value="test">
                                         <input style="background-color: lightgreen" type="submit"
                                                class="btn btn-outline-secondary" value="<fmt:message key="topUp"/>">
                                     </form>
 
-                                    <form style="float: right; width: 60%" action="${Path.CARD_BLOCK_PATH}" method="post">
+                                    <form style="float: right; width: 60%" action="${Path.CARD_BLOCK_PATH}"
+                                          method="post">
                                         <input type="hidden" name="cardId" value="${card.id}">
                                         <input style="margin-left: 70px; background-color: lightcoral" type="submit"
                                                class="btn btn-outline-secondary" value="<fmt:message key="block"/>">
@@ -178,8 +180,6 @@
                     </li>
                 </c:otherwise>
             </c:choose>
-
-
         </c:forEach>
 
 

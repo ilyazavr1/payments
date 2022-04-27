@@ -28,7 +28,12 @@ public class CardService {
     public Card getCardByNumber(String number) {
         return cardDao.getCardByNumber(number);
     }
+    public int countCardsByUser(User user){
+        int counter = cardDao.countCardsByUser(user);
 
+
+        return cardDao.countCardsByUser(user);
+    }
     public List<Card> getCardByUserId(long id) {
         return cardDao.getCardByUserId(id);
     }
@@ -41,10 +46,6 @@ public class CardService {
         if (cardDao.isExistCard(card.getNumber()) || user == null) throw new CardExistException();
 
         return cardDao.createCardWithUser(card, user);
-    }
-
-    public boolean updateCardWithMoney(Card card, int money) {
-        return cardDao.updateCardWithMoney(card, money);
     }
 
     public boolean topUpCard(Card card, String money) throws CardTopUpException {
@@ -78,30 +79,9 @@ public class CardService {
         return cardDao.unblockCardById(id);
     }
 
-    public boolean deleteCardRequestByCardId(long id) {
-        return cardDao.deleteCardRequestByCardId(id);
-    }
-
-    public boolean updateCardConsiderationById(long id) {
-        return cardDao.updateCardConsiderationById(id);
-    }
-
-    public boolean createCardUnblockRequest(Card card, User user) {
-        return cardDao.createCardUnblockRequest(card, user);
-    }
-
     public boolean makeRequestToUnblockCard(Card card, User user) {
         return cardDao.updateCardConsiderationById(card.getId()) && cardDao.createCardUnblockRequest(card, user);
     }
-
-    public boolean transferMoneyFromCardToCard(long cardSenderId, long cardDestinationId, int money) {
-        return cardDao.transferMoneyFromCardToCard(cardSenderId, cardDestinationId, money);
-    }
-
-    public boolean isExistCard(String number) {
-        return cardDao.isExistCard(number);
-    }
-
 
     public List<Card> sort(long id, String type, String order, int limit, int offset) {
         String query = "SELECT * FROM card WHERE user_id=? ORDER BY %s %s LIMIT %d OFFSET %d";
@@ -139,5 +119,32 @@ public class CardService {
 
         return null;
     }
+
+
+
+
+    public boolean updateCardWithMoney(Card card, int money) {
+        return cardDao.updateCardWithMoney(card, money);
+    }
+
+    public boolean deleteCardRequestByCardId(long id) {
+        return cardDao.deleteCardRequestByCardId(id);
+    }
+
+    public boolean updateCardConsiderationById(long id) {
+        return cardDao.updateCardConsiderationById(id);
+    }
+
+    public boolean createCardUnblockRequest(Card card, User user) {
+        return cardDao.createCardUnblockRequest(card, user);
+    }
+    public boolean transferMoneyFromCardToCard(long cardSenderId, long cardDestinationId, int money) {
+        return cardDao.transferMoneyFromCardToCard(cardSenderId, cardDestinationId, money);
+    }
+
+    public boolean isExistCard(String number) {
+        return cardDao.isExistCard(number);
+    }
+
 }
 

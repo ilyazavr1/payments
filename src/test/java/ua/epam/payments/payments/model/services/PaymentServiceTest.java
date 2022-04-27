@@ -12,6 +12,10 @@ import ua.epam.payments.payments.model.exception.OutOfMoneyException;
 
 import java.time.LocalDateTime;
 import java.time.Month;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.function.Function;
+import java.util.stream.Collectors;
 
 import static org.junit.Assert.*;
 import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
@@ -30,7 +34,7 @@ public class PaymentServiceTest {
             .withNumber("1234123412341234")
             .withUnderConsideration(false)
             .withMoney(1000)
-            .withUserId(11)
+            .withUserId(1)
             .withBlocked(false)
             .build();
     private Card UNBLOCKED_CARD_DEST = new Card.Builder()
@@ -104,6 +108,10 @@ public class PaymentServiceTest {
         assertTrue(paymentService.confirmPayment(ID));
     }
 
+
+
+
+
     @Test
     public void createPreparedPaymentShouldThrowInvalidMoneyException() {
         assertThrows(InvalidMoneyException.class,
@@ -144,8 +152,6 @@ public class PaymentServiceTest {
 
 
         assertDoesNotThrow(() -> paymentService.makePayment(UNBLOCKED_CARD_SEND, UNBLOCKED_CARD_DEST, MONEY_STRING));
-
-        System.out.println(paymentService.makePayment(UNBLOCKED_CARD_SEND, UNBLOCKED_CARD_DEST, MONEY_STRING));
 
 
     }

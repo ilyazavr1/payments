@@ -2,6 +2,7 @@ package ua.epam.payments.payments.model.services;
 
 import ua.epam.payments.payments.model.dao.CardDao;
 import ua.epam.payments.payments.model.dao.PaymentDao;
+import ua.epam.payments.payments.model.entity.User;
 import ua.epam.payments.payments.model.entity.dto.FullPaymentDto;
 import ua.epam.payments.payments.model.entity.Card;
 import ua.epam.payments.payments.model.entity.Payment;
@@ -28,10 +29,26 @@ public class PaymentService {
     }
 
 
+    public int countPaymentsByUser(User user) {
+        return paymentDao.countPaymentsByUser(user);
+    }
+
     public Payment getPaymentById(long id) {
         return paymentDao.getPaymentById(id);
     }
 
+    /**
+     * Gets prepared Payment from database.
+     * Gets a card from which money is withdrawn from database.
+     * Gets a card that replenishes from database.
+     * Calls the method that transfers money.
+     * Confirms Payment.
+     *
+     * @param id Payment id
+     * @return boolean if the payment was confirmed or not
+     * @throws CardBlockedException if card is blocked
+     * @throws OutOfMoneyException if the difference between card balance and payment money is negative
+     */
     public boolean confirmPayment(long id) throws CardBlockedException, OutOfMoneyException {
         Payment payment = paymentDao.getPaymentById(id);
         if (payment.getPaymentStatusId() == 2) return false;
@@ -47,6 +64,18 @@ public class PaymentService {
     }
 
 
+    /**
+     * Validates money string.
+     * Checks whether there is enough money on card sender balance.
+     * Creates prepared Payment.
+     *
+     * @param cardSender card from which money is withdrawn from database.
+     * @param cardDestination card that replenishes from database.
+     * @param money money to be transferred.
+     * @return boolean if the prepared payment was confirmed or not.
+     * @throws InvalidMoneyException if money input is invalid.
+     * @throws OutOfMoneyException if the difference between card balance and payment money is negative.
+     */
     public boolean createPreparedPayment(Card cardSender, Card cardDestination, String money) throws InvalidMoneyException, OutOfMoneyException {
         if (money.isEmpty() || !money.replaceFirst("^0*", "").matches("^[0-9]{0,5}$"))
             throw new InvalidMoneyException();
@@ -57,6 +86,13 @@ public class PaymentService {
         return paymentDao.createPreparedPayment(cardSender, cardDestination, moneyInt);
     }
 
+
+    /**
+     * Updates database Payment records in case the Card information has changed.
+     *
+     * @param id User id
+     * @return boolean if payments eas updated
+     */
     public boolean updatePreparedPaymentsByUserId(long id) {
         List<Payment> paymentList = paymentDao.getPaymentsByUserId(id);
         Map<Long, Card> longCardMap = cardDao.getCardByUserId(id).stream().collect(Collectors.toMap(Card::getId, Function.identity()));
@@ -76,6 +112,19 @@ public class PaymentService {
     }
 
 
+    /**
+     * Validates string money input.
+     * Checks whether there is enough money on card sender balance.
+     * Transfers money.
+     * Creates payment in database.
+     *
+     * @param cardSender a card from which money is withdrawn from database.
+     * @param cardDestination a card that replenishes from database.
+     * @param money money to transfer.
+     * @return boolean if payment was made
+     * @throws InvalidMoneyException if money input is invalid.
+     * @throws OutOfMoneyException if the difference between card balance and payment money is negative.
+     */
     public boolean makePayment(Card cardSender, Card cardDestination, String money) throws InvalidMoneyException, OutOfMoneyException {
         if (money.isEmpty() || !money.replaceFirst("^0*", "").matches("^[0-9]{0,5}$")) {
             throw new InvalidMoneyException();

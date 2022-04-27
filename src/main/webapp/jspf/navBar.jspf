@@ -131,7 +131,6 @@
                     <a href="?sessionLocale=en"> <fmt:message key="changeLanguageTo"/></a>
                 </c:if>
             </div>
-
         </nav>
 
     </c:otherwise>

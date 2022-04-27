@@ -62,6 +62,9 @@ public class PaymentsServlet extends HttpServlet {
 
         paymentService.updatePreparedPaymentsByUserId(user.getId());
         List<FullPaymentDto> paymentList = paymentService.sort(user.getId(), sortingType, sortingOrder, limit, (limit * (offset - 1)));
+        req.setAttribute("loopPagination", (int) Math.ceil((double) paymentService.countPaymentsByUser(user) / limit));
+        System.out.println( paymentService.countPaymentsByUser(user));
+        System.out.println(user.getId());
 
         if (paymentList.isEmpty()){
             logger.info("User {} do not have any payments", user.getEmail());

@@ -23,34 +23,26 @@ public class AccessFilter implements Filter {
     @Override
     public void doFilter(ServletRequest servletRequest, ServletResponse servletResponse, FilterChain filterChain) throws IOException, ServletException {
         HttpServletRequest req = (HttpServletRequest) servletRequest;
-        HttpServletResponse res = (HttpServletResponse) servletResponse;
+        HttpServletResponse resp = (HttpServletResponse) servletResponse;
         User user = (User) req.getSession().getAttribute("user");
         if (user == null) {
+
             if (req.getServletPath().equals(Path.LOGIN_PATH) || req.getServletPath().equals(Path.REGISTRATION_PATH)) {
-                servletRequest.getRequestDispatcher(req.getServletPath()).forward(servletRequest, servletResponse);
+                    req.getRequestDispatcher(req.getServletPath()).forward(req, resp);
                 return;
             }
-            servletRequest.getRequestDispatcher(Path.LOGIN_PATH).forward(servletRequest, servletResponse);
-            return;
-        }
-/*
 
-        if (user.getBlocked()) {
-            req.getSession().invalidate();
-            servletRequest.setAttribute(Constants.USER_IS_BLOCKED, Constants.USER_IS_BLOCKED);
-            servletRequest.getRequestDispatcher(Path.LOGIN_PATH).forward(servletRequest, servletResponse);
-            return;
-        }*/
+        }
 
         if (ADMIN_PATHS.contains(req.getServletPath())) {
             if (req.getSession().getAttribute("userRole").equals(Role.CLIENT.name())) {
-                res.sendRedirect(Path.CARDS_PATH);
+                resp.sendRedirect(Path.CARDS_PATH);
                 return;
             }
         }
         if (CLIENT_PATHS.contains(req.getServletPath())) {
             if (req.getSession().getAttribute("userRole").equals(Role.ADMINISTRATOR.name())) {
-                res.sendRedirect(Path.ADMIN_ALL_USERS_PATH);
+                resp.sendRedirect(Path.ADMIN_ALL_USERS_PATH);
                 return;
             }
         }

@@ -134,7 +134,7 @@
         <c:set var="sortOrder" value="${requestScope.sortingOrder}" scope="request"> </c:set>
 
 
-        <c:forEach begin="1" end="5" varStatus="loop">
+        <c:forEach begin="1" end="${requestScope.loopPagination}" varStatus="loop">
             <c:set var="num" value="${loop.index}" scope="page"> </c:set>
             <c:choose>
                 <c:when test="${requestScope.page == num}">

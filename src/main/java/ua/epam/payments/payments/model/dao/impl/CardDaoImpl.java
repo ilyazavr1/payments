@@ -34,7 +34,7 @@ public class CardDaoImpl implements CardDao {
     public static final String SQL_CREATE_CARD = "INSERT INTO card values (default, ?, ?, default, default,default, ?)";
     public static final String SQL_ADD_CARD_TO_USER = "UPDATE card SET user_id=? WHERE id=?";
     public static final String SQL_GET_CARD_BY_USER = "SELECT * FROM card WHERE user_id=?";
-    public static final String SQL_COUNT_CARD_BY_USER = "SELECT count(card.id) FROM card WHERE user_id =?;";
+    public static final String SQL_COUNT_CARD_BY_USER = "SELECT count(card.id) FROM card WHERE user_id =?";
     public static final String SQL_GET_CARD_BY_USER_LIMIT = "SELECT * FROM card WHERE user_id=? LIMIT ? OFFSET ?";
     public static final String SQL_GET_CARDS_REQUESTS = "select * from card_unblock_request";
     public static final String SQL_DELETE_CARD_REQUEST = "DELETE FROM card_unblock_request WHERE card_id = ?;";
@@ -64,31 +64,7 @@ public class CardDaoImpl implements CardDao {
         return card;
     }
 
-/*    @Override
-    public List<Card> getCardByUserLimit(User user, int limit, int offset) {
-        List<Card> accountsList = null;
-        try (Connection con = DBManager.getInstance().getConnection();
-             PreparedStatement stmt = con.prepareStatement(SQL_GET_CARD_BY_USER_LIMIT)) {
-            stmt.setLong(1, user.getId());
-            stmt.setInt(2, limit);
-            stmt.setInt(3, offset);
-            try (ResultSet rs = stmt.executeQuery()) {
-                accountsList = new ArrayList<>();
-                while (rs.next()) {
-                    CardMapper accountMapper = new CardMapper();
-                    accountsList.add(accountMapper.mapRSToCard(rs));
 
-                }
-            }
-
-        } catch (SQLException throwables) {
-            throwables.printStackTrace();
-        }
-
-        return accountsList;
-    }*/
-
-    //"SELECT * FROM card WHERE user_id=? ORDER BY ? ? LIMIT ? OFFSET ?";
     @Override
     public List<CardsUnblockRequestDto> getCardRequests() {
         List<CardsUnblockRequestDto> list;
@@ -362,7 +338,25 @@ public class CardDaoImpl implements CardDao {
         return true;
     }
 
+    @Override
+    public int countCardsByUser(User user) {
+        int countCards = 0;
+        try (Connection con = DBManager.getInstance().getConnection();
+             PreparedStatement stmt = con.prepareStatement(SQL_COUNT_CARD_BY_USER)) {
+            stmt.setLong(1, user.getId());
 
+            try (ResultSet rs = stmt.executeQuery()) {
+                while (rs.next()) {
+                    countCards = rs.getInt(1);
+                }
+            }
+
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
+        }
+
+        return countCards;
+    }
 }
 
 

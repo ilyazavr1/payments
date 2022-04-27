@@ -3,6 +3,8 @@ package ua.epam.payments.payments.model.util;
 
 import java.util.concurrent.ThreadLocalRandom;
 
+
+
 public class CardGeneration {
 
     public static String generateCardNumber() {

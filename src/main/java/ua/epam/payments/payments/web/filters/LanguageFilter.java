@@ -22,6 +22,7 @@ public class LanguageFilter implements Filter {
         if (encodingParam != null) {
             encoding = encodingParam;
         }
+
     }
 
     @Override
@@ -47,23 +48,3 @@ public class LanguageFilter implements Filter {
         Filter.super.destroy();
     }
 }
-/* public static final String ENCODING = "UTF-8";
-     servletRequest.setCharacterEncoding("UTF-8");
-       servletResponse.setCharacterEncoding(ENCODING);
-        servletResponse.setContentType("text/html;charset=UTF-8");
-        servletRequest.setCharacterEncoding(encoding);*/
-     /*   if (language != null &&(language.equals(LANG_UK) || language.equals(LANG_EN))) {
-            req.setAttribute("lang", language);
-
-        } else {
-            req.setAttribute("lang", LANG_UK);
-        }*/
-// System.out.println(req.getSession().getAttribute("lang"));
-
-/*req.setAttribute("test", "123");
-        if (req.getParameter("sessionLocale") == null) {
-            req.getSession().setAttribute(LANG_COOKIE_NAME, LANG_UK);
-        } else if(req.getParameter("sessionLocale").equalsIgnoreCase(LANG_EN)){
-            req.getSession().setAttribute(LANG_COOKIE_NAME, LANG_EN);
-        } else req.getSession().setAttribute(LANG_COOKIE_NAME, LANG_UK);t
-       // System.out.println(req.getSession().getAttribute("lang"));*/

@@ -17,11 +17,17 @@ public class PasswordEncryption {
     private static final int ITERATIONS = 200;
     private static final int KEY_LENGTH = 512;
     private static final int SALT_SIZE = 16;
+
     private static final Logger logger = LogManager.getLogger(PasswordEncryption.class);
 
-    public String encrypt(String password) throws NoSuchAlgorithmException, InvalidKeySpecException {
+    public String encrypt(String password)   {
         byte[] salt = getSalt();
-        return Hex.encodeHexString(hashPassword(password, salt)) + Hex.encodeHexString(salt);
+        try {
+            return Hex.encodeHexString(hashPassword(password, salt)) + Hex.encodeHexString(salt);
+        } catch (NoSuchAlgorithmException | InvalidKeySpecException e) {
+            logger.error("{}, when trying to encrypt user password", e.getMessage());
+            throw new RuntimeException();
+        }
     }
 
     private byte[] hashPassword(String password, byte[] salt) throws NoSuchAlgorithmException, InvalidKeySpecException {

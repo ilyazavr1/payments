@@ -53,7 +53,7 @@ public class UserService {
         PasswordEncryption passwordEncryption = new PasswordEncryption();
         User user = null;
 
-        try {
+
             user = new User.Builder()
                     .withFirstName(firstName)
                     .withLastName(lastName)
@@ -61,10 +61,7 @@ public class UserService {
                     .withEmail(email)
                     .withPassword(passwordEncryption.encrypt(password))
                     .build();
-        } catch (NoSuchAlgorithmException | InvalidKeySpecException e) {
-            //TODO in registration exception
-            e.printStackTrace();
-        }
+
 
         return userDao.createUser(user);
     }

@@ -32,11 +32,12 @@ public class CardServiceTest {
 
 
     private Card card;
-    private final static User USER = new User.Builder().build();
+    private User USER;
     private final static User USER_NULL = null;
 
     @Before
     public void setUp() throws Exception {
+        USER = new User.Builder().build();
         card = new Card.Builder()
                 .withId(ID)
                 .withName(NAME)
@@ -97,4 +98,25 @@ public class CardServiceTest {
 
         assertTrue(cardService.unblockCardById(ID));
     }
+
+    @Test
+    public void makeRequestToUnblockCardReturnFalse() {
+
+        when(cardDao.updateCardConsiderationById(card.getId())).thenReturn(false);
+        when(cardDao.createCardUnblockRequest(card, USER)).thenReturn(false);
+
+        assertFalse(cardService.makeRequestToUnblockCard(card,USER));
+
+    }
+    @Test
+    public void makeRequestToUnblockCardReturnTrue() {
+
+        when(cardDao.updateCardConsiderationById(card.getId())).thenReturn(true);
+        when(cardDao.createCardUnblockRequest(card, USER)).thenReturn(true);
+
+        assertTrue(cardService.makeRequestToUnblockCard(card,USER));
+
+    }
+
+
 }
