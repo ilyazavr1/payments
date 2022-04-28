@@ -28,28 +28,53 @@ public class CardService {
     public Card getCardByNumber(String number) {
         return cardDao.getCardByNumber(number);
     }
-    public int countCardsByUser(User user){
+
+    public int countCardsByUser(User user) {
         int counter = cardDao.countCardsByUser(user);
 
 
         return cardDao.countCardsByUser(user);
     }
+
     public List<Card> getCardByUserId(long id) {
         return cardDao.getCardByUserId(id);
     }
 
+    /**
+     * Takes from database CardsUnblockRequest that contains information about the user and his card to be unlocked.
+     *
+     * @return CardsUnblockRequestDto with information about user and card
+     */
     public List<CardsUnblockRequestDto> getCardRequestsToUnblock() {
         return cardDao.getCardRequests();
     }
 
+    /**
+     * Checks if card exits in database.
+     * Creates new Card in database and assigns User to it.
+     *
+     * @param card new Card to be saved
+     * @param user User to be associated with Card
+     * @return boolean if the Card was created or not
+     * @throws CardExistException if card already exists in database
+     */
     public boolean createCardWithUser(Card card, User user) throws CardExistException {
         if (cardDao.isExistCard(card.getNumber()) || user == null) throw new CardExistException();
 
         return cardDao.createCardWithUser(card, user);
     }
 
+    /**
+     * Validates money input.
+     * Replenishes the balance on the card.
+     *
+     * @param card  Card to be topped up
+     * @param money money for card
+     * @return if Card was topped up or not
+     * @throws CardTopUpException if money input is invalid
+     */
     public boolean topUpCard(Card card, String money) throws CardTopUpException {
-        if (money.isEmpty() ||!money.replaceFirst("^0*", "").matches("^[0-9]{0,5}$")) throw new CardTopUpException();
+        if (money.isEmpty() || !money.replaceFirst("^0*", "").matches("^[0-9]{0,5}$")) throw new CardTopUpException();
 
         int moneyInt = Integer.parseInt(money);
 
@@ -79,6 +104,14 @@ public class CardService {
         return cardDao.unblockCardById(id);
     }
 
+    /**
+     * Change Card attribute 'underConsideration' to true.
+     * Creates new card unblock request.
+     *
+     * @param card Card to be unblocked.
+     * @param user User assigned to Card.
+     * @return boolean if request to unblock was made or not.
+     */
     public boolean makeRequestToUnblockCard(Card card, User user) {
         return cardDao.updateCardConsiderationById(card.getId()) && cardDao.createCardUnblockRequest(card, user);
     }
@@ -120,9 +153,7 @@ public class CardService {
         return null;
     }
 
-
-
-
+/*
     public boolean updateCardWithMoney(Card card, int money) {
         return cardDao.updateCardWithMoney(card, money);
     }
@@ -131,20 +162,21 @@ public class CardService {
         return cardDao.deleteCardRequestByCardId(id);
     }
 
-    public boolean updateCardConsiderationById(long id) {
+  *//*  public boolean updateCardConsiderationById(long id) {
         return cardDao.updateCardConsiderationById(id);
     }
 
     public boolean createCardUnblockRequest(Card card, User user) {
         return cardDao.createCardUnblockRequest(card, user);
-    }
+    }*//*
+
     public boolean transferMoneyFromCardToCard(long cardSenderId, long cardDestinationId, int money) {
         return cardDao.transferMoneyFromCardToCard(cardSenderId, cardDestinationId, money);
     }
 
     public boolean isExistCard(String number) {
         return cardDao.isExistCard(number);
-    }
+    }*/
 
 }
 
