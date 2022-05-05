@@ -117,10 +117,9 @@
                                 <h3 class="card-title"><cardFormat:formatCardNumber number="${card.number}"/></h3>
                                 <h3 class="card-title">${card.name}</h3>
                                 <p class="card-text"><c:out value="${card.money}"> </c:out></p>
-                                <p class="card-text"><cardFormat:formatActiveBlockedBoolean
-                                        status="${card.blocked}"> </cardFormat:formatActiveBlockedBoolean></p>
+                                <p class="card-text"><cardFormat:formatActiveBlockedBoolean status="${card.blocked}"> </cardFormat:formatActiveBlockedBoolean></p>
                                 <a style="background-color: lightgreen" href="${cardUnblockId}"
-                                   class="btn btn-outline-secondary">UNBLOCK</a>
+                                   class="btn btn-outline-secondary"><fmt:message key="unblock"/></a>
 
                             </div>
                         </div>
@@ -135,7 +134,7 @@
                                 <p class="card-text"><c:out value="${card.money}"> </c:out></p>
                                 <p class="card-text"><cardFormat:formatActiveBlockedBoolean
                                         status="${card.blocked}"> </cardFormat:formatActiveBlockedBoolean></p>
-                                <p>Under consideration</p>
+                                <p><fmt:message key="underConsideration"/></p>
 
                             </div>
                         </div>

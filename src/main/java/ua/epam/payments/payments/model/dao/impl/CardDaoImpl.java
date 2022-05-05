@@ -32,13 +32,11 @@ public class CardDaoImpl implements CardDao {
     public static final String SQL_TOP_UP_MONEY = "UPDATE card SET money=money+? WHERE id=?";
 
     public static final String SQL_CREATE_CARD = "INSERT INTO card values (default, ?, ?, default, default,default, ?)";
-    public static final String SQL_ADD_CARD_TO_USER = "UPDATE card SET user_id=? WHERE id=?";
     public static final String SQL_GET_CARD_BY_USER = "SELECT * FROM card WHERE user_id=?";
     public static final String SQL_COUNT_CARD_BY_USER = "SELECT count(card.id) FROM card WHERE user_id =?";
-    public static final String SQL_GET_CARD_BY_USER_LIMIT = "SELECT * FROM card WHERE user_id=? LIMIT ? OFFSET ?";
     public static final String SQL_GET_CARDS_REQUESTS = "select * from card_unblock_request";
     public static final String SQL_DELETE_CARD_REQUEST = "DELETE FROM card_unblock_request WHERE card_id = ?;";
-    //public static final String SQL_GET_CARD_BY_USER_LIMIT_SORTED = "SELECT * FROM card WHERE user_id=? ORDER BY ? LIMIT ? OFFSET ?";
+
 
     private final Logger logger = LogManager.getLogger(CardDaoImpl.class);
 
@@ -362,37 +360,3 @@ public class CardDaoImpl implements CardDao {
 
 
 
-/*    @Override
-    public boolean addCardToUser(Card card, User user) {
-        try (Connection con = DBManager.getInstance().getConnection();
-             PreparedStatement stmt = con.prepareStatement(SQL_ADD_CARD_TO_USER)) {
-            stmt.setLong(1, user.getId());
-            stmt.setLong(2, card.getId());
-
-            return stmt.executeUpdate() > 0;
-
-        } catch (SQLException throwables) {
-            throwables.printStackTrace();
-        }
-        return false;
-
-            @Override
-    public int countCardsByUser(User user) {
-        int countCards = 0;
-        try (Connection con = DBManager.getInstance().getConnection();
-             PreparedStatement stmt = con.prepareStatement(SQL_COUNT_CARD_BY_USER)) {
-            stmt.setLong(1, user.getId());
-
-            try (ResultSet rs = stmt.executeQuery()) {
-                while (rs.next()) {
-                    countCards = rs.getInt(1);
-                }
-            }
-
-        } catch (SQLException throwables) {
-            throwables.printStackTrace();
-        }
-
-        return countCards;
-    }
-    }*/

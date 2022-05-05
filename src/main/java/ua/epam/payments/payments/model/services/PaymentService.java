@@ -17,8 +17,10 @@ import java.util.function.Function;
 import java.util.stream.Collectors;
 
 public class PaymentService {
-    private static final String CREATION_TIMESTAMP = "creation_timestamp";
-    private static final String NUMBER = "payment.id";
+    public static final String CREATION_TIMESTAMP = "creation_timestamp";
+    public static final String NUMBER = "payment.id";
+    public static final String ASC = "ASC";
+    public static final String DESC = "DESC";
 
     private final PaymentDao paymentDao;
     private final CardDao cardDao;

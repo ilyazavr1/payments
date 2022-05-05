@@ -97,28 +97,7 @@ public class PaymentsDaoImpl implements PaymentDao {
         return paymentList;
     }
 
-/*    @Override
-    public List<FullPaymentDto> getFullPaymentsByUser(User user) {
-        List<FullPaymentDto> paymentList = null;
-        try (Connection con = DBManager.getInstance().getConnection();
-             PreparedStatement stmt = con.prepareStatement(SQL_GET_FULL_PAYMENTS_BY_USER)) {
-            stmt.setLong(1, user.getId());
 
-            try (ResultSet rs = stmt.executeQuery()) {
-                paymentList = new ArrayList<>();
-                PaymentMapper paymentMapper = new PaymentMapper();
-                while (rs.next()) {
-                    paymentList.add(paymentMapper.mapRSToFullPaymentDto(rs));
-
-                }
-            }
-
-        } catch (SQLException throwables) {
-            throwables.printStackTrace();
-        }
-
-        return paymentList;
-    }*/
 
     @Override
     public List<FullPaymentDto> getFullPaymentsByUserLimitSorted(long id, String query) {
@@ -145,8 +124,7 @@ public class PaymentsDaoImpl implements PaymentDao {
     }
 
 
-    //SQL_UPDATE_PREPARED_PAYMENTS_MONEY
-    //UPDATE payment SET balance=? WHERE id=?
+
     @Override
     public boolean updatePreparedPaymentMoney(List<Payment> paymentList) {
 
@@ -168,26 +146,6 @@ public class PaymentsDaoImpl implements PaymentDao {
         return false;
     }
 
-   /* @Override
-    public List<FullPaymentDto> getFullPayments() {
-        List<FullPaymentDto> paymentList = null;
-        try (Connection con = DBManager.getInstance().getConnection();
-             PreparedStatement stmt = con.prepareStatement(SQL_GET_FULL_PAYMENTS)) {
-
-            try (ResultSet rs = stmt.executeQuery()) {
-                paymentList = new ArrayList<>();
-                PaymentMapper paymentMapper = new PaymentMapper();
-                while (rs.next()) {
-                    paymentList.add(paymentMapper.mapRSToFullPaymentWithNameDto(rs));
-                }
-            }
-
-        } catch (SQLException throwables) {
-            throwables.printStackTrace();
-        }
-
-        return paymentList;
-    }*/
 
 
     @Override

@@ -153,30 +153,7 @@ public class CardService {
         return null;
     }
 
-/*
-    public boolean updateCardWithMoney(Card card, int money) {
-        return cardDao.updateCardWithMoney(card, money);
-    }
 
-    public boolean deleteCardRequestByCardId(long id) {
-        return cardDao.deleteCardRequestByCardId(id);
-    }
-
-  *//*  public boolean updateCardConsiderationById(long id) {
-        return cardDao.updateCardConsiderationById(id);
-    }
-
-    public boolean createCardUnblockRequest(Card card, User user) {
-        return cardDao.createCardUnblockRequest(card, user);
-    }*//*
-
-    public boolean transferMoneyFromCardToCard(long cardSenderId, long cardDestinationId, int money) {
-        return cardDao.transferMoneyFromCardToCard(cardSenderId, cardDestinationId, money);
-    }
-
-    public boolean isExistCard(String number) {
-        return cardDao.isExistCard(number);
-    }*/
 
 }
 

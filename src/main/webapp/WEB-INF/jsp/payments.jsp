@@ -74,6 +74,7 @@
                 <th style="padding-right: 150px"><fmt:message key="date"/></th>
                 <th><fmt:message key="status"/></th>
                 <th class="text-center"><fmt:message key="cardAction"/></th>
+                <th>PDF</th>
             </tr>
             </thead>
             <c:if test="${requestScope.payments != null}">
@@ -109,6 +110,7 @@
                         <c:if test="${requestScope.invalidPayment == payment.id}">
                             <td style="color: red"><fmt:message key="outOfMoney"> </fmt:message></td>
                         </c:if>
+                        <td></td>
                     </tr>
 
                 </c:forEach>

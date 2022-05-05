@@ -15,18 +15,22 @@ public class BooleanActiveBlockedFormatTag extends SimpleTagSupport {
         this.status = status;
     }
 
+
+
     @Override
     public void doTag() throws JspException, IOException {
         PageContext pageContext = (PageContext) getJspContext();
-        ResourceBundle resourceBundle = ResourceBundle.getBundle("messages", Locale.getDefault());
+        ResourceBundle resourceBundle = ResourceBundle.getBundle("messages", new Locale((String) pageContext.getSession().getAttribute("lang")));
+
+
 
         String result;
 
-        if (status) result = "blocked";
-        else result = "active";
-       //
+        if (status) result = resourceBundle.getString("blocked");
+        else result = resourceBundle.getString("active");
 
-        //System.out.println(pageContext.getSession().getAttribute("lang"));
+
+
 
         getJspContext().getOut().write(result);
 

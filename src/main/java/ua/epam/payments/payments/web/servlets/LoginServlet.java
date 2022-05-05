@@ -25,8 +25,7 @@ public class LoginServlet extends HttpServlet {
     private final static Logger logger = LogManager.getLogger(LoginServlet.class);
 
 
-    //  vlad@gmail.com
-    //  Qwerty12345
+
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         logger.debug("LoginServlet started");

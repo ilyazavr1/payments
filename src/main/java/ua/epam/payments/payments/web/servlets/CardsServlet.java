@@ -65,7 +65,7 @@ public class CardsServlet extends HttpServlet {
 
 
 
-       // int counter = (int) Math.ceil((double) cardService.countCardsByUser(user) / limit);
+
 
         req.setAttribute("cards", cards);
         req.setAttribute("loopPagination", (int) Math.ceil((double) cardService.countCardsByUser(user) / limit));
