@@ -14,6 +14,10 @@ public class Payment {
     private long cardSenderId;
     private long cardDestinationId;
 
+
+    private long userId;
+    private long userDestinationId;
+
     public long getId() {
         return id;
     }
@@ -70,6 +74,22 @@ public class Payment {
         this.cardDestinationId = cardDestinationId;
     }
 
+    public long getUserId() {
+        return userId;
+    }
+
+    public void setUserId(long userId) {
+        this.userId = userId;
+    }
+
+    public long getUserDestinationId() {
+        return userDestinationId;
+    }
+
+    public void setUserDestinationId(long userDestinationId) {
+        this.userDestinationId = userDestinationId;
+    }
+
     public static class Builder {
         private final Payment newPayment;
 
@@ -77,44 +97,55 @@ public class Payment {
             newPayment = new Payment();
         }
 
-        public Payment.Builder withId(long id){
+        public Payment.Builder withId(long id) {
             newPayment.id = id;
             return this;
         }
 
-        public Payment.Builder withBalance(int balance){
+        public Payment.Builder withBalance(int balance) {
             newPayment.balance = balance;
             return this;
         }
 
-        public Payment.Builder withMoney(int money){
+        public Payment.Builder withMoney(int money) {
             newPayment.money = money;
             return this;
         }
-        public Payment.Builder withPaymentStatusId(int paymentStatusId){
+
+        public Payment.Builder withPaymentStatusId(int paymentStatusId) {
             newPayment.paymentStatusId = paymentStatusId;
             return this;
         }
 
-        public Payment.Builder withCreationTimestamp(LocalDateTime creationTimestamp){
+        public Payment.Builder withCreationTimestamp(LocalDateTime creationTimestamp) {
             newPayment.creationTimestamp = creationTimestamp;
             return this;
         }
+
         public Payment.Builder withCreationTimestamp(Timestamp timestamp) {
             newPayment.creationTimestamp = timestamp.toLocalDateTime();
             return this;
         }
-        public Payment.Builder withCardSenderId(long cardSenderId){
+
+        public Payment.Builder withCardSenderId(long cardSenderId) {
             newPayment.cardSenderId = cardSenderId;
             return this;
         }
 
-        public Payment.Builder withCardDestinationId(long cardDestinationId){
+        public Payment.Builder withCardDestinationId(long cardDestinationId) {
             newPayment.cardDestinationId = cardDestinationId;
             return this;
         }
 
-        public Payment build(){
+        public Payment.Builder withUserId(long userId) {
+            newPayment.userId = userId;
+            return this;
+        }
+        public Payment.Builder withUserDestinationId(long userDestinationId) {
+            newPayment.userDestinationId = userDestinationId;
+            return this;
+        }
+        public Payment build() {
             return newPayment;
         }
 
@@ -131,14 +162,18 @@ public class Payment {
                 ", creationTimestamp=" + creationTimestamp +
                 ", cardSenderId=" + cardSenderId +
                 ", cardDestinationId=" + cardDestinationId +
+                ", userId=" + userId +
+                ", userDestinationId=" + userDestinationId +
                 '}';
     }
 
-    public enum Status{
+    public enum Status {
         PREPARED, SENT;
+
         public boolean isPrepared() {
             return this == PREPARED;
         }
+
         public boolean isSent() {
             return this == SENT;
         }

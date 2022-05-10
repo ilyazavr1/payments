@@ -150,12 +150,7 @@
 <nav aria-label="Page navigation example">
 
     <ul class="pagination">
-        <li class="page-item">
-            <a class="page-link" href="#" aria-label="Previous">
-                <span aria-hidden="true"><</span>
-                <span class="sr-only">Previous</span>
-            </a>
-        </li>
+
 
         <c:set var="rec" value="${requestScope.records}" scope="request"> </c:set>
         <c:set var="lenght" value="${requestScope.loopPagination}" scope="request"> </c:set>
@@ -182,18 +177,13 @@
         </c:forEach>
 
 
-        <li class="page-item">
-            <a class="page-link" href="#" aria-label="Next">
-                <span aria-hidden="true">></span>
-                <span class="sr-only">Next</span>
-            </a>
-        </li>
+
     </ul>
 
 
 </nav>
 <form action="${Path.CARDS_PATH}" method="get">
-    <input type="hidden" name="page" value="${requestScope.page}">
+    <input type="hidden" name="page" value="1">
 
     <select name="records">
 

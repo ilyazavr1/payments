@@ -83,13 +83,15 @@ create table card_unblock_request
 
 create table payment
 (
-    id                  serial  NOT NULL,
+    id                  serial                        NOT NULL,
     balance             integer,
-    money               integer NOT NULL                                          DEFAULT 0,
-    payment_status_id   integer REFERENCES payment_status (id) ON DELETE SET NULL DEFAULT 1,
-    creation_timestamp  timestamp                                                 DEFAULT CURRENT_TIMESTAMP,
-    card_sender_id      bigint  NOT NULL REFERENCES card (id),
-    card_destination_id bigint  NOT NULL REFERENCES card (id),
+    money               integer                       NOT NULL                                          DEFAULT 0,
+    payment_status_id   integer                       REFERENCES payment_status (id) ON DELETE SET NULL DEFAULT 1,
+    creation_timestamp  timestamp                                                                       DEFAULT CURRENT_TIMESTAMP,
+    card_sender_id      bigint                        NOT NULL REFERENCES card (id),
+    card_destination_id bigint                        NOT NULL REFERENCES card (id),
+    user_id             bigint REFERENCES "user" (id) NOT NULL,
+    user_destination_id bigint REFERENCES "user" (id) NOT NULL,
     PRIMARY KEY (id)
 );
 

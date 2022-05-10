@@ -145,7 +145,7 @@ public class PaymentServiceTest {
     }
 
     @Test
-    public void makePaymentShouldNotThrowException() throws OutOfMoneyException, InvalidMoneyException {
+    public void makePaymentShouldNotThrowException() {
 
         when(cardDao.transferMoneyFromCardToCard(UNBLOCKED_CARD_SEND.getId(), UNBLOCKED_CARD_DEST.getId(), PAYMENT.getMoney())).thenReturn(true);
         when(paymentDao.createConfirmedPayment(UNBLOCKED_CARD_SEND, UNBLOCKED_CARD_DEST, 10)).thenReturn(true);

@@ -30,9 +30,6 @@ public class CardService {
     }
 
     public int countCardsByUser(User user) {
-        int counter = cardDao.countCardsByUser(user);
-
-
         return cardDao.countCardsByUser(user);
     }
 

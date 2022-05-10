@@ -74,7 +74,7 @@
                 <th style="padding-right: 150px"><fmt:message key="date"/></th>
                 <th><fmt:message key="status"/></th>
                 <th class="text-center"><fmt:message key="cardAction"/></th>
-                <th>PDF</th>
+                <%--<th>PDF</th>--%>
             </tr>
             </thead>
             <c:if test="${requestScope.payments != null}">
@@ -98,10 +98,13 @@
                         <c:choose>
                             <c:when test="${payment.status.equals('PREPARED')}">
                                 <td><span class="badge badge-primary"><fmt:message key="statusPrepared"/></span></td>
-                                <form action="${Path.PAYMENTS_CONFIRM_PATH}" method="post">
-                                    <td><input type="submit" class="btn btn-success" value="<fmt:message key="confirm"/>"></td>
-                                    <input type="hidden" name="paymentId" value="${payment.id}">
-                                </form>
+                                <c:if test="${payment.userId == sessionScope.user.id}">
+                                    <form action="${Path.PAYMENTS_CONFIRM_PATH}" method="post">
+                                        <td><input type="submit" class="btn btn-success"
+                                                   value="<fmt:message key="confirm"/>"></td>
+                                        <input type="hidden" name="paymentId" value="${payment.id}">
+                                    </form>
+                                </c:if>
                             </c:when>
                             <c:otherwise>
                                 <td><span class="badge badge-primary"><fmt:message key="statusSent"/></span></td>
@@ -110,7 +113,12 @@
                         <c:if test="${requestScope.invalidPayment == payment.id}">
                             <td style="color: red"><fmt:message key="outOfMoney"> </fmt:message></td>
                         </c:if>
-                        <td></td>
+                            <%-- <td>
+
+                                 <form action="/download">
+                                     <input type="submit" value="test">
+                                 </form>
+                             </td>--%>
                     </tr>
 
                 </c:forEach>
@@ -123,12 +131,7 @@
 <nav aria-label="Page navigation example">
 
     <ul class="pagination">
-        <li class="page-item">
-            <a class="page-link" href="#" aria-label="Previous">
-                <span aria-hidden="true"><</span>
-                <span class="sr-only">Previous</span>
-            </a>
-        </li>
+
 
         <c:set var="rec" value="${requestScope.records}" scope="request"> </c:set>
         <c:set var="lenght" value="${requestScope.loopPagination}" scope="request"> </c:set>
@@ -157,18 +160,13 @@
         </c:forEach>
 
 
-        <li class="page-item">
-            <a class="page-link" href="#" aria-label="Next">
-                <span aria-hidden="true">></span>
-                <span class="sr-only">Next</span>
-            </a>
-        </li>
+
     </ul>
 
 
 </nav>
 <form action="${Path.PAYMENTS_PATH}" method="get">
-    <input type="hidden" name="page" value="${requestScope.page}">
+    <input type="hidden" name="page" value="1">
 
     <select name="records">
 

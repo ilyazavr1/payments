@@ -1,5 +1,7 @@
 package ua.epam.payments.payments.model.entity.dto;
 
+import ua.epam.payments.payments.model.entity.Payment;
+
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
 
@@ -19,6 +21,8 @@ public class FullPaymentDto {
     private String destinationSurname;
     private String destinationFullName;
     private String senderFullName;
+    private long userId;
+    private long userDestinationId;
 
     public long getId() {
         return id;
@@ -136,6 +140,22 @@ public class FullPaymentDto {
         return senderFullName;
     }
 
+    public long getUserId() {
+        return userId;
+    }
+
+    public void setUserId(long userId) {
+        this.userId = userId;
+    }
+
+    public long getUserDestinationId() {
+        return userDestinationId;
+    }
+
+    public void setUserDestinationId(long userDestinationId) {
+        this.userDestinationId = userDestinationId;
+    }
+
     public void setSenderFullName(String senderFullName) {
         this.senderFullName = senderFullName;
     }
@@ -208,7 +228,14 @@ public class FullPaymentDto {
             newFullPayment.destinationFullName = String.format("%s %s %s", lName, fName, surname);
             return this;
         }
-
+        public FullPaymentDto.Builder withUserId(long userId) {
+            newFullPayment.userId = userId;
+            return this;
+        }
+        public FullPaymentDto.Builder withUserDestinationId(long userDestinationId) {
+            newFullPayment.userDestinationId = userDestinationId;
+            return this;
+        }
         public FullPaymentDto build() {
             return newFullPayment;
         }
@@ -216,5 +243,26 @@ public class FullPaymentDto {
 
     }
 
-
+    @Override
+    public String toString() {
+        return "FullPaymentDto{" +
+                "id=" + id +
+                ", money=" + money +
+                ", status='" + status + '\'' +
+                ", creationTimestamp=" + creationTimestamp +
+                ", senderCardNumber='" + senderCardNumber + '\'' +
+                ", senderBalance=" + senderBalance +
+                ", destinationCardNumber='" + destinationCardNumber + '\'' +
+                ", senderFirstName='" + senderFirstName + '\'' +
+                ", senderLastName='" + senderLastName + '\'' +
+                ", senderSurnameName='" + senderSurnameName + '\'' +
+                ", destinationFirstName='" + destinationFirstName + '\'' +
+                ", destinationLastName='" + destinationLastName + '\'' +
+                ", destinationSurname='" + destinationSurname + '\'' +
+                ", destinationFullName='" + destinationFullName + '\'' +
+                ", senderFullName='" + senderFullName + '\'' +
+                ", userId=" + userId +
+                ", userDestinationId=" + userDestinationId +
+                '}';
+    }
 }

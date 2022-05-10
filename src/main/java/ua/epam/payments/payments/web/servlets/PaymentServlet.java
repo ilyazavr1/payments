@@ -94,7 +94,6 @@ public class PaymentServlet extends HttpServlet {
             doGet(req, resp);
             return;
         } catch (OutOfMoneyException e) {
-            System.out.println("out ");
             req.setAttribute(Constants.OUT_OF_MONEY, Constants.OUT_OF_MONEY);
             doGet(req, resp);
             return;

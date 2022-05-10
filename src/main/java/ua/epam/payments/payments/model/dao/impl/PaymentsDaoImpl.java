@@ -19,12 +19,12 @@ import java.util.List;
 
 public class PaymentsDaoImpl implements PaymentDao {
     public static final String SQL_GET_PAYMENT_BY_ID = "SELECT * FROM payment WHERE id=?";
-    public static final String SQL_CREATE_PREPARED_PAYMENT = "INSERT INTO payment VALUES (default, ?, ?, default, default, ?, ?)";
-    public static final String SQL_CREATE_CONFIRMED_PAYMENT = "INSERT INTO payment VALUES (default, ?,  ?, 2, default, ?, ?)";
+    public static final String SQL_CREATE_PREPARED_PAYMENT = "INSERT INTO payment VALUES (default, ?, ?, default, default, ?, ?, ?, ?)";
+    public static final String SQL_CREATE_CONFIRMED_PAYMENT = "INSERT INTO payment VALUES (default, ?,  ?, 2, default, ?, ?, ?, ?)";
     public static final String SQL_GET_PAYMENTS_BY_USER = "SELECT * FROM payment WHERE card_sender_id IN (SELECT card.id FROM card WHERE user_id =?);";
 
     public static final String SQL_UPDATE_PREPARED_PAYMENTS_MONEY = "UPDATE payment SET balance=? WHERE id=?";
-    public static final String SQL_COUNT_PAYMENTS_BY_USER = "SELECT  count(payment.id)  FROM payment LEFT JOIN card c on c.id = payment.card_destination_id where c.user_id =?";
+    public static final String SQL_COUNT_PAYMENTS_BY_USER = "SELECT  count(payment.id)  FROM payment where user_id = ?";
 
     public static final String SQL_CONFIRM_PAYMENT_BY_ID = "UPDATE payment SET creation_timestamp = default, payment_status_id=2 WHERE id =?";
 
@@ -98,13 +98,13 @@ public class PaymentsDaoImpl implements PaymentDao {
     }
 
 
-
     @Override
     public List<FullPaymentDto> getFullPaymentsByUserLimitSorted(long id, String query) {
         List<FullPaymentDto> paymentList = null;
         try (Connection con = DBManager.getInstance().getConnection();
              PreparedStatement stmt = con.prepareStatement(query)) {
             stmt.setLong(1, id);
+            stmt.setLong(2, id);
 
             try (ResultSet rs = stmt.executeQuery()) {
                 paymentList = new ArrayList<>();
@@ -122,7 +122,6 @@ public class PaymentsDaoImpl implements PaymentDao {
 
         return paymentList;
     }
-
 
 
     @Override
@@ -147,7 +146,6 @@ public class PaymentsDaoImpl implements PaymentDao {
     }
 
 
-
     @Override
     public boolean confirmPayment(long id) {
         try (Connection con = DBManager.getInstance().getConnection();
@@ -169,6 +167,8 @@ public class PaymentsDaoImpl implements PaymentDao {
             stmt.setInt(2, money);
             stmt.setLong(3, cardSender.getId());
             stmt.setLong(4, cardDestination.getId());
+            stmt.setLong(5, cardSender.getUserId());
+            stmt.setLong(6, cardDestination.getUserId());
 
             return stmt.executeUpdate() > 0;
         } catch (SQLException throwables) {
@@ -188,6 +188,8 @@ public class PaymentsDaoImpl implements PaymentDao {
             stmt.setInt(2, money);
             stmt.setLong(3, cardSender.getId());
             stmt.setLong(4, cardDestination.getId());
+            stmt.setLong(5, cardSender.getUserId());
+            stmt.setLong(6, cardDestination.getUserId());
 
             return stmt.executeUpdate() > 0;
         } catch (SQLException throwables) {

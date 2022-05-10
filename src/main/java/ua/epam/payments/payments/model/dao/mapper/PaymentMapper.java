@@ -10,7 +10,6 @@ import java.sql.SQLException;
 public class PaymentMapper {
 
     public Payment mapRSToPayment(ResultSet rs) throws SQLException {
-
         return new Payment.Builder()
                 .withId(rs.getInt(1))
                 .withBalance(rs.getInt(2))
@@ -19,6 +18,8 @@ public class PaymentMapper {
                 .withCreationTimestamp(rs.getTimestamp(5))
                 .withCardSenderId(rs.getLong(6))
                 .withCardDestinationId(rs.getLong(7))
+                .withUserId(rs.getLong(8))
+                .withUserDestinationId(rs.getLong(9))
                 .build();
     }
 
@@ -34,20 +35,10 @@ public class PaymentMapper {
                 .withCardDestinationNumber(rs.getString(8))
                 .withCreationTimestamp(rs.getTimestamp(9))
                 .withPaymentStatus(rs.getString(10))
+                .withUserId(rs.getLong(11))
+                .withUserDestinationId(rs.getLong(12))
                 .build();
     }
 
-    public FullPaymentDto mapRSToFullPaymentWithNameDto(ResultSet rs) throws SQLException {
-        return new FullPaymentDto.Builder()
-                .withId(rs.getInt(1))
-                .withMoney(rs.getInt(2))
-                .withPaymentStatus(rs.getString(3))
-                .withCreationTimestamp(rs.getTimestamp(4))
-                .withCardSenderNumber(rs.getString(5))
-                .withUserSenderFullName(rs.getString(6), rs.getString(7), rs.getString(8))
-                .withCardDestinationNumber(rs.getString(9))
-                .withUserDestinationFullName(rs.getString(10), rs.getString(11), rs.getString(12))
-                .build();
-    }
 
 }
