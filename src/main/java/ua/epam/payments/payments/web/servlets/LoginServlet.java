@@ -39,7 +39,7 @@ public class LoginServlet extends HttpServlet {
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         logger.debug("LoginServlet started");
         if (req.getSession().getAttribute("user") != null) {
-            resp.sendRedirect(Path.PROFILE_PATH);
+            resp.sendRedirect(Path.CARDS_PATH);
             return;
         }
 

@@ -2,6 +2,7 @@ package ua.epam.payments.payments.web.servlets;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import ua.epam.payments.payments.model.dao.impl.RoleDaoImpl;
 import ua.epam.payments.payments.model.dao.impl.UserDaoImpl;
 import ua.epam.payments.payments.model.entity.User;
 import ua.epam.payments.payments.model.exception.RegisteredEmailException;
@@ -60,7 +61,7 @@ public class RegistrationServlet extends HttpServlet {
         UserService userService = new UserService(new UserDaoImpl());
         User user;
         try {
-            if (userService.registerUser(firstName, lastName, surname, email, password)) {
+            if (userService.registerUser(firstName, lastName, surname, email, password, new RoleDaoImpl())) {
                 user = userService.getUserByEmail(email);
                 HttpSession session = req.getSession();
                 session.setAttribute("user", user);
@@ -75,6 +76,6 @@ public class RegistrationServlet extends HttpServlet {
         }
 
 
-        resp.sendRedirect(Path.PROFILE_PATH);
+        resp.sendRedirect(Path.CARDS_PATH);
     }
 }

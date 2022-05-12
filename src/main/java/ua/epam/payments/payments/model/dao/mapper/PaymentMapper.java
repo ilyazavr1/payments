@@ -24,7 +24,7 @@ public class PaymentMapper {
     }
 
     public FullPaymentDto mapRSToFullPaymentDto(ResultSet rs) throws SQLException {
-        return new FullPaymentDto.Builder()
+        /*return new FullPaymentDto.Builder()
                 .withId(rs.getInt(1))
                 .withCardSenderNumber(rs.getString(2))
                 .withSenderBalance(rs.getInt(3))
@@ -37,8 +37,29 @@ public class PaymentMapper {
                 .withPaymentStatus(rs.getString(10))
                 .withUserId(rs.getLong(11))
                 .withUserDestinationId(rs.getLong(12))
+                .build();*/
+        return new FullPaymentDto.Builder()
+                .withId(rs.getInt(1))
+                .withUserSenderFirstName(rs.getString(2))
+                .withUserSenderLastName(rs.getString(3))
+                .withUserSenderSurname(rs.getString(4))
+                .withCardSenderNumber(rs.getString(5))
+
+                .withSenderBalance(rs.getInt(6))
+                .withMoney(rs.getInt(7))
+
+                .withUserDestinationFirstName(rs.getString(8))
+                .withUserDestinationLastName(rs.getString(9))
+                .withUserDestinationSurname(rs.getString(10))
+                .withCardDestinationNumber(rs.getString(11))
+
+                .withCreationTimestamp(rs.getTimestamp(12))
+                .withPaymentStatus(rs.getString(13))
+                .withUserId(rs.getLong(14))
+                .withUserDestinationId(rs.getLong(15))
                 .build();
     }
+
 
 
 }

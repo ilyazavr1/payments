@@ -2,7 +2,7 @@ package ua.epam.payments.payments.model.entity;
 
 
 public class Card {
-    private static final long serialVersionUID = 123L;
+
 
     private long id;
     private String name;

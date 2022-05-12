@@ -1,7 +1,5 @@
 package ua.epam.payments.payments.model.entity.dto;
 
-import ua.epam.payments.payments.model.entity.Payment;
-
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
 
@@ -15,7 +13,7 @@ public class FullPaymentDto {
     private String destinationCardNumber;
     private String senderFirstName;
     private String senderLastName;
-    private String senderSurnameName;
+    private String senderSurname;
     private String destinationFirstName;
     private String destinationLastName;
     private String destinationSurname;
@@ -96,12 +94,12 @@ public class FullPaymentDto {
         this.senderLastName = senderLastName;
     }
 
-    public String getSenderSurnameName() {
-        return senderSurnameName;
+    public String getSenderSurname() {
+        return senderSurname;
     }
 
-    public void setSenderSurnameName(String senderSurnameName) {
-        this.senderSurnameName = senderSurnameName;
+    public void setSenderSurname(String senderSurname) {
+        this.senderSurname = senderSurname;
     }
 
     public String getDestinationFirstName() {
@@ -219,6 +217,19 @@ public class FullPaymentDto {
             newFullPayment.destinationSurname = destinationSurname;
             return this;
         }
+
+        public FullPaymentDto.Builder withUserSenderFirstName(String senderFirstName) {
+            newFullPayment.senderFirstName = senderFirstName;
+            return this;
+        }
+        public FullPaymentDto.Builder withUserSenderLastName(String senderFirstName) {
+            newFullPayment.senderLastName = senderFirstName;
+            return this;
+        }
+        public FullPaymentDto.Builder withUserSenderSurname(String senderSurname) {
+            newFullPayment.senderSurname = senderSurname;
+            return this;
+        }
         public FullPaymentDto.Builder withUserSenderFullName(String fName, String lName, String surname) {
             newFullPayment.senderFullName = String.format("%s %s %s", lName, fName, surname);
             return this;
@@ -255,7 +266,7 @@ public class FullPaymentDto {
                 ", destinationCardNumber='" + destinationCardNumber + '\'' +
                 ", senderFirstName='" + senderFirstName + '\'' +
                 ", senderLastName='" + senderLastName + '\'' +
-                ", senderSurnameName='" + senderSurnameName + '\'' +
+                ", senderSurnameName='" + senderSurname + '\'' +
                 ", destinationFirstName='" + destinationFirstName + '\'' +
                 ", destinationLastName='" + destinationLastName + '\'' +
                 ", destinationSurname='" + destinationSurname + '\'' +

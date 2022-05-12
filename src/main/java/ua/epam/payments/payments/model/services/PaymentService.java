@@ -144,7 +144,7 @@ public class PaymentService {
 
     public List<FullPaymentDto> sort(long id, String type, String order, int limit, int offset) {
 
-        String query = "SELECT payment.id,\n" +
+        /*String query = "SELECT payment.id,\n" +
                 "       (SELECT card.number as sender_card_number FROM card WHERE card.id = payment.card_sender_id),\n" +
                 "        payment.balance,\n" +
                 "       payment.money,\n" +
@@ -157,8 +157,20 @@ public class PaymentService {
                 "       payment.user_id,\n" +
                 "       payment.user_destination_id\n" +
                 "FROM payment\n" +
+                "WHERE payment.user_id =? OR payment.user_destination_id = ? ORDER BY %s %s LIMIT %d OFFSET %d";*/
+        String query = "SELECT payment.id,\n" +
+                "       u1.first_name,u1.last_name,u1.surname,c1.number,\n" +
+                "       payment.balance, payment.money,\n" +
+                "       u2.first_name,u2.last_name,u2.surname, c2.number,\n" +
+                "       payment.creation_timestamp,\n" +
+                "       (SELECT status  FROM payment_status WHERE payment.payment_status_id = payment_status.id),\n" +
+                "       payment.user_id, payment.user_destination_id\n" +
+                "       from payment\n" +
+                "    left join card c1 on payment.card_sender_id = c1.id\n" +
+                "    left join card c2 on payment.card_destination_id = c2.id\n" +
+                "    left join \"user\" u1 on u1.id = payment.user_id\n" +
+                "    left join \"user\" u2 on u2.id = payment.user_destination_id\n" +
                 "WHERE payment.user_id =? OR payment.user_destination_id = ? ORDER BY %s %s LIMIT %d OFFSET %d";
-
         if (type.equalsIgnoreCase(CREATION_TIMESTAMP)) {
 
             if (order.equalsIgnoreCase("ASC")) {

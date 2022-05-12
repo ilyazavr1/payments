@@ -20,7 +20,7 @@ public class UserDaoImpl implements UserDao {
     public static final String SQL_UNBLOCK_USER_BY_ID = "UPDATE \"user\" SET blocked=false WHERE id =?";
     public static final String SQL_GET_USER_ROLE_BY_ROLE_ID = "SELECT name FROM role WHERE id=?";
 
-    public static final String USER_ID = "id";
+
 
     private final Logger logger = LogManager.getLogger(UserDaoImpl.class);
 
@@ -151,7 +151,7 @@ public class UserDaoImpl implements UserDao {
             stmt.setString(4, user.getEmail());
             stmt.setString(5, user.getPassword());
             stmt.setBoolean(6, false);
-            stmt.setInt(7, 2);
+            stmt.setInt(7, user.getRolesId());
 
             return stmt.executeUpdate() > 0;
 

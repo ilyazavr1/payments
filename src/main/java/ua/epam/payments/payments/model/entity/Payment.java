@@ -4,7 +4,7 @@ import java.sql.Timestamp;
 import java.time.LocalDateTime;
 
 public class Payment {
-    private static final long serialVersionUID = 123L;
+
 
     private long id;
     private int balance;

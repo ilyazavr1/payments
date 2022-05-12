@@ -25,14 +25,14 @@ public class AccessFilter implements Filter {
         HttpServletRequest req = (HttpServletRequest) servletRequest;
         HttpServletResponse resp = (HttpServletResponse) servletResponse;
         User user = (User) req.getSession().getAttribute("user");
-        System.out.println(user);
+
         if (user == null) {
 
-            if (req.getServletPath().equals(Path.LOGIN_PATH) || req.getServletPath().equals(Path.REGISTRATION_PATH)) {
-                    req.getRequestDispatcher(req.getServletPath()).forward(req, resp);
-                return;
+            if (req.getServletPath().equals(Path.REGISTRATION_PATH)) {
+                req.getRequestDispatcher(Path.REGISTRATION_PATH).forward(req, resp);
+            } else {
+                req.getRequestDispatcher(Path.LOGIN_PATH).forward(req, resp);
             }
-            resp.sendRedirect(Path.LOGIN_PATH);
             return;
         }
 

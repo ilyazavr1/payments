@@ -65,6 +65,7 @@
 
             <tr>
                 <th><fmt:message key="number"/></th>
+                <th style="padding-right: 150px"><fmt:message key="senderName"/></th>
                 <th style="padding-right: 150px"><fmt:message key="senderCard"/></th>
                 <th><fmt:message key="balanceBefore"/></th>
                 <th><fmt:message key="paymentSum"/></th>
@@ -81,6 +82,9 @@
                 <c:forEach var="payment" items="${requestScope.payments }">
                     <tr>
                         <td>${payment.id}</td>
+                        <td><ufn:fullName firstName="${payment.senderFirstName}"
+                                          lastName="${payment.senderLastName}"
+                                          surname="${payment.senderSurname}"> </ufn:fullName></td>
                         <td><cardFormat:formatCardNumber
                                 number="${payment.senderCardNumber}"> </cardFormat:formatCardNumber></td>
                         <td>${payment.senderBalance}</td>

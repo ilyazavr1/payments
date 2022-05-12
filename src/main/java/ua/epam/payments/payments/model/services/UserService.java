@@ -3,7 +3,9 @@ package ua.epam.payments.payments.model.services;
 import org.apache.commons.codec.DecoderException;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import ua.epam.payments.payments.model.dao.RoleDao;
 import ua.epam.payments.payments.model.dao.UserDao;
+import ua.epam.payments.payments.model.entity.Role;
 import ua.epam.payments.payments.model.entity.User;
 import ua.epam.payments.payments.model.exception.AuthenticationException;
 import ua.epam.payments.payments.model.exception.RegisteredEmailException;
@@ -47,23 +49,19 @@ public class UserService {
         return userDao.unblockUserById(id);
     }
 
-    public boolean registerUser(String firstName, String lastName, String surname, String email, String password) throws RegisteredEmailException {
+    public boolean registerUser(String firstName, String lastName, String surname, String email, String password, RoleDao roleDao) throws RegisteredEmailException {
 
         if (userDao.getUserByEmail(email) != null) throw new RegisteredEmailException();
         PasswordEncryption passwordEncryption = new PasswordEncryption();
-        User user = null;
 
-
-            user = new User.Builder()
-                    .withFirstName(firstName)
-                    .withLastName(lastName)
-                    .withSurname(surname)
-                    .withEmail(email)
-                    .withPassword(passwordEncryption.encrypt(password))
-                    .build();
-
-
-        return userDao.createUser(user);
+        return userDao.createUser(new User.Builder()
+                .withFirstName(firstName)
+                .withLastName(lastName)
+                .withSurname(surname)
+                .withEmail(email)
+                .withPassword(passwordEncryption.encrypt(password))
+                .withRolesId(roleDao.getRoleIdByEnum(Role.CLIENT))
+                .build());
     }
 
     public User authenticateUser(String email, String password) throws AuthenticationException, UserIsBlockedException {
@@ -73,7 +71,7 @@ public class UserService {
         if (user == null || !passwordEncryption.isPasswordCorrect(password, user.getPassword()))
             throw new AuthenticationException();
 
-        if(user.getBlocked())  throw new UserIsBlockedException();
+        if (user.getBlocked()) throw new UserIsBlockedException();
 
 
         return user;

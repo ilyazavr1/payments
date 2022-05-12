@@ -2,8 +2,8 @@ package ua.epam.payments.payments.model.entity;
 
 import java.io.Serializable;
 
-public class User implements Serializable {
-    private static final long serialVersionUID = 123L;
+public class User {
+
 
     private long id;
     private String firstName;
@@ -12,7 +12,7 @@ public class User implements Serializable {
     private String email;
     private String password;
     private boolean blocked;
-    private long rolesId;
+    private int rolesId;
 
 
     public long getId() {
@@ -71,11 +71,11 @@ public class User implements Serializable {
         this.blocked = blocked;
     }
 
-    public long getRolesId() {
+    public int getRolesId() {
         return rolesId;
     }
 
-    public void setRolesId(long rolesId) {
+    public void setRolesId(int rolesId) {
         this.rolesId = rolesId;
     }
 
@@ -121,7 +121,7 @@ public class User implements Serializable {
             return this;
         }
 
-        public Builder withRolesId(long rolesId){
+        public Builder withRolesId(int rolesId){
             newUser.rolesId = rolesId;
             return this;
         }

@@ -24,7 +24,7 @@ public class PaymentsDaoImpl implements PaymentDao {
     public static final String SQL_GET_PAYMENTS_BY_USER = "SELECT * FROM payment WHERE card_sender_id IN (SELECT card.id FROM card WHERE user_id =?);";
 
     public static final String SQL_UPDATE_PREPARED_PAYMENTS_MONEY = "UPDATE payment SET balance=? WHERE id=?";
-    public static final String SQL_COUNT_PAYMENTS_BY_USER = "SELECT  count(payment.id)  FROM payment where user_id = ?";
+    public static final String SQL_COUNT_PAYMENTS_BY_USER = "SELECT  count(payment.id)  FROM payment where user_id = ? OR user_destination_id = ?";
 
     public static final String SQL_CONFIRM_PAYMENT_BY_ID = "UPDATE payment SET creation_timestamp = default, payment_status_id=2 WHERE id =?";
 
@@ -59,6 +59,7 @@ public class PaymentsDaoImpl implements PaymentDao {
         try (Connection con = DBManager.getInstance().getConnection();
              PreparedStatement stmt = con.prepareStatement(SQL_COUNT_PAYMENTS_BY_USER)) {
             stmt.setLong(1, user.getId());
+            stmt.setLong(2, user.getId());
 
             try (ResultSet rs = stmt.executeQuery()) {
                 while (rs.next()) {

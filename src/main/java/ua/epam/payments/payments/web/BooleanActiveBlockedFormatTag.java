@@ -1,6 +1,5 @@
 package ua.epam.payments.payments.web;
 
-import javax.servlet.jsp.JspException;
 import javax.servlet.jsp.PageContext;
 import javax.servlet.jsp.tagext.SimpleTagSupport;
 import java.io.IOException;
@@ -18,7 +17,7 @@ public class BooleanActiveBlockedFormatTag extends SimpleTagSupport {
 
 
     @Override
-    public void doTag() throws JspException, IOException {
+    public void doTag() throws IOException {
         PageContext pageContext = (PageContext) getJspContext();
         ResourceBundle resourceBundle = ResourceBundle.getBundle("messages", new Locale((String) pageContext.getSession().getAttribute("lang")));
 

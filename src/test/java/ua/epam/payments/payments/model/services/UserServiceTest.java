@@ -2,7 +2,9 @@ package ua.epam.payments.payments.model.services;
 
 import org.junit.Before;
 import org.junit.Test;
+import ua.epam.payments.payments.model.dao.RoleDao;
 import ua.epam.payments.payments.model.dao.UserDao;
+import ua.epam.payments.payments.model.entity.Role;
 import ua.epam.payments.payments.model.entity.User;
 import ua.epam.payments.payments.model.exception.AuthenticationException;
 import ua.epam.payments.payments.model.exception.RegisteredEmailException;
@@ -56,6 +58,7 @@ public class UserServiceTest {
 
     @Test
     public void getUserById() {
+
         when(userService.getUserById(122)).thenReturn(USER_REGISTERED);
 
         assertNotNull(userService.getUserById(122));
@@ -63,16 +66,20 @@ public class UserServiceTest {
 
     @Test
     public void registerUserShouldThrowRegisteredEmailException() {
+        RoleDao roleDao = mock(RoleDao.class);
+        when(roleDao.getRoleIdByEnum(Role.CLIENT)).thenReturn(2);
         when(userDao.getUserByEmail(REGISTERED_EMAIL)).thenReturn(USER_REGISTERED);
 
-        assertThrows(RegisteredEmailException.class, () -> userService.registerUser(FIRST_NAME, LAST_NAME, SURNAME, REGISTERED_EMAIL, PASSWORD));
+        assertThrows(RegisteredEmailException.class, () -> userService.registerUser(FIRST_NAME, LAST_NAME, SURNAME, REGISTERED_EMAIL, PASSWORD, roleDao));
     }
 
     @Test
     public void registerUserShouldNotThrowRegisteredEmailException() {
+        RoleDao roleDao = mock(RoleDao.class);
+        when(roleDao.getRoleIdByEnum(Role.CLIENT)).thenReturn(2);
         when(userDao.getUserByEmail(NOT_REGISTERED_EMAIL)).thenReturn(null);
 
-        assertDoesNotThrow(() -> userService.registerUser(FIRST_NAME, LAST_NAME, SURNAME, NOT_REGISTERED_EMAIL, PASSWORD));
+       assertDoesNotThrow(() -> userService.registerUser(FIRST_NAME, LAST_NAME, SURNAME, NOT_REGISTERED_EMAIL, PASSWORD,roleDao));
 
     }
 
