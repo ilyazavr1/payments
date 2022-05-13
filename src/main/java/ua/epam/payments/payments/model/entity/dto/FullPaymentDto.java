@@ -8,17 +8,22 @@ public class FullPaymentDto {
     private int money;
     private String status;
     private LocalDateTime creationTimestamp;
-    private String senderCardNumber;
+
     private int senderBalance;
-    private String destinationCardNumber;
     private String senderFirstName;
     private String senderLastName;
     private String senderSurname;
+    private String senderCardNumber;
+
+    private int destinationBalance;
     private String destinationFirstName;
     private String destinationLastName;
     private String destinationSurname;
+    private String destinationCardNumber;
+
     private String destinationFullName;
     private String senderFullName;
+
     private long userId;
     private long userDestinationId;
 
@@ -102,6 +107,14 @@ public class FullPaymentDto {
         this.senderSurname = senderSurname;
     }
 
+    public int getDestinationBalance() {
+        return destinationBalance;
+    }
+
+    public void setDestinationBalance(int destinationBalance) {
+        this.destinationBalance = destinationBalance;
+    }
+
     public String getDestinationFirstName() {
         return destinationFirstName;
     }
@@ -158,6 +171,10 @@ public class FullPaymentDto {
         this.senderFullName = senderFullName;
     }
 
+    public boolean isSent(){
+        return status.equals("SENT");
+    }
+
     public static class Builder {
         private final FullPaymentDto newFullPayment;
 
@@ -177,6 +194,11 @@ public class FullPaymentDto {
 
         public FullPaymentDto.Builder withSenderBalance(int senderBalance) {
             newFullPayment.senderBalance = senderBalance;
+            return this;
+        }
+
+        public FullPaymentDto.Builder withDestinationBalance(int destinationBalance) {
+            newFullPayment.destinationBalance = destinationBalance;
             return this;
         }
 

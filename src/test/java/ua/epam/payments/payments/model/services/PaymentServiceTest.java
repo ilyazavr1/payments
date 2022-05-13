@@ -102,7 +102,7 @@ public class PaymentServiceTest {
         when(cardDao.getCardById(PAYMENT.getCardSenderId())).thenReturn(UNBLOCKED_CARD_SEND);
         when(cardDao.getCardById(PAYMENT.getCardDestinationId())).thenReturn(UNBLOCKED_CARD_DEST);
         when(cardDao.transferMoneyFromCardToCard(UNBLOCKED_CARD_SEND.getId(), UNBLOCKED_CARD_DEST.getId(), PAYMENT.getMoney())).thenReturn(true);
-        when(paymentDao.confirmPayment(PAYMENT.getId())).thenReturn(true);
+     //   when(paymentDao.confirmPayment(PAYMENT.getId())).thenReturn(true);
 
         assertDoesNotThrow(() -> paymentService.confirmPayment(ID));
         assertTrue(paymentService.confirmPayment(ID));

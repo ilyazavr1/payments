@@ -84,7 +84,8 @@ create table card_unblock_request
 create table payment
 (
     id                  serial                        NOT NULL,
-    balance             integer,
+    balance             integer                       NOT NULL                                          DEFAULT 0,
+    balance_destination integer                       NOT NULL                                          DEFAULT 0,
     money               integer                       NOT NULL                                          DEFAULT 0,
     payment_status_id   integer                       REFERENCES payment_status (id) ON DELETE SET NULL DEFAULT 1,
     creation_timestamp  timestamp                                                                       DEFAULT CURRENT_TIMESTAMP,
@@ -97,6 +98,23 @@ create table payment
 
 /*SET timezone = 'Europe/Kiev';*/
 SET TIME ZONE 'Europe/Kiev';
+
+
+
+INSERT INTO "user"
+VALUES (default, 'admin', 'admin', 'admin', 'admin@gmail.com',
+        '747e2fea27df74d88affc130918788d2d2ca7f83b2e664129ebbdc48bf1ca9e29419e3523765a6b22bce8b2781236a2227e62196385328f9bc023df037a1ef807b7ae22254557000aaa79a19ad22834e',
+        default, 1);
+
+INSERT INTO "user"
+VALUES (default, 'Влад', 'Лизогуб', 'Батьковтч', 'vlad@gmail.com',
+        '747e2fea27df74d88affc130918788d2d2ca7f83b2e664129ebbdc48bf1ca9e29419e3523765a6b22bce8b2781236a2227e62196385328f9bc023df037a1ef807b7ae22254557000aaa79a19ad22834e',
+        default, 2);
+
+INSERT INTO "user"
+VALUES (default, 'Artem', 'Krivenko', 'Батьковтч', 'artem@gmail.com',
+        '747e2fea27df74d88affc130918788d2d2ca7f83b2e664129ebbdc48bf1ca9e29419e3523765a6b22bce8b2781236a2227e62196385328f9bc023df037a1ef807b7ae22254557000aaa79a19ad22834e',
+        default, 2);
 
 
 /*create table user_account

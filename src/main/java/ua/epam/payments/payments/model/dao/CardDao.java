@@ -12,7 +12,7 @@ public interface CardDao {
 
     Card getCardByNumber(String number);
 
-    List<Card> getCardByUserId(long id);
+    List<Card> getCardsByUserId(long id);
 
     List<Card> getCardByUserLimitSorted(long id, String query);
 

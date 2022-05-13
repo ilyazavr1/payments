@@ -13,13 +13,14 @@ public class PaymentMapper {
         return new Payment.Builder()
                 .withId(rs.getInt(1))
                 .withBalance(rs.getInt(2))
-                .withMoney(rs.getInt(3))
-                .withPaymentStatusId(rs.getInt(4))
-                .withCreationTimestamp(rs.getTimestamp(5))
-                .withCardSenderId(rs.getLong(6))
-                .withCardDestinationId(rs.getLong(7))
-                .withUserId(rs.getLong(8))
-                .withUserDestinationId(rs.getLong(9))
+                .withBalanceDestination(rs.getInt(3))
+                .withMoney(rs.getInt(4))
+                .withPaymentStatusId(rs.getInt(5))
+                .withCreationTimestamp(rs.getTimestamp(6))
+                .withCardSenderId(rs.getLong(7))
+                .withCardDestinationId(rs.getLong(8))
+                .withUserId(rs.getLong(9))
+                .withUserDestinationId(rs.getLong(10))
                 .build();
     }
 
@@ -47,16 +48,17 @@ public class PaymentMapper {
 
                 .withSenderBalance(rs.getInt(6))
                 .withMoney(rs.getInt(7))
+                .withDestinationBalance(rs.getInt(8))
 
-                .withUserDestinationFirstName(rs.getString(8))
-                .withUserDestinationLastName(rs.getString(9))
-                .withUserDestinationSurname(rs.getString(10))
-                .withCardDestinationNumber(rs.getString(11))
+                .withUserDestinationFirstName(rs.getString(9))
+                .withUserDestinationLastName(rs.getString(10))
+                .withUserDestinationSurname(rs.getString(11))
+                .withCardDestinationNumber(rs.getString(12))
 
-                .withCreationTimestamp(rs.getTimestamp(12))
-                .withPaymentStatus(rs.getString(13))
-                .withUserId(rs.getLong(14))
-                .withUserDestinationId(rs.getLong(15))
+                .withCreationTimestamp(rs.getTimestamp(13))
+                .withPaymentStatus(rs.getString(14))
+                .withUserId(rs.getLong(15))
+                .withUserDestinationId(rs.getLong(16))
                 .build();
     }
 

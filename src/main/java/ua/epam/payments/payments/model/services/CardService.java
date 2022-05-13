@@ -34,7 +34,7 @@ public class CardService {
     }
 
     public List<Card> getCardByUserId(long id) {
-        return cardDao.getCardByUserId(id);
+        return cardDao.getCardsByUserId(id);
     }
 
     /**

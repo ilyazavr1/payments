@@ -19,14 +19,14 @@ import java.util.List;
 
 public class PaymentsDaoImpl implements PaymentDao {
     public static final String SQL_GET_PAYMENT_BY_ID = "SELECT * FROM payment WHERE id=?";
-    public static final String SQL_CREATE_PREPARED_PAYMENT = "INSERT INTO payment VALUES (default, ?, ?, default, default, ?, ?, ?, ?)";
-    public static final String SQL_CREATE_CONFIRMED_PAYMENT = "INSERT INTO payment VALUES (default, ?,  ?, 2, default, ?, ?, ?, ?)";
-    public static final String SQL_GET_PAYMENTS_BY_USER = "SELECT * FROM payment WHERE card_sender_id IN (SELECT card.id FROM card WHERE user_id =?);";
+    public static final String SQL_CREATE_PREPARED_PAYMENT = "INSERT INTO payment VALUES (default, ?, ?, ?, default, default, ?, ?, ?, ?)";
+    public static final String SQL_CREATE_CONFIRMED_PAYMENT = "INSERT INTO payment VALUES (default, ?, ?, ?, 2, default, ?, ?, ?, ?)";
+    public static final String SQL_GET_PAYMENTS_BY_USER = "SELECT * FROM payment WHERE user_id = ? and payment_status_id = 1;";
 
-    public static final String SQL_UPDATE_PREPARED_PAYMENTS_MONEY = "UPDATE payment SET balance=? WHERE id=?";
+    public static final String SQL_UPDATE_PREPARED_PAYMENTS_MONEY = "UPDATE payment SET balance=?, balance_destination=? WHERE id=?";
     public static final String SQL_COUNT_PAYMENTS_BY_USER = "SELECT  count(payment.id)  FROM payment where user_id = ? OR user_destination_id = ?";
 
-    public static final String SQL_CONFIRM_PAYMENT_BY_ID = "UPDATE payment SET creation_timestamp = default, payment_status_id=2 WHERE id =?";
+    public static final String SQL_CONFIRM_PAYMENT_BY_ID = "UPDATE payment SET creation_timestamp = default, balance = ?, balance_destination = ?, payment_status_id=2 WHERE id =?";
 
     private final Logger logger = LogManager.getLogger(PaymentsDaoImpl.class);
 
@@ -75,8 +75,8 @@ public class PaymentsDaoImpl implements PaymentDao {
     }
 
     @Override
-    public List<Payment> getPaymentsByUserId(long id) {
-        List<Payment> paymentList = null;
+    public List<Payment> getPreparedPaymentsByUserId(long id) {
+        List<Payment> paymentList;
         try (Connection con = DBManager.getInstance().getConnection();
              PreparedStatement stmt = con.prepareStatement(SQL_GET_PAYMENTS_BY_USER)) {
             stmt.setLong(1, id);
@@ -133,7 +133,8 @@ public class PaymentsDaoImpl implements PaymentDao {
 
             for (Payment payment : paymentList) {
                 stmt.setInt(1, payment.getBalance());
-                stmt.setLong(2, payment.getId());
+                stmt.setInt(2, payment.getBalanceDestination());
+                stmt.setLong(3, payment.getId());
                 stmt.executeUpdate();
             }
 
@@ -148,11 +149,13 @@ public class PaymentsDaoImpl implements PaymentDao {
 
 
     @Override
-    public boolean confirmPayment(long id) {
+    public boolean confirmPayment(long id, Card cardSender, Card cardDestination, int money) {
         try (Connection con = DBManager.getInstance().getConnection();
              PreparedStatement stmt = con.prepareStatement(SQL_CONFIRM_PAYMENT_BY_ID)) {
             System.out.println(id);
-            stmt.setLong(1, id);
+            stmt.setInt(1,cardSender.getMoney());
+            stmt.setInt(2,cardDestination.getMoney());
+            stmt.setLong(3, id);
             return stmt.executeUpdate() > 0;
         } catch (SQLException throwables) {
             logger.error("{}, when trying to confirm Payment Id = {}", throwables.getMessage(), id);
@@ -165,11 +168,12 @@ public class PaymentsDaoImpl implements PaymentDao {
         try (Connection con = DBManager.getInstance().getConnection();
              PreparedStatement stmt = con.prepareStatement(SQL_CREATE_PREPARED_PAYMENT)) {
             stmt.setInt(1, cardSender.getMoney());
-            stmt.setInt(2, money);
-            stmt.setLong(3, cardSender.getId());
-            stmt.setLong(4, cardDestination.getId());
-            stmt.setLong(5, cardSender.getUserId());
-            stmt.setLong(6, cardDestination.getUserId());
+            stmt.setInt(2, cardDestination.getMoney());
+            stmt.setInt(3, money);
+            stmt.setLong(4, cardSender.getId());
+            stmt.setLong(5, cardDestination.getId());
+            stmt.setLong(6, cardSender.getUserId());
+            stmt.setLong(7, cardDestination.getUserId());
 
             return stmt.executeUpdate() > 0;
         } catch (SQLException throwables) {
@@ -186,11 +190,12 @@ public class PaymentsDaoImpl implements PaymentDao {
         try (Connection con = DBManager.getInstance().getConnection();
              PreparedStatement stmt = con.prepareStatement(SQL_CREATE_CONFIRMED_PAYMENT)) {
             stmt.setInt(1, cardSender.getMoney());
-            stmt.setInt(2, money);
-            stmt.setLong(3, cardSender.getId());
-            stmt.setLong(4, cardDestination.getId());
-            stmt.setLong(5, cardSender.getUserId());
-            stmt.setLong(6, cardDestination.getUserId());
+            stmt.setInt(2, cardDestination.getMoney());
+            stmt.setInt(3, money);
+            stmt.setLong(4, cardSender.getId());
+            stmt.setLong(5, cardDestination.getId());
+            stmt.setLong(6, cardSender.getUserId());
+            stmt.setLong(7, cardDestination.getUserId());
 
             return stmt.executeUpdate() > 0;
         } catch (SQLException throwables) {

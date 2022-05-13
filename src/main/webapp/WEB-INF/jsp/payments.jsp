@@ -87,9 +87,40 @@
                                           surname="${payment.senderSurname}"> </ufn:fullName></td>
                         <td><cardFormat:formatCardNumber
                                 number="${payment.senderCardNumber}"> </cardFormat:formatCardNumber></td>
-                        <td>${payment.senderBalance}</td>
-                        <td>${payment.money}</td>
-                        <td>${payment.senderBalance - payment.money}</td>
+
+                        <c:choose>
+                            <c:when test="${payment.isSent()}">
+                                <c:choose>
+                                    <c:when test="${payment.userId == sessionScope.user.id}">
+                                        <td>${payment.senderBalance + payment.money}</td>
+                                        <td>${payment.money}</td>
+                                        <td>${payment.senderBalance}</td>
+                                    </c:when>
+                                    <c:otherwise>
+                                        <td>${payment.destinationBalance - payment.money}</td>
+                                        <td>${payment.money}</td>
+                                        <td>${payment.destinationBalance }</td>
+                                    </c:otherwise>
+                                </c:choose>
+                            </c:when>
+
+                            <c:otherwise>
+                                <c:choose>
+                                    <c:when test="${payment.userId == sessionScope.user.id}">
+                                        <td>${payment.senderBalance}</td>
+                                        <td>${payment.money}</td>
+                                        <td>${payment.senderBalance - payment.money}</td>
+                                    </c:when>
+                                    <c:otherwise>
+                                        <td>${payment.destinationBalance}</td>
+                                        <td>${payment.money}</td>
+                                        <td>${payment.destinationBalance + payment.money}</td>
+                                    </c:otherwise>
+                                </c:choose>
+                            </c:otherwise>
+                        </c:choose>
+
+
                         <td><ufn:fullName firstName="${payment.destinationFirstName}"
                                           lastName="${payment.destinationLastName}"
                                           surname="${payment.destinationSurname}"> </ufn:fullName></td>
@@ -162,7 +193,6 @@
 
 
         </c:forEach>
-
 
 
     </ul>

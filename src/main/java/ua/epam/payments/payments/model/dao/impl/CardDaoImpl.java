@@ -94,7 +94,7 @@ public class CardDaoImpl implements CardDao {
     }
 
     @Override
-    public List<Card> getCardByUserId(long id) {
+    public List<Card> getCardsByUserId(long id) {
         return getCards(id, SQL_GET_CARD_BY_USER);
     }
 

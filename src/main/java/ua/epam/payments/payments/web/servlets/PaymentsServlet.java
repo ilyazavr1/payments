@@ -60,7 +60,7 @@ public class PaymentsServlet extends HttpServlet {
 
 
 
-        paymentService.updatePreparedPaymentsByUserId(user.getId());
+//        paymentService.updatePreparedPaymentsByUserId(user.getId());
         List<FullPaymentDto> paymentList = paymentService.sort(user.getId(), sortingType, sortingOrder, limit, (limit * (offset - 1)));
         req.setAttribute("loopPagination", (int) Math.ceil((double) paymentService.countPaymentsByUser(user) / limit));
 

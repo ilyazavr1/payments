@@ -61,7 +61,11 @@ public class PaymentService {
         if (cardSender.isBlocked() || cardDestination.isBlocked()) throw new CardBlockedException();
 
         if (cardDao.transferMoneyFromCardToCard(cardSender.getId(), cardDestination.getId(), payment.getMoney())) {
-            return paymentDao.confirmPayment(payment.getId());
+            cardSender.setMoney(cardSender.getMoney() - payment.getMoney());
+            cardDestination.setMoney(cardDestination.getMoney() + payment.getMoney());
+            updatePreparedPaymentsByUserId(payment.getUserId(),payment.getUserDestinationId());
+
+            return paymentDao.confirmPayment(payment.getId(), cardSender, cardDestination, payment.getMoney());
         } else return false;
     }
 
@@ -92,22 +96,25 @@ public class PaymentService {
     /**
      * Updates database Payment records in case the Card information has changed.
      *
-     * @param id User id
+     * @param senderId User id
      * @return boolean if payments eas updated
      */
-    public boolean updatePreparedPaymentsByUserId(long id) {
-        List<Payment> paymentList = paymentDao.getPaymentsByUserId(id);
-        Map<Long, Card> longCardMap = cardDao.getCardByUserId(id).stream().collect(Collectors.toMap(Card::getId, Function.identity()));
-        if (longCardMap.isEmpty()) return false;
+    public boolean updatePreparedPaymentsByUserId(long senderId, long destinationId) {
+        List<Payment> paymentList = paymentDao.getPreparedPaymentsByUserId(senderId);
+        Map<Long, Card> longCardMapFrom = cardDao.getCardsByUserId(senderId).stream().collect(Collectors.toMap(Card::getId, Function.identity()));
+        Map<Long, Card> longCardMapTo = cardDao.getCardsByUserId(destinationId).stream().collect(Collectors.toMap(Card::getId, Function.identity()));
+        if (longCardMapFrom.isEmpty()) return false;
 
-        paymentList = paymentList.stream()
-                .filter(payment -> payment.getPaymentStatusId() == 1)
-                .collect(Collectors.toList());
+        longCardMapFrom.forEach((key, value) -> System.out.println(key + ":" + value));
+        longCardMapTo.forEach((key, value) -> System.out.println(key + ":" + value));
 
 
         if (paymentList.isEmpty()) return false;
 
-        paymentList.forEach(payment -> payment.setBalance(longCardMap.get(payment.getCardSenderId()).getMoney()));
+        paymentList.forEach(payment -> {
+            payment.setBalance(longCardMapFrom.get(payment.getCardSenderId()).getMoney());
+            payment.setBalanceDestination(longCardMapTo.get(payment.getCardDestinationId()).getMoney());
+        });
 
 
         return paymentDao.updatePreparedPaymentMoney(paymentList);
@@ -136,6 +143,10 @@ public class PaymentService {
         if ((cardSender.getMoney() - moneyInt) < 0) throw new OutOfMoneyException();
 
         if (cardDao.transferMoneyFromCardToCard(cardSender.getId(), cardDestination.getId(), moneyInt)) {
+            cardSender.setMoney(cardSender.getMoney() - moneyInt);
+            cardDestination.setMoney(cardDestination.getMoney() + moneyInt);
+            updatePreparedPaymentsByUserId(cardSender.getUserId(),cardDestination.getUserId());
+
             return paymentDao.createConfirmedPayment(cardSender, cardDestination, moneyInt);
         } else return false;
 
@@ -144,23 +155,9 @@ public class PaymentService {
 
     public List<FullPaymentDto> sort(long id, String type, String order, int limit, int offset) {
 
-        /*String query = "SELECT payment.id,\n" +
-                "       (SELECT card.number as sender_card_number FROM card WHERE card.id = payment.card_sender_id),\n" +
-                "        payment.balance,\n" +
-                "       payment.money,\n" +
-                "       (SELECT \"user\".first_name FROM \"user\",card WHERE payment.card_destination_id=card.id and card.user_id = \"user\".id),\n" +
-                "       (SELECT \"user\".last_name FROM \"user\",card WHERE payment.card_destination_id=card.id and card.user_id = \"user\".id),\n" +
-                "       (SELECT \"user\".surname FROM \"user\",card WHERE payment.card_destination_id=card.id and card.user_id = \"user\".id),\n" +
-                "       (SELECT card.number as destination_card_number FROM card WHERE card.id = payment.card_destination_id),\n" +
-                "       payment.creation_timestamp,\n" +
-                "       (SELECT status  FROM payment_status WHERE payment.payment_status_id = payment_status.id),\n" +
-                "       payment.user_id,\n" +
-                "       payment.user_destination_id\n" +
-                "FROM payment\n" +
-                "WHERE payment.user_id =? OR payment.user_destination_id = ? ORDER BY %s %s LIMIT %d OFFSET %d";*/
         String query = "SELECT payment.id,\n" +
                 "       u1.first_name,u1.last_name,u1.surname,c1.number,\n" +
-                "       payment.balance, payment.money,\n" +
+                "       payment.balance, payment.money, payment.balance_destination,\n" +
                 "       u2.first_name,u2.last_name,u2.surname, c2.number,\n" +
                 "       payment.creation_timestamp,\n" +
                 "       (SELECT status  FROM payment_status WHERE payment.payment_status_id = payment_status.id),\n" +

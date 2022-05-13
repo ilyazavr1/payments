@@ -8,6 +8,7 @@ public class Payment {
 
     private long id;
     private int balance;
+    private int balanceDestination;
     private int money;
     private int paymentStatusId;
     private LocalDateTime creationTimestamp;
@@ -32,6 +33,14 @@ public class Payment {
 
     public void setBalance(int balance) {
         this.balance = balance;
+    }
+
+    public int getBalanceDestination() {
+        return balanceDestination;
+    }
+
+    public void setBalanceDestination(int balanceDestination) {
+        this.balanceDestination = balanceDestination;
     }
 
     public int getMoney() {
@@ -104,6 +113,10 @@ public class Payment {
 
         public Payment.Builder withBalance(int balance) {
             newPayment.balance = balance;
+            return this;
+        }
+        public Payment.Builder withBalanceDestination(int balanceDestination) {
+            newPayment.balanceDestination = balanceDestination;
             return this;
         }
 
