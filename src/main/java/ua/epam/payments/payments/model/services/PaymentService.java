@@ -35,21 +35,19 @@ public class PaymentService {
         return paymentDao.countPaymentsByUser(user);
     }
 
-    public Payment getPaymentById(long id) {
-        return paymentDao.getPaymentById(id);
-    }
 
     /**
      * Gets prepared Payment from database.
      * Gets a card from which money is withdrawn from database.
      * Gets a card that replenishes from database.
      * Calls the method that transfers money.
+     * Updates the balance of Cards in the prepared Payment.
      * Confirms Payment.
      *
      * @param id Payment id
      * @return boolean if the payment was confirmed or not
      * @throws CardBlockedException if card is blocked
-     * @throws OutOfMoneyException if the difference between card balance and payment money is negative
+     * @throws OutOfMoneyException  if the difference between card balance and payment money is negative
      */
     public boolean confirmPayment(long id) throws CardBlockedException, OutOfMoneyException {
         Payment payment = paymentDao.getPaymentById(id);
@@ -63,7 +61,7 @@ public class PaymentService {
         if (cardDao.transferMoneyFromCardToCard(cardSender.getId(), cardDestination.getId(), payment.getMoney())) {
             cardSender.setMoney(cardSender.getMoney() - payment.getMoney());
             cardDestination.setMoney(cardDestination.getMoney() + payment.getMoney());
-            updatePreparedPaymentsByUserId(payment.getUserId(),payment.getUserDestinationId());
+            updatePreparedPaymentsByUserId(payment.getUserId(), payment.getUserDestinationId());
 
             return paymentDao.confirmPayment(payment.getId(), cardSender, cardDestination, payment.getMoney());
         } else return false;
@@ -75,12 +73,12 @@ public class PaymentService {
      * Checks whether there is enough money on card sender balance.
      * Creates prepared Payment.
      *
-     * @param cardSender card from which money is withdrawn from database.
+     * @param cardSender      card from which money is withdrawn from database.
      * @param cardDestination card that replenishes from database.
-     * @param money money to be transferred.
+     * @param money           money to be transferred.
      * @return boolean if the prepared payment was confirmed or not.
      * @throws InvalidMoneyException if money input is invalid.
-     * @throws OutOfMoneyException if the difference between card balance and payment money is negative.
+     * @throws OutOfMoneyException   if the difference between card balance and payment money is negative.
      */
     public boolean createPreparedPayment(Card cardSender, Card cardDestination, String money) throws InvalidMoneyException, OutOfMoneyException {
         if (money.isEmpty() || !money.replaceFirst("^0*", "").matches("^[0-9]{0,5}$"))
@@ -94,9 +92,10 @@ public class PaymentService {
 
 
     /**
-     * Updates database Payment records in case the Card information has changed.
+     * Updates database Payment records in case the Card balance has changed.
      *
-     * @param senderId User id
+     * @param senderId User sender id
+     * @param destinationId User destination id
      * @return boolean if payments eas updated
      */
     public boolean updatePreparedPaymentsByUserId(long senderId, long destinationId) {
@@ -125,14 +124,15 @@ public class PaymentService {
      * Validates string money input.
      * Checks whether there is enough money on card sender balance.
      * Transfers money.
+     * Updates the balance of Cards in the prepared Payment.
      * Creates payment in database.
      *
-     * @param cardSender a card from which money is withdrawn from database.
+     * @param cardSender      a card from which money is withdrawn from database.
      * @param cardDestination a card that replenishes from database.
-     * @param money money to transfer.
+     * @param money           money to transfer.
      * @return boolean if payment was made
      * @throws InvalidMoneyException if money input is invalid.
-     * @throws OutOfMoneyException if the difference between card balance and payment money is negative.
+     * @throws OutOfMoneyException   if the difference between card balance and payment money is negative.
      */
     public boolean makePayment(Card cardSender, Card cardDestination, String money) throws InvalidMoneyException, OutOfMoneyException {
         if (money.isEmpty() || !money.replaceFirst("^0*", "").matches("^[0-9]{0,5}$")) {
@@ -145,7 +145,7 @@ public class PaymentService {
         if (cardDao.transferMoneyFromCardToCard(cardSender.getId(), cardDestination.getId(), moneyInt)) {
             cardSender.setMoney(cardSender.getMoney() - moneyInt);
             cardDestination.setMoney(cardDestination.getMoney() + moneyInt);
-            updatePreparedPaymentsByUserId(cardSender.getUserId(),cardDestination.getUserId());
+            updatePreparedPaymentsByUserId(cardSender.getUserId(), cardDestination.getUserId());
 
             return paymentDao.createConfirmedPayment(cardSender, cardDestination, moneyInt);
         } else return false;
