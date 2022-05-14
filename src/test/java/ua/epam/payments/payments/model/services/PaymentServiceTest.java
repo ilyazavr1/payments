@@ -102,14 +102,11 @@ public class PaymentServiceTest {
         when(cardDao.getCardById(PAYMENT.getCardSenderId())).thenReturn(UNBLOCKED_CARD_SEND);
         when(cardDao.getCardById(PAYMENT.getCardDestinationId())).thenReturn(UNBLOCKED_CARD_DEST);
         when(cardDao.transferMoneyFromCardToCard(UNBLOCKED_CARD_SEND.getId(), UNBLOCKED_CARD_DEST.getId(), PAYMENT.getMoney())).thenReturn(true);
-     //   when(paymentDao.confirmPayment(PAYMENT.getId())).thenReturn(true);
+        when(paymentDao.confirmPayment(PAYMENT.getId(), UNBLOCKED_CARD_SEND, UNBLOCKED_CARD_DEST, PAYMENT.getMoney())).thenReturn(true);
 
         assertDoesNotThrow(() -> paymentService.confirmPayment(ID));
         assertTrue(paymentService.confirmPayment(ID));
     }
-
-
-
 
 
     @Test
@@ -142,6 +139,18 @@ public class PaymentServiceTest {
                 () -> paymentService.makePayment(UNBLOCKED_CARD_SEND, UNBLOCKED_CARD_DEST, "10001"));
         assertThrows(InvalidMoneyException.class,
                 () -> paymentService.makePayment(UNBLOCKED_CARD_SEND, UNBLOCKED_CARD_DEST, "-1"));
+    }
+
+    @Test
+    public void makePaymentShouldNotThrowExceptionReturnFalse() throws OutOfMoneyException, InvalidMoneyException {
+
+        when(cardDao.transferMoneyFromCardToCard(UNBLOCKED_CARD_SEND.getId(), UNBLOCKED_CARD_DEST.getId(), PAYMENT.getMoney())).thenReturn(false);
+        when(paymentDao.createConfirmedPayment(UNBLOCKED_CARD_SEND, UNBLOCKED_CARD_DEST, 10)).thenReturn(true);
+
+        assertFalse(paymentService.makePayment(UNBLOCKED_CARD_SEND,UNBLOCKED_CARD_DEST, String.valueOf(PAYMENT.getMoney())));
+        assertDoesNotThrow(() -> paymentService.makePayment(UNBLOCKED_CARD_SEND, UNBLOCKED_CARD_DEST, MONEY_STRING));
+
+
     }
 
     @Test

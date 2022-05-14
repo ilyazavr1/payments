@@ -12,15 +12,11 @@ import ua.epam.payments.payments.model.exception.OutOfMoneyException;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
-import java.util.function.Function;
-import java.util.stream.Collectors;
 
 public class PaymentService {
     public static final String CREATION_TIMESTAMP = "creation_timestamp";
     public static final String NUMBER = "payment.id";
-    public static final String ASC = "ASC";
-    public static final String DESC = "DESC";
+
 
     private final PaymentDao paymentDao;
     private final CardDao cardDao;
@@ -61,7 +57,9 @@ public class PaymentService {
         if (cardDao.transferMoneyFromCardToCard(cardSender.getId(), cardDestination.getId(), payment.getMoney())) {
             cardSender.setMoney(cardSender.getMoney() - payment.getMoney());
             cardDestination.setMoney(cardDestination.getMoney() + payment.getMoney());
-            updatePreparedPaymentsByUserId(payment.getUserId(), payment.getUserDestinationId());
+
+
+            paymentDao.updatePreparedPaymentsByTwoCards(cardSender, cardDestination);
 
             return paymentDao.confirmPayment(payment.getId(), cardSender, cardDestination, payment.getMoney());
         } else return false;
@@ -92,35 +90,6 @@ public class PaymentService {
 
 
     /**
-     * Updates database Payment records in case the Card balance has changed.
-     *
-     * @param senderId User sender id
-     * @param destinationId User destination id
-     * @return boolean if payments eas updated
-     */
-    public boolean updatePreparedPaymentsByUserId(long senderId, long destinationId) {
-        List<Payment> paymentList = paymentDao.getPreparedPaymentsByUserId(senderId);
-        Map<Long, Card> longCardMapFrom = cardDao.getCardsByUserId(senderId).stream().collect(Collectors.toMap(Card::getId, Function.identity()));
-        Map<Long, Card> longCardMapTo = cardDao.getCardsByUserId(destinationId).stream().collect(Collectors.toMap(Card::getId, Function.identity()));
-        if (longCardMapFrom.isEmpty()) return false;
-
-        longCardMapFrom.forEach((key, value) -> System.out.println(key + ":" + value));
-        longCardMapTo.forEach((key, value) -> System.out.println(key + ":" + value));
-
-
-        if (paymentList.isEmpty()) return false;
-
-        paymentList.forEach(payment -> {
-            payment.setBalance(longCardMapFrom.get(payment.getCardSenderId()).getMoney());
-            payment.setBalanceDestination(longCardMapTo.get(payment.getCardDestinationId()).getMoney());
-        });
-
-
-        return paymentDao.updatePreparedPaymentMoney(paymentList);
-    }
-
-
-    /**
      * Validates string money input.
      * Checks whether there is enough money on card sender balance.
      * Transfers money.
@@ -145,7 +114,8 @@ public class PaymentService {
         if (cardDao.transferMoneyFromCardToCard(cardSender.getId(), cardDestination.getId(), moneyInt)) {
             cardSender.setMoney(cardSender.getMoney() - moneyInt);
             cardDestination.setMoney(cardDestination.getMoney() + moneyInt);
-            updatePreparedPaymentsByUserId(cardSender.getUserId(), cardDestination.getUserId());
+
+            paymentDao.updatePreparedPaymentsByTwoCards(cardSender, cardDestination);
 
             return paymentDao.createConfirmedPayment(cardSender, cardDestination, moneyInt);
         } else return false;

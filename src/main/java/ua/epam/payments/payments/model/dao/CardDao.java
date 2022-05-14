@@ -16,17 +16,13 @@ public interface CardDao {
 
     List<Card> getCardByUserLimitSorted(long id, String query);
 
-    //List<Card> getCardByUserLimit(User user, int limit, int offset);
-
     List<CardsUnblockRequestDto> getCardRequests();
 
     int countCardsByUser(User user);
 
     boolean createCardWithUser(Card card, User user);
 
-    //boolean addCardToUser(Card card, User user);
-
-    boolean updateCardWithMoney(Card card, int money);
+    boolean updateCardByCardIdWithMoney(Card card, int money);
 
     boolean blockCardById(long id);
 

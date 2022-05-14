@@ -13,11 +13,11 @@ public interface PaymentDao {
 
     int countPaymentsByUser(User user);
 
-    List<Payment> getPreparedPaymentsByUserId(long id);
-
     List<FullPaymentDto> getFullPaymentsByUserLimitSorted(long id, String query);
 
-    boolean updatePreparedPaymentMoney(List<Payment> paymentList);
+    boolean updatePreparedPaymentsByTwoCards(Card sender, Card destination);
+
+    boolean updatePreparedPaymentByOneCard(Card card);
 
     boolean confirmPayment(long id, Card cardSender, Card cardDestination, int money);
 
@@ -26,7 +26,4 @@ public interface PaymentDao {
     boolean createConfirmedPayment(Card cardSender, Card cardDestination, int money);
 
 
-/*    List<FullPaymentDto> getFullPaymentsByUser(User user);
-
-    List<FullPaymentDto> getFullPayments();*/
 }

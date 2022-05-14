@@ -99,7 +99,7 @@ public class CardDaoImpl implements CardDao {
     }
 
     private List<Card> getCards(long id, String query) {
-        List<Card> accountsList = new ArrayList<>();
+        List<Card> cards = new ArrayList<>();
 
         try (Connection con = DBManager.getInstance().getConnection();
              PreparedStatement stmt = con.prepareStatement(query)) {
@@ -108,8 +108,8 @@ public class CardDaoImpl implements CardDao {
             try (ResultSet rs = stmt.executeQuery()) {
 
                 while (rs.next()) {
-                    CardMapper accountMapper = new CardMapper();
-                    accountsList.add(accountMapper.mapRSToCard(rs));
+                    CardMapper cardMapper = new CardMapper();
+                    cards.add(cardMapper.mapRSToCard(rs));
 
                 }
             }
@@ -123,7 +123,7 @@ public class CardDaoImpl implements CardDao {
             throw new RuntimeException(throwables);
         }
 
-        return accountsList;
+        return cards;
     }
 
 
@@ -184,12 +184,13 @@ public class CardDaoImpl implements CardDao {
 
 
     @Override
-    public boolean updateCardWithMoney(Card card, int money) {
+    public boolean updateCardByCardIdWithMoney(Card card, int money) {
         try (Connection con = DBManager.getInstance().getConnection();
              PreparedStatement stmt = con.prepareStatement(SQL_UPDATE_CARD_WITH_MONEY)) {
             stmt.setInt(1, money);
             stmt.setLong(2, card.getId());
 
+            card.setMoney(card.getMoney() + money);
             return stmt.executeUpdate() > 0;
 
         } catch (SQLException throwables) {

@@ -1,6 +1,8 @@
 package ua.epam.payments.payments.model.services;
 
 import ua.epam.payments.payments.model.dao.CardDao;
+import ua.epam.payments.payments.model.dao.PaymentDao;
+import ua.epam.payments.payments.model.dao.impl.PaymentsDaoImpl;
 import ua.epam.payments.payments.model.entity.dto.CardsUnblockRequestDto;
 import ua.epam.payments.payments.model.entity.Card;
 import ua.epam.payments.payments.model.entity.User;
@@ -11,6 +13,7 @@ import java.util.List;
 
 public class CardService {
     private final CardDao cardDao;
+
 
     private static final String NUMBER = "number";
     private static final String NAME = "name";
@@ -70,14 +73,18 @@ public class CardService {
      * @return if Card was topped up or not
      * @throws CardTopUpException if money input is invalid
      */
-    public boolean topUpCard(Card card, String money) throws CardTopUpException {
+    public boolean topUpCard(Card card, String money, PaymentDao paymentDao) throws CardTopUpException {
         if (money.isEmpty() || !money.replaceFirst("^0*", "").matches("^[0-9]{0,5}$")) throw new CardTopUpException();
 
         int moneyInt = Integer.parseInt(money);
 
         if (moneyInt <= 0 || moneyInt > 10000) throw new CardTopUpException();
 
-        return cardDao.updateCardWithMoney(card, moneyInt);
+
+        if (cardDao.updateCardByCardIdWithMoney(card, moneyInt)) {
+            paymentDao.updatePreparedPaymentByOneCard(card);
+            return true;
+        } else return false;
     }
 
     public boolean blockCardById(long id) {
@@ -149,7 +156,6 @@ public class CardService {
 
         return null;
     }
-
 
 
 }

@@ -67,14 +67,31 @@
                     </c:if>
                 </div>
                 <hr>
-                <div class="form-group row">
-                    <div class="col-md-6">
-                        <button name="prepare" type="submit" class="btn btn-warning btn-lg btn-block"><fmt:message key="prepare"/></button>
-                    </div>
-                    <div class="col-md-6">
-                        <button name="send" type="submit" class="btn btn-success btn-lg btn-block"><fmt:message key="send"/></button>
-                    </div>
-                </div>
+
+                <c:choose>
+                    <c:when test="${requestScope.cards.isEmpty()}">
+                        <div class="form-group row">
+                            <div class="col-md-6">
+                                <button disabled name="prepare" type="submit" class="btn btn-warning btn-lg btn-block"><fmt:message key="prepare"/></button>
+                            </div>
+                            <div class="col-md-6">
+                                <button disabled name="send" type="submit" class="btn btn-success btn-lg btn-block"><fmt:message key="send"/></button>
+                            </div>
+                        </div>
+                    </c:when>
+                    <c:otherwise>
+                        <div class="form-group row">
+                            <div class="col-md-6">
+                                <button name="prepare" type="submit" class="btn btn-warning btn-lg btn-block"><fmt:message key="prepare"/></button>
+                            </div>
+                            <div class="col-md-6">
+                                <button name="send" type="submit" class="btn btn-success btn-lg btn-block"><fmt:message key="send"/></button>
+                            </div>
+                        </div>
+                    </c:otherwise>
+                </c:choose>
+
+
             </form>
         </div>
     </div>

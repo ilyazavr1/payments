@@ -23,7 +23,16 @@ public class PaymentsDaoImpl implements PaymentDao {
     public static final String SQL_CREATE_CONFIRMED_PAYMENT = "INSERT INTO payment VALUES (default, ?, ?, ?, 2, default, ?, ?, ?, ?)";
     public static final String SQL_GET_PAYMENTS_BY_USER = "SELECT * FROM payment WHERE user_id = ? and payment_status_id = 1;";
 
-    public static final String SQL_UPDATE_PREPARED_PAYMENTS_MONEY = "UPDATE payment SET balance=?, balance_destination=? WHERE id=?";
+    public static final String SQL_UPDATE_PREPARED_PAYMENTS_ONE_CARD = "UPDATE payment\n" +
+            "SET balance             = (CASE WHEN card_sender_id = ? THEN ? else balance end),\n" +
+            "    balance_destination = (CASE WHEN card_destination_id = ? THEN ? else balance_destination end)\n" +
+            "WHERE payment_status_id = 1";
+
+    public static final String SQL_UPDATE_PREPARED_PAYMENTS_TWO_CARDS = "UPDATE payment " +
+            "SET balance             = (CASE WHEN card_sender_id = ? THEN ? WHEN card_sender_id = ? THEN ? ELSE balance END ),\n" +
+            "    balance_destination = (CASE WHEN card_destination_id = ? THEN ? WHEN card_destination_id = ? THEN ? ELSE balance_destination END )" +
+            "WHERE payment_status_id = 1";
+
     public static final String SQL_COUNT_PAYMENTS_BY_USER = "SELECT  count(payment.id)  FROM payment where user_id = ? OR user_destination_id = ?";
 
     public static final String SQL_CONFIRM_PAYMENT_BY_ID = "UPDATE payment SET creation_timestamp = default, balance = ?, balance_destination = ?, payment_status_id=2 WHERE id =?";
@@ -74,29 +83,6 @@ public class PaymentsDaoImpl implements PaymentDao {
         return counter;
     }
 
-    @Override
-    public List<Payment> getPreparedPaymentsByUserId(long id) {
-        List<Payment> paymentList;
-        try (Connection con = DBManager.getInstance().getConnection();
-             PreparedStatement stmt = con.prepareStatement(SQL_GET_PAYMENTS_BY_USER)) {
-            stmt.setLong(1, id);
-
-            try (ResultSet rs = stmt.executeQuery()) {
-                paymentList = new ArrayList<>();
-                PaymentMapper paymentMapper = new PaymentMapper();
-                while (rs.next()) {
-                    paymentList.add(paymentMapper.mapRSToPayment(rs));
-
-                }
-            }
-
-        } catch (SQLException throwables) {
-            logger.error("{}, when trying to get Payment list by User Id = {}", throwables.getMessage(), id);
-            throw new RuntimeException(throwables);
-        }
-
-        return paymentList;
-    }
 
 
     @Override
@@ -123,26 +109,60 @@ public class PaymentsDaoImpl implements PaymentDao {
 
         return paymentList;
     }
-
-
+    /**
+     * Updates prepared Payments in case the Card balance has changed.
+     *
+     * @param card Card sender
+     * @return boolean if payments eas updated
+     */
     @Override
-    public boolean updatePreparedPaymentMoney(List<Payment> paymentList) {
-
+    public boolean updatePreparedPaymentByOneCard(Card card) {
         try (Connection con = DBManager.getInstance().getConnection();
-             PreparedStatement stmt = con.prepareStatement(SQL_UPDATE_PREPARED_PAYMENTS_MONEY)) {
+             PreparedStatement stmt = con.prepareStatement(SQL_UPDATE_PREPARED_PAYMENTS_ONE_CARD)) {
 
-            for (Payment payment : paymentList) {
-                stmt.setInt(1, payment.getBalance());
-                stmt.setInt(2, payment.getBalanceDestination());
-                stmt.setLong(3, payment.getId());
-                stmt.executeUpdate();
-            }
+            stmt.setLong(1, card.getId());
+            stmt.setInt(2, card.getMoney());
+            stmt.setLong(3, card.getId());
+            stmt.setInt(4, card.getMoney());
 
-            return true;
+            return stmt.executeUpdate() > 0;
+
         } catch (SQLException throwables) {
             throwables.printStackTrace();
         }
 
+        return false;
+    }
+
+    /**
+     * Updates prepared Payments records in case the Cards balance has changed.
+     *
+     * @param sender Card sender
+     * @param destination Card destination
+     * @return boolean if payments eas updated
+     */
+    @Override
+    public boolean updatePreparedPaymentsByTwoCards(Card sender, Card destination) {
+        try (Connection con = DBManager.getInstance().getConnection();
+             PreparedStatement stmt = con.prepareStatement(SQL_UPDATE_PREPARED_PAYMENTS_TWO_CARDS)) {
+
+
+            stmt.setLong(1, sender.getId());
+            stmt.setInt(2, sender.getMoney());
+            stmt.setLong(3, destination.getId());
+            stmt.setInt(4, destination.getMoney());
+
+            stmt.setLong(5, sender.getId());
+            stmt.setInt(6, sender.getMoney());
+            stmt.setLong(7, destination.getId());
+            stmt.setInt(8, destination.getMoney());
+
+            return stmt.executeUpdate() > 0;
+
+
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
+        }
 
         return false;
     }
@@ -153,8 +173,8 @@ public class PaymentsDaoImpl implements PaymentDao {
         try (Connection con = DBManager.getInstance().getConnection();
              PreparedStatement stmt = con.prepareStatement(SQL_CONFIRM_PAYMENT_BY_ID)) {
             System.out.println(id);
-            stmt.setInt(1,cardSender.getMoney());
-            stmt.setInt(2,cardDestination.getMoney());
+            stmt.setInt(1, cardSender.getMoney());
+            stmt.setInt(2, cardDestination.getMoney());
             stmt.setLong(3, id);
             return stmt.executeUpdate() > 0;
         } catch (SQLException throwables) {

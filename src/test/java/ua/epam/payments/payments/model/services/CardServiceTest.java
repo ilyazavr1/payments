@@ -3,6 +3,7 @@ package ua.epam.payments.payments.model.services;
 import org.junit.Before;
 import org.junit.Test;
 import ua.epam.payments.payments.model.dao.CardDao;
+import ua.epam.payments.payments.model.dao.PaymentDao;
 import ua.epam.payments.payments.model.entity.Card;
 import ua.epam.payments.payments.model.entity.User;
 import ua.epam.payments.payments.model.exception.CardExistException;
@@ -17,6 +18,7 @@ import static org.mockito.Mockito.when;
 public class CardServiceTest {
 
     private CardDao cardDao = mock(CardDao.class);
+    private PaymentDao paymentDao = mock(PaymentDao.class);
     private CardService cardService = new CardService(cardDao);
 
     private static final int MONEY_INT = 1000;
@@ -68,20 +70,22 @@ public class CardServiceTest {
 
     @Test
     public void topUpCardShouldThrowCardTopUpException() {
-        assertThrows(CardTopUpException.class, () -> cardService.topUpCard(card, ""));
-        assertThrows(CardTopUpException.class, () -> cardService.topUpCard(card, "dsd"));
-        assertThrows(CardTopUpException.class, () -> cardService.topUpCard(card, "10001"));
-        assertThrows(CardTopUpException.class, () -> cardService.topUpCard(card, "-1"));
-        assertThrows(CardTopUpException.class, () -> cardService.topUpCard(card, "123123123213"));
+
+
+        assertThrows(CardTopUpException.class, () -> cardService.topUpCard(card, "", paymentDao));
+        assertThrows(CardTopUpException.class, () -> cardService.topUpCard(card, "dsd", paymentDao));
+        assertThrows(CardTopUpException.class, () -> cardService.topUpCard(card, "10001", paymentDao));
+        assertThrows(CardTopUpException.class, () -> cardService.topUpCard(card, "-1", paymentDao));
+        assertThrows(CardTopUpException.class, () -> cardService.topUpCard(card, "123123123213", paymentDao));
 
     }
 
     @Test
     public void topUpCardShouldNotThrowException() throws CardTopUpException {
-        when(cardDao.updateCardWithMoney(card, MONEY_INT)).thenReturn(true);
+        when(cardDao.updateCardByCardIdWithMoney(card, MONEY_INT)).thenReturn(true);
 
-        assertDoesNotThrow(() -> cardService.topUpCard(card, MONEY_STRING));
-        assertTrue(cardService.topUpCard(card, MONEY_STRING));
+        assertDoesNotThrow(() -> cardService.topUpCard(card, MONEY_STRING, paymentDao));
+        assertTrue(cardService.topUpCard(card, MONEY_STRING, paymentDao));
     }
 
     @Test

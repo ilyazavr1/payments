@@ -4,6 +4,7 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import ua.epam.payments.payments.model.dao.CardDao;
 import ua.epam.payments.payments.model.dao.impl.CardDaoImpl;
+import ua.epam.payments.payments.model.dao.impl.PaymentsDaoImpl;
 import ua.epam.payments.payments.model.entity.Card;
 import ua.epam.payments.payments.model.entity.User;
 import ua.epam.payments.payments.model.exception.CardTopUpException;
@@ -28,6 +29,8 @@ public class CardConfirmTopUpServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         logger.debug("CardTopUpServlet started");
+
+
         CardService cardService = new CardService(new CardDaoImpl());
         String inputMoney = req.getParameter("money").trim();
 
@@ -42,7 +45,7 @@ public class CardConfirmTopUpServlet extends HttpServlet {
         }
 
         try {
-            cardService.topUpCard(card, inputMoney);
+            cardService.topUpCard(card, inputMoney, new PaymentsDaoImpl());
             logger.info("Card with id \"{}\" topped up", card.getId());
         } catch (CardTopUpException e) {
             req.getSession().setAttribute(Constants.INVALID_MONEY_AMOUNT, Constants.INVALID_MONEY_AMOUNT);
