@@ -11,11 +11,14 @@
 <%@include file="/jspf/navBar.jspf" %>
 
 
+
+
+
 <div class="col-md-6 offset-md-3">
     <span class="anchor" id="formPayment"></span>
     <hr class="my-5">
 
-    <!-- form card cc payment -->
+
     <div class="card card-outline-secondary">
         <div class="card-body">
             <h3 class="text-center"><fmt:message key="makePayment"/> </h3>

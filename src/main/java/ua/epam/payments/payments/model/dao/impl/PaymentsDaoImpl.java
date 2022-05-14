@@ -87,7 +87,7 @@ public class PaymentsDaoImpl implements PaymentDao {
 
     @Override
     public List<FullPaymentDto> getFullPaymentsByUserLimitSorted(long id, String query) {
-        List<FullPaymentDto> paymentList = null;
+        List<FullPaymentDto> paymentList;
         try (Connection con = DBManager.getInstance().getConnection();
              PreparedStatement stmt = con.prepareStatement(query)) {
             stmt.setLong(1, id);

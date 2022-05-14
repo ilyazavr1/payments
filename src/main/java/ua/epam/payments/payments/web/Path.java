@@ -72,5 +72,5 @@ public class Path {
 
 
 
-    public static final String TEST = "/jsp/testLog.jsp";
+
 }

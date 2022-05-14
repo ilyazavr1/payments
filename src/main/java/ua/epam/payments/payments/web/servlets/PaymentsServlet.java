@@ -62,11 +62,11 @@ public class PaymentsServlet extends HttpServlet {
         req.setAttribute("loopPagination", (int) Math.ceil((double) paymentService.countPaymentsByUser(user) / limit));
 
 
-        if (paymentList.isEmpty()){
+        /*if (paymentList.isEmpty()){
             logger.info("User {} do not have any payments", user.getEmail());
             req.getRequestDispatcher(Path.PAYMENTS_JSP).forward(req, resp);
             return;
-        }
+        }*/
 
         logger.info("Payments sorted");
 

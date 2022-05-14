@@ -32,8 +32,8 @@
                 <li class="nav-item">
                     <a class="nav-link" href="${Path.PAYMENTS_PATH}"><fmt:message key="navBar.myPayments"/></a>
                 </li>
-                <li>
-                    <p style="color: darkgray"> <c:out value="${sessionScope.user.email}"> </c:out>  </p>
+                <li style="margin-left: 100px">
+                    <p style="color: white; font-size: 23px"> <c:out value="${sessionScope.user.email}"> </c:out>  </p>
                 </li>
 
 
@@ -85,8 +85,8 @@
                     <a class="nav-link" href="${Path.ADMIN_UNBLOCK_USERS_CARDS_REQUESTS_PATH}"><fmt:message
                             key="navBar.cardsUnblockRequest"/></a>
                 </li>
-                <li>
-                    <p style="color: darkgray"> <c:out value="${sessionScope.user.email}"> </c:out>  </p>
+                <li style="margin-left: 100px">
+                    <p style="color: white; font-size: 23px"> <c:out value="${sessionScope.user.email}"> </c:out>  </p>
                 </li>
             </ul>
 
