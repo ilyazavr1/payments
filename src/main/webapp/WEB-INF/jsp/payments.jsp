@@ -148,12 +148,7 @@
                                 <c:if test="${requestScope.invalidPayment == payment.id}">
                                     <td style="color: red"><fmt:message key="outOfMoney"> </fmt:message></td>
                                 </c:if>
-                                    <%-- <td>
 
-                                         <form action="/download">
-                                             <input type="submit" value="test">
-                                         </form>
-                                     </td>--%>
                             </tr>
 
                         </c:forEach>

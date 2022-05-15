@@ -27,7 +27,7 @@ public class Path {
     );
 
     //SERVLETS PATHS
-    public static final String PROFILE_PATH = "/profile";
+
     public static final String REGISTRATION_PATH = "/registration";
     public static final String LOGIN_PATH = "/login";
     public static final String LOGOUT_PATH = "/logout";
