@@ -1,5 +1,7 @@
 package ua.epam.payments.payments.model.services;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import ua.epam.payments.payments.model.dao.CardDao;
 import ua.epam.payments.payments.model.dao.PaymentDao;
 import ua.epam.payments.payments.model.entity.User;
@@ -20,10 +22,10 @@ import java.util.List;
  * @author Illia Smiian
  */
 public class PaymentService {
+    private static final Logger logger = LogManager.getLogger(PaymentService.class);
+
     public static final String CREATION_TIMESTAMP = "creation_timestamp";
     public static final String NUMBER = "payment.id";
-
-
     private final PaymentDao paymentDao;
     private final CardDao cardDao;
 
@@ -60,15 +62,19 @@ public class PaymentService {
         if ((payment.getBalance() - payment.getMoney()) < 0) throw new OutOfMoneyException();
         if (cardSender.isBlocked() || cardDestination.isBlocked()) throw new CardBlockedException();
 
-        if (cardDao.transferMoneyFromCardToCard(cardSender.getId(), cardDestination.getId(), payment.getMoney())) {
-            cardSender.setMoney(cardSender.getMoney() - payment.getMoney());
-            cardDestination.setMoney(cardDestination.getMoney() + payment.getMoney());
+        if (!cardDao.transferMoneyFromCardToCard(cardSender.getId(), cardDestination.getId(), payment.getMoney()))
+            return false;
 
+        cardSender.setMoney(cardSender.getMoney() - payment.getMoney());
+        cardDestination.setMoney(cardDestination.getMoney() + payment.getMoney());
+        paymentDao.updatePreparedPaymentsByTwoCards(cardSender, cardDestination);
 
-            paymentDao.updatePreparedPaymentsByTwoCards(cardSender, cardDestination);
+        paymentDao.confirmPayment(payment.getId(), cardSender, cardDestination, payment.getMoney());
 
-            return paymentDao.confirmPayment(payment.getId(), cardSender, cardDestination, payment.getMoney());
-        } else return false;
+        logger.info("Payment with id \"{}\" confirmed", id);
+
+        return true;
+
     }
 
 
@@ -91,7 +97,10 @@ public class PaymentService {
         if (moneyInt <= 0 || moneyInt > 10000) throw new InvalidMoneyException();
         if ((cardSender.getMoney() - moneyInt) < 0) throw new OutOfMoneyException();
 
-        return paymentDao.createPreparedPayment(cardSender, cardDestination, moneyInt);
+        if (paymentDao.createPreparedPayment(cardSender, cardDestination, moneyInt)) {
+            logger.info("Payment prepared [cardFrom: {}; cardTo: {}; money: {}]", cardSender.getNumber(), cardDestination.getNumber(), money);
+            return true;
+        } else return false;
     }
 
 
@@ -117,15 +126,16 @@ public class PaymentService {
         if (moneyInt < 0 || moneyInt > 10000) throw new InvalidMoneyException();
         if ((cardSender.getMoney() - moneyInt) < 0) throw new OutOfMoneyException();
 
-        if (cardDao.transferMoneyFromCardToCard(cardSender.getId(), cardDestination.getId(), moneyInt)) {
-            cardSender.setMoney(cardSender.getMoney() - moneyInt);
-            cardDestination.setMoney(cardDestination.getMoney() + moneyInt);
+        if (!cardDao.transferMoneyFromCardToCard(cardSender.getId(), cardDestination.getId(), moneyInt)) return false;
+        cardSender.setMoney(cardSender.getMoney() - moneyInt);
+        cardDestination.setMoney(cardDestination.getMoney() + moneyInt);
+        paymentDao.updatePreparedPaymentsByTwoCards(cardSender, cardDestination);
 
-            paymentDao.updatePreparedPaymentsByTwoCards(cardSender, cardDestination);
+        if (!paymentDao.createConfirmedPayment(cardSender, cardDestination, moneyInt)) return false;
 
-            return paymentDao.createConfirmedPayment(cardSender, cardDestination, moneyInt);
-        } else return false;
+        logger.info("Payment has been made [cardFrom: {}; cardTo: {}; money: {}]", cardSender.getNumber(), cardDestination.getNumber(), money);
 
+        return true;
     }
 
 

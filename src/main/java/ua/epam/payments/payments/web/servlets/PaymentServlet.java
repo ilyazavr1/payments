@@ -33,15 +33,10 @@ public class PaymentServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         CardService cardService = new CardService(new CardDaoImpl());
-
-
         User user = (User) req.getSession().getAttribute("user");
-
         List<Card> cards = cardService.getCardByUserId(user.getId());
 
         req.setAttribute("cards", cards);
-
-
         req.getRequestDispatcher(Path.PAYMENT_JSP).forward(req, resp);
     }
 
@@ -79,10 +74,8 @@ public class PaymentServlet extends HttpServlet {
 
             if (req.getParameter("prepare") != null) {
                 paymentService.createPreparedPayment(cardSender, cardDestination, money);
-                logger.info("Payment prepared");
             } else if (req.getParameter("send") != null) {
                 paymentService.makePayment(cardSender, cardDestination, money);
-                logger.info("Payment has been made");
             }
 
         } catch (InvalidCardNumberException e) {

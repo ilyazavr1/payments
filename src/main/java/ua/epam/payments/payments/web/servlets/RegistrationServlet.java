@@ -66,8 +66,8 @@ public class RegistrationServlet extends HttpServlet {
                 HttpSession session = req.getSession();
                 session.setAttribute("user", user);
                 session.setAttribute("userRole", userService.getUserRoleByUserRoleId(user.getRolesId()));
+                logger.info("User registered {}", email);
             }
-            logger.info("User registered {}", email);
         } catch (RegisteredEmailException e) {
             logger.info("User failed to register");
             req.setAttribute(Constants.EMAIL_EXISTS, Constants.EMAIL_EXISTS);

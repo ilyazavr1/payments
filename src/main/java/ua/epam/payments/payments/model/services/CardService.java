@@ -67,7 +67,10 @@ public class CardService {
     public boolean createCardWithUser(Card card, User user) throws CardExistException {
         if (cardDao.isExistCard(card.getNumber()) || user == null) throw new CardExistException();
 
-        return cardDao.createCardWithUser(card, user);
+        if (cardDao.createCardWithUser(card, user)) {
+            logger.info("Card with number {} created and added to user {}", card.getNumber(), user.getEmail());
+            return true;
+        } else return false;
     }
 
     /**
@@ -98,8 +101,7 @@ public class CardService {
         if (cardDao.blockCardById(id)) {
             logger.info("Card with id:\"{}\" is blocked", id);
             return true;
-        }
-        return false;
+        } else return false;
     }
 
     public boolean unblockCardById(long id) {
@@ -127,7 +129,11 @@ public class CardService {
      * @return boolean if request to unblock was made or not.
      */
     public boolean makeRequestToUnblockCard(Card card, User user) {
-        return cardDao.updateCardConsiderationById(card.getId()) && cardDao.createCardUnblockRequest(card, user);
+        if (cardDao.updateCardConsiderationById(card.getId()) && cardDao.createCardUnblockRequest(card, user)) {
+            logger.info("Card with id \"{}\" was requested to be unlocked by {}", card.getId(), user.getEmail());
+            return true;
+        } else return false;
+
     }
 
     public List<Card> sort(long id, String type, String order, int limit, int offset) {

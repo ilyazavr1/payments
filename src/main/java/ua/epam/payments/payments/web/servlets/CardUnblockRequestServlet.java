@@ -33,10 +33,7 @@ public class CardUnblockRequestServlet extends HttpServlet {
         Card card = cardService.getCardById(Long.parseLong(req.getParameter("id")));
         User user = userService.getUserById(card.getUserId());
 
-
-        if (cardService.makeRequestToUnblockCard(card, user)) {
-            logger.info("Card with id \"{}\" was requested to be unlocked by {}", card.getId(), user.getEmail());
-        }
+        cardService.makeRequestToUnblockCard(card, user);
 
         resp.sendRedirect(Path.CARDS_PATH);
     }

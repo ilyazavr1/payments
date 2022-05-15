@@ -47,7 +47,6 @@ public class CreateCardServlet extends HttpServlet {
 
         try {
             cardService.createCardWithUser(newCard, user);
-            logger.info("Card with number {} created and added to user {}", newCard.getNumber(), user.getEmail());
         } catch (CardExistException e) {
             logger.info("Failed to create card");
             req.setAttribute(Constants.FAILED_TO_CREATE_CARD, Constants.FAILED_TO_CREATE_CARD);

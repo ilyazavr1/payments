@@ -66,9 +66,8 @@ public class AdminBockCardServlet extends HttpServlet {
             req.getRequestDispatcher(Path.ADMIN_BLOCK_USER_CARD_JSP).forward(req, resp);
         }
 
+        cardService.blockCardById(Long.parseLong(cardIdToBlock));
 
-        if (cardService.blockCardById(Long.parseLong(cardIdToBlock)))
-            logger.info("Card with id:\"{}\" is blocked", cardIdToBlock);
 
         resp.sendRedirect(Path.ADMIN_USER_CARDS_PATH);
     }

@@ -36,8 +36,6 @@ public class ConfirmPayment extends HttpServlet {
 
         try {
             paymentService.confirmPayment(paymentId);
-            logger.info("Payment with id \"{}\" confirmed", paymentId);
-
         } catch (CardBlockedException | OutOfMoneyException e) {
             resp.sendRedirect(Path.PAYMENTS_PATH+"?invalidPayment="+paymentId);
             return;
