@@ -1,6 +1,6 @@
 package ua.epam.payments.payments.model.entity;
 
-import java.io.Serializable;
+
 
 public class User {
 

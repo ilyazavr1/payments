@@ -46,11 +46,11 @@ public class CardConfirmTopUpServlet extends HttpServlet {
 
         try {
             cardService.topUpCard(card, inputMoney, new PaymentsDaoImpl());
-            logger.info("Card with id \"{}\" topped up", card.getId());
         } catch (CardTopUpException e) {
             req.getSession().setAttribute(Constants.INVALID_MONEY_AMOUNT, Constants.INVALID_MONEY_AMOUNT);
             req.setAttribute(Constants.INVALID_MONEY_AMOUNT, Constants.INVALID_MONEY_AMOUNT);
             req.getRequestDispatcher(Path.CARD_TOP_UP_PATH).forward(req, resp);
+            logger.info("Card with id \"{}\" top up failed", cardId);
             return;
         }
 

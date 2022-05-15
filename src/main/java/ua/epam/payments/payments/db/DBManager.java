@@ -62,10 +62,6 @@ public class DBManager {
     public void closeConnection(){
         ds.close();
     }
-    //test
-    public void testActive(){
-        System.out.println(ds.getHikariPoolMXBean().getActiveConnections());
-        //System.out.println(ds.getHikariPoolMXBean().getTotalConnections());
-    }
+
 
 }

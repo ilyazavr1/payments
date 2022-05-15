@@ -64,8 +64,7 @@ public class CardBlock extends HttpServlet {
             return;
         }
 
-        if (cardService.blockCardById(Long.parseLong(cardIdToBlock)))
-            logger.info("Card with id:\"{}\" is blocked", cardIdToBlock);
+        cardService.blockCardById(Long.parseLong(cardIdToBlock));
 
         resp.sendRedirect(Path.CARDS_PATH);
     }

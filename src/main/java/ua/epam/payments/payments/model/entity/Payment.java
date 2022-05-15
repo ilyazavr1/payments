@@ -180,17 +180,7 @@ public class Payment {
                 '}';
     }
 
-    public enum Status {
-        PREPARED, SENT;
 
-        public boolean isPrepared() {
-            return this == PREPARED;
-        }
-
-        public boolean isSent() {
-            return this == SENT;
-        }
-    }
 }
 
 

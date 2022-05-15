@@ -6,7 +6,11 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-
+/**
+ * Validates User input during registration.
+ *
+ * @author Illia Smiian
+ */
 public class UserValidator {
     public static final Pattern EMAIL_ADDRESS_REGEX = Pattern.compile("^[-\\w.]+@([A-z0-9][-A-z0-9]+\\.)+[A-z]{2,4}$", Pattern.CASE_INSENSITIVE);
     public static final Pattern NAME_REGEX = Pattern.compile("^(\\p{L}){1}( |[\\p{L}]){2,50}$");

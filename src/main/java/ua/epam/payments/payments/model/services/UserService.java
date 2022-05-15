@@ -1,6 +1,6 @@
 package ua.epam.payments.payments.model.services;
 
-import org.apache.commons.codec.DecoderException;
+
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import ua.epam.payments.payments.model.dao.RoleDao;
@@ -11,12 +11,14 @@ import ua.epam.payments.payments.model.exception.AuthenticationException;
 import ua.epam.payments.payments.model.exception.RegisteredEmailException;
 import ua.epam.payments.payments.model.exception.UserIsBlockedException;
 import ua.epam.payments.payments.model.util.PasswordEncryption;
-import ua.epam.payments.payments.web.servlets.CardBlock;
 
-import java.security.NoSuchAlgorithmException;
-import java.security.spec.InvalidKeySpecException;
 import java.util.List;
 
+/**
+ * Manages business logic related with User.
+ *
+ * @author Illia Smiian
+ */
 public class UserService {
     private final UserDao userDao;
     private static final Logger logger = LogManager.getLogger(UserService.class);

@@ -14,6 +14,11 @@ import java.io.IOException;
 
 import java.util.List;
 
+/**
+ * Authorization filter for delimitation of access rights.
+ *
+ *  @author Illia Smiian
+ */
 @WebFilter("/*")
 public class AccessFilter implements Filter {
 

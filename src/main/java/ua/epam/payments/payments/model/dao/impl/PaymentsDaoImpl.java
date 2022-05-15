@@ -21,7 +21,7 @@ public class PaymentsDaoImpl implements PaymentDao {
     public static final String SQL_GET_PAYMENT_BY_ID = "SELECT * FROM payment WHERE id=?";
     public static final String SQL_CREATE_PREPARED_PAYMENT = "INSERT INTO payment VALUES (default, ?, ?, ?, default, default, ?, ?, ?, ?)";
     public static final String SQL_CREATE_CONFIRMED_PAYMENT = "INSERT INTO payment VALUES (default, ?, ?, ?, 2, default, ?, ?, ?, ?)";
-    public static final String SQL_GET_PAYMENTS_BY_USER = "SELECT * FROM payment WHERE user_id = ? and payment_status_id = 1;";
+
 
     public static final String SQL_UPDATE_PREPARED_PAYMENTS_ONE_CARD = "UPDATE payment\n" +
             "SET balance             = (CASE WHEN card_sender_id = ? THEN ? else balance end),\n" +
@@ -109,6 +109,8 @@ public class PaymentsDaoImpl implements PaymentDao {
 
         return paymentList;
     }
+
+
     /**
      * Updates prepared Payments in case the Card balance has changed.
      *

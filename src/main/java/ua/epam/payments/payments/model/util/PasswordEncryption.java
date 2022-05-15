@@ -5,7 +5,7 @@ import org.apache.commons.codec.DecoderException;
 import org.apache.commons.codec.binary.Hex;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import ua.epam.payments.payments.web.servlets.CardBlock;
+
 
 import javax.crypto.SecretKeyFactory;
 import javax.crypto.spec.PBEKeySpec;
@@ -13,6 +13,12 @@ import java.security.NoSuchAlgorithmException;
 import java.security.SecureRandom;
 import java.security.spec.InvalidKeySpecException;
 
+
+/**
+ * Password encoder PBKDF2.
+ *
+ * @author Illia Smiian
+ */
 public class PasswordEncryption {
     private static final int ITERATIONS = 200;
     private static final int KEY_LENGTH = 512;

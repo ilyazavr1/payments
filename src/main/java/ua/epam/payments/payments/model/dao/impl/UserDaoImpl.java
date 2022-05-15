@@ -140,7 +140,7 @@ public class UserDaoImpl implements UserDao {
         }
     }
 
-    //user data: 1 - first_name, 2 - last_name, 3 - surname, 4 - email, 5 - password, 6 - blocked, 7 - role_id
+
     @Override
     public boolean createUser(User user) {
         try (Connection con = DBManager.getInstance().getConnection();

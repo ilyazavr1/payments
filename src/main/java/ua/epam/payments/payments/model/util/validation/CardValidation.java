@@ -8,6 +8,12 @@ import javax.servlet.http.HttpServletRequest;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Validates Cards before money transfer.
+ * Validates card number.
+ *
+ * @author Illia Smiian
+ */
 public class CardValidation {
 
    private List<String> errors = new ArrayList<>();

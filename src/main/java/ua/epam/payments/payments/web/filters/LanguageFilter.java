@@ -7,21 +7,21 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
 
-
+/**
+ * Filter for setting encoding and internalization.
+ *
+ *  @author Illia Smiian
+ */
 public class LanguageFilter implements Filter {
 
-    public static final String LANG_UK = "uk";
-    public static final String LANG_EN = "en";
-    public static final String LANG_COOKIE_NAME = "lang";
-    private static String encoding = "UTF-8";
+    private static final String LANG_UK = "uk";
+    private static final String LANG_EN = "en";
+    private static final String LANG_COOKIE_NAME = "lang";
+    private static final String encoding = "UTF-8";
 
     @Override
-    public void init(FilterConfig filterConfig) throws ServletException {
-        String encodingParam =
-                filterConfig.getInitParameter("encoding");
-        if (encodingParam != null) {
-            encoding = encodingParam;
-        }
+    public void init(FilterConfig filterConfig)  {
+
 
     }
 

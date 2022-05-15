@@ -4,7 +4,11 @@ package ua.epam.payments.payments.model.util;
 import java.util.concurrent.ThreadLocalRandom;
 
 
-
+/**
+ * Generates Card number.
+ *
+ * @author Illia Smiian
+ */
 public class CardGeneration {
 
     public static String generateCardNumber() {

@@ -4,6 +4,11 @@ import javax.servlet.annotation.WebListener;
 import javax.servlet.http.HttpSessionEvent;
 import javax.servlet.http.HttpSessionListener;
 
+/**
+ * Listener for setting language attribute on start up.
+ *
+ * @author Iliia Smiian
+ */
 @WebListener
 public class SessionListener implements HttpSessionListener {
 

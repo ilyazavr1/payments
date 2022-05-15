@@ -1,20 +1,26 @@
 package ua.epam.payments.payments.model.services;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import ua.epam.payments.payments.model.dao.CardDao;
 import ua.epam.payments.payments.model.dao.PaymentDao;
-import ua.epam.payments.payments.model.dao.impl.PaymentsDaoImpl;
 import ua.epam.payments.payments.model.entity.dto.CardsUnblockRequestDto;
 import ua.epam.payments.payments.model.entity.Card;
 import ua.epam.payments.payments.model.entity.User;
 import ua.epam.payments.payments.model.exception.CardExistException;
 import ua.epam.payments.payments.model.exception.CardTopUpException;
+import ua.epam.payments.payments.web.servlets.CardBlock;
 
 import java.util.List;
 
+/**
+ * Manages business logic related with Card.
+ *
+ * @author Illia Smiian
+ */
 public class CardService {
+    private static final Logger logger = LogManager.getLogger(CardService.class);
     private final CardDao cardDao;
-
-
     private static final String NUMBER = "number";
     private static final String NAME = "name";
     private static final String MONEY = "money";
@@ -83,13 +89,17 @@ public class CardService {
 
         if (cardDao.updateCardByCardIdWithMoney(card, moneyInt)) {
             paymentDao.updatePreparedPaymentByOneCard(card);
+            logger.info("Card with id \"{}\" topped up", card.getId());
             return true;
         } else return false;
     }
 
     public boolean blockCardById(long id) {
-
-        return cardDao.blockCardById(id);
+        if (cardDao.blockCardById(id)) {
+            logger.info("Card with id:\"{}\" is blocked", id);
+            return true;
+        }
+        return false;
     }
 
     public boolean unblockCardById(long id) {

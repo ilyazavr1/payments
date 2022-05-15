@@ -13,6 +13,12 @@ import ua.epam.payments.payments.model.exception.OutOfMoneyException;
 import java.util.ArrayList;
 import java.util.List;
 
+
+/**
+ * Manages business logic related with Payment.
+ *
+ * @author Illia Smiian
+ */
 public class PaymentService {
     public static final String CREATION_TIMESTAMP = "creation_timestamp";
     public static final String NUMBER = "payment.id";
